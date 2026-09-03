@@ -24,16 +24,52 @@ function setActive(i) {
   });
 }
 
+// Swipe threshold in px before a touch gesture counts as prev/next rather
+// than a tap or a scroll.
+const SWIPE_THRESHOLD = 40;
+
+function addSwipe(el, onPrev, onNext) {
+  if (!el) return;
+  let startX = null, startY = null;
+  el.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  el.addEventListener('touchend', (e) => {
+    if (startX == null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    startX = null;
+    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) onNext(); else onPrev();
+    }
+  }, { passive: true });
+}
+
 function initSpotlight() {
   const prev = document.querySelector('.spotlight-nav.prev');
   const next = document.querySelector('.spotlight-nav.next');
   const main = document.getElementById('spotlightMain');
+  const zoomBtn = document.getElementById('spotlightZoom');
   const lightbox = document.getElementById('lightbox');
   const closeBtn = document.getElementById('lightboxClose');
 
   if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); setActive(index - 1); });
   if (next) next.addEventListener('click', (e) => { e.stopPropagation(); setActive(index + 1); });
-  if (main && lightbox) main.addEventListener('click', () => { lightbox.hidden = false; });
+
+  // Clicking the photo itself steps through the gallery — left half = previous,
+  // right half = next — so browsing a product's photos doesn't require aiming
+  // for the small arrow buttons. Zooming in has its own dedicated control.
+  if (main) {
+    main.addEventListener('click', (e) => {
+      if (e.target.closest('.spotlight-nav') || e.target.closest('#spotlightZoom')) return;
+      if (images.length < 2) return;
+      const rect = main.getBoundingClientRect();
+      const clickedLeftHalf = (e.clientX - rect.left) < rect.width / 2;
+      setActive(clickedLeftHalf ? index - 1 : index + 1);
+    });
+  }
+  if (zoomBtn && lightbox) zoomBtn.addEventListener('click', (e) => { e.stopPropagation(); lightbox.hidden = false; });
   if (closeBtn && lightbox) closeBtn.addEventListener('click', () => { lightbox.hidden = true; });
   if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.hidden = true; });
 
@@ -46,6 +82,9 @@ function initSpotlight() {
   document.querySelectorAll('.spotlight-thumbs img').forEach((t, i) => {
     t.addEventListener('click', () => setActive(i));
   });
+
+  addSwipe(main, () => setActive(index - 1), () => setActive(index + 1));
+  addSwipe(lightbox, () => setActive(index - 1), () => setActive(index + 1));
 }
 
 function renderError(message) {
@@ -84,6 +123,7 @@ async function renderProduct() {
       <div class="spotlight">
         <div class="spotlight-main" id="spotlightMain">
           <img id="spotlightImg" src="${escapeHTML(images[0].src)}" alt="${escapeHTML(images[0].alt || '')}">
+          <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button">&#128269;</button>
           ${images.length > 1 ? `
             <div class="spotlight-nav prev" aria-label="Vorige foto">&#8249;</div>
             <div class="spotlight-nav next" aria-label="Volgende foto">&#8250;</div>` : ''}

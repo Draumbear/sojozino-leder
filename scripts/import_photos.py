@@ -125,17 +125,26 @@ def main():
             seen_slugs[slug] = True
             prod_order += 1
 
+            # Photos aren't always directly inside the product folder -- some
+            # products have nested subfolders for colour/view variants (e.g.
+            # "Bordeauxrode riem/1", "2", or "Tties/den Sofie/lichtbruin").
+            # Walk the whole subtree so nothing gets silently skipped, sorted
+            # by full relative path so photos from the same subfolder stay
+            # grouped together in a stable order.
             src_dir = os.path.join(cat_path, pf)
-            files = sorted(
-                f for f in os.listdir(src_dir)
-                if os.path.splitext(f)[1].lower() in IMAGE_EXT
-            )
+            found = []
+            for root, _dirs, fnames in os.walk(src_dir):
+                for fname in fnames:
+                    if os.path.splitext(fname)[1].lower() in IMAGE_EXT:
+                        full = os.path.join(root, fname)
+                        found.append((os.path.relpath(full, src_dir), full))
+            found.sort(key=lambda t: t[0])
+            files = [full for _rel, full in found]
             if not files:
                 continue
 
             images = []
-            for i, fname in enumerate(files, start=1):
-                src_path = os.path.join(src_dir, fname)
+            for i, src_path in enumerate(files, start=1):
                 out_name = f"{i:02d}.jpg"
                 dst_path = os.path.join(ASSETS, slug, out_name)
                 resize_save(src_path, dst_path, MAX_DIM)
@@ -145,7 +154,7 @@ def main():
                 })
 
             # Cover thumbnail (separate, smaller file for grid views).
-            cover_src = os.path.join(src_dir, files[0])
+            cover_src = files[0]
             cover_dst = os.path.join(ASSETS, slug, "cover.jpg")
             resize_save(cover_src, cover_dst, THUMB_DIM)
             cover = {"src": f"assets/products/{slug}/cover.jpg", "alt": name}

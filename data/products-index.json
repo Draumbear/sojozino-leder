@@ -1,5 +1,16 @@
 [
   {
+    "slug": "tties",
+    "name": "Tties",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/tties/cover.jpg",
+      "alt": "Tties"
+    },
+    "order": 1,
+    "featured": false
+  },
+  {
     "slug": "clutch",
     "name": "Clutch",
     "category": "handtassen",
@@ -110,6 +121,17 @@
     "featured": false
   },
   {
+    "slug": "slingbags",
+    "name": "Slingbags",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/slingbags/cover.jpg",
+      "alt": "Slingbags"
+    },
+    "order": 12,
+    "featured": false
+  },
+  {
     "slug": "stovebuze",
     "name": "Stovebuze",
     "category": "handtassen",
@@ -173,6 +195,39 @@
       "alt": "Tas Metje"
     },
     "order": 5,
+    "featured": false
+  },
+  {
+    "slug": "bordeauxrode-riem",
+    "name": "Bordeauxrode Riem",
+    "category": "riemen",
+    "cover": {
+      "src": "assets/products/bordeauxrode-riem/cover.jpg",
+      "alt": "Bordeauxrode Riem"
+    },
+    "order": 1,
+    "featured": false
+  },
+  {
+    "slug": "dopp-kit",
+    "name": "Dopp Kit",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/dopp-kit/cover.jpg",
+      "alt": "Dopp Kit"
+    },
+    "order": 1,
+    "featured": false
+  },
+  {
+    "slug": "driehoek-geldbeugels",
+    "name": "Driehoek Geldbeugels",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/driehoek-geldbeugels/cover.jpg",
+      "alt": "Driehoek Geldbeugels"
+    },
+    "order": 2,
     "featured": false
   },
   {
@@ -294,6 +349,17 @@
       "alt": "Kaartenhouder Grof Leder"
     },
     "order": 13,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouder-origami",
+    "name": "Kaartenhouder Origami",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouder-origami/cover.jpg",
+      "alt": "Kaartenhouder Origami"
+    },
+    "order": 14,
     "featured": false
   },
   {

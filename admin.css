@@ -35,7 +35,7 @@
   border-bottom: 1px solid var(--a-line);
 }
 .admin-header h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Zilla Slab', Georgia, serif;
   font-size: 1.3rem;
   font-weight: 700;
   margin: 0;
@@ -66,7 +66,7 @@
 }
 .admin-card > h2:first-child { margin-top: 0; }
 .admin-card h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Zilla Slab', Georgia, serif;
   font-size: 1.15rem;
   margin: 0 0 1rem;
 }
@@ -162,7 +162,7 @@
 
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
 .stat-box { background: #fff; border: 1px solid var(--a-line); border-radius: var(--a-radius-sm); padding: 1.1rem; text-align: center; }
-.stat-box .num { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: var(--a-rust); }
+.stat-box .num { font-family: 'Zilla Slab', serif; font-size: 2rem; font-weight: 700; color: var(--a-rust); }
 .stat-box .label { font-size: 0.78rem; color: var(--a-ink-faint); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* Image manager */
