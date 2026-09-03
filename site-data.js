@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: 'index.html', label: 'Home' },
   { href: 'over-mij.html', label: 'Over mij' },
   { href: 'creaties.html', label: 'Creaties' },
+  { href: 'bestellen.html', label: 'Bestellen' },
   { href: 'waar-vind-je-mij.html', label: 'Waar vind je mij' },
   { href: 'contact.html', label: 'Contact' },
 ];

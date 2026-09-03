@@ -24,9 +24,56 @@ DATA = os.path.join(BASE, "data")
 
 CATEGORY_MAP = {
     "1 handtassen": ("handtassen", "Handtassen"),
-    "2 tassen rugzakken": ("tassen-rugzakken", "Tassen & Rugzakken"),
+    "2 tassen rugzakken": ("tassen", "Tassen"),
     "3 riemen": ("riemen", "Riemen"),
     "4 kleine lederwaren": ("kleine-lederwaren", "Kleine Lederwaren"),
+}
+
+# Kleine Lederwaren is the one category the leathermaker wants broken down
+# further. Fixed list (order matters -- shown in this order in filters and
+# the dashboard); products not matched below fall into "allerlei".
+SUBCATEGORIES = [
+    ("portefeuilles", "Portefeuilles"),
+    ("kaartenhouders", "Kaartenhouders"),
+    ("toilettassen", "Toilettassen"),
+    ("poepzakjeshouder", "Poepzakjeshouder"),
+    ("sleutelhangers", "Sleutelhangers"),
+    ("place-mats", "Place-mats"),
+    ("onderleggers", "Onderleggers"),
+    ("hoesjes", "Hoesjes"),
+    ("brillendozen", "Brillendozen"),
+    ("etuis", "Etuis"),
+    ("boekenleggers", "Boekenleggers"),
+    ("allerlei", "Allerlei"),
+]
+
+# Best-effort mapping from product slug (within Kleine Lederwaren) to one of
+# the subcategories above, based on what each item actually is. Anything not
+# listed here defaults to "allerlei" -- Tinkie can reassign any of these via
+# the dashboard's product editor, this is just a sensible starting point.
+SUBCATEGORY_MAP = {
+    "bifold-de-nele-portefeuille": "portefeuilles",
+    "driehoek-geldbeugels": "portefeuilles",
+    "inges-longwallet": "portefeuilles",
+    "kleine-geldbeugel": "portefeuilles",
+    "portefeuille-den-stijn": "portefeuilles",
+    "portefeuille-rood-zwart": "portefeuilles",
+    "kaartenhouder-blauw": "kaartenhouders",
+    "kaartenhouder-bruin-idem-grofleder": "kaartenhouders",
+    "kaartenhouder-grof-leder": "kaartenhouders",
+    "kaartenhouder-origami": "kaartenhouders",
+    "kaartenhouder-schuifflap": "kaartenhouders",
+    "kaartenhouders": "kaartenhouders",
+    "kaartenhouders-duo-kleur": "kaartenhouders",
+    "dopp-kit": "toilettassen",
+    "poepzakjeshouder-handtasje": "poepzakjeshouder",
+    "zakmeshouder-met-sleutelhanger": "sleutelhangers",
+    "smartphonetasje": "hoesjes",
+    "tablethoes": "hoesjes",
+    "telefoonhoesje-prosper": "hoesjes",
+    "henks-gsm-houder": "hoesjes",
+    "mes-tasje": "etuis",
+    "messenbeugel": "etuis",
 }
 
 MAX_DIM = 1600
@@ -68,8 +115,10 @@ def resize_save(src_path, dst_path, max_dim):
     img.save(dst_path, "JPEG", quality=JPEG_QUALITY, optimize=True)
 
 
-def load_existing_descriptions():
-    """slug -> description, for whatever's already in data/products/*.json."""
+def load_existing_products():
+    """slug -> {description, subcategory}, for whatever's already on disk --
+    so re-running the import doesn't clobber copy or subcategory
+    reassignments Tinkie already made through the dashboard."""
     out = {}
     products_dir = os.path.join(DATA, "products")
     if not os.path.isdir(products_dir):
@@ -80,15 +129,17 @@ def load_existing_descriptions():
         try:
             with open(os.path.join(products_dir, fname), encoding="utf-8") as f:
                 d = json.load(f)
-            if d.get("description"):
-                out[d["slug"]] = d["description"]
+            out[d["slug"]] = {
+                "description": d.get("description") or None,
+                "subcategory": d.get("subcategory") or None,
+            }
         except (OSError, json.JSONDecodeError):
             continue
     return out
 
 
 def main():
-    existing_desc = load_existing_descriptions()
+    existing = load_existing_products()
 
     categories = []
     products_index = []
@@ -106,7 +157,10 @@ def main():
     for cat_folder in cat_folders:
         cat_slug, cat_name = CATEGORY_MAP.get(cat_folder, (slugify(cat_folder), cat_folder))
         cat_order += 1
-        categories.append({"slug": cat_slug, "name": cat_name, "order": cat_order})
+        cat_entry = {"slug": cat_slug, "name": cat_name, "order": cat_order}
+        if cat_slug == "kleine-lederwaren":
+            cat_entry["subcategories"] = [{"slug": s, "name": n} for s, n in SUBCATEGORIES]
+        categories.append(cat_entry)
 
         cat_path = os.path.join(SOURCE, cat_folder)
         product_folders = sorted(
@@ -159,16 +213,20 @@ def main():
             resize_save(cover_src, cover_dst, THUMB_DIM)
             cover = {"src": f"assets/products/{slug}/cover.jpg", "alt": name}
 
-            description = existing_desc.get(
-                slug,
+            prior = existing.get(slug) or {}
+            description = prior.get("description") or (
                 f"Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust "
-                f"contact op voor meer details over {name.lower()}.",
+                f"contact op voor meer details over {name.lower()}."
             )
+            subcategory = None
+            if cat_slug == "kleine-lederwaren":
+                subcategory = prior.get("subcategory") or SUBCATEGORY_MAP.get(slug, "allerlei")
 
             products_index.append({
                 "slug": slug,
                 "name": name,
                 "category": cat_slug,
+                "subcategory": subcategory,
                 "cover": cover,
                 "order": prod_order,
                 "featured": False,
@@ -179,6 +237,7 @@ def main():
                     "slug": slug,
                     "name": name,
                     "category": cat_slug,
+                    "subcategory": subcategory,
                     "description": description,
                     "images": images,
                 }, f, ensure_ascii=False, indent=2)

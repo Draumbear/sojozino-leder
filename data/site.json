@@ -3,15 +3,17 @@
   "ownerName": "Johnny Decoopman",
   "tagline": "Unieke handgemaakte lederwaren in Oostende",
   "heroEyebrow": "Handgemaakt leder — Oostende",
-  "aboutHeading": "Over Sojozino",
+  "aboutHeading": "Het verhaal van Sojozino",
   "aboutPhoto": {
     "src": "assets/about.jpg",
     "alt": "Johnny Decoopman aan het werk"
   },
   "aboutParagraphs": [
-    "Sojozino is het lederatelier van Johnny Decoopman, lederbewerker en ambachtenliefhebber uit Oostende.",
-    "Elk stuk dat hier vandaan komt wordt met de hand gesneden, genaaid en afgewerkt — van handtassen en rugzakken tot riemen en kleine lederwaren zoals portefeuilles en kaartenhouders. Geen twee stukken zijn precies hetzelfde.",
-    "Werk aan een eigen ontwerp, een herstelling of iets op maat? Neem gerust contact op."
+    "Welkom bij Sojozino_leder, waar het ambacht van lederbewerking wordt gekoesterd en in ere gehouden door Johnny Decoopman.",
+    "Sojozino is een samensmelting van de twee eerste letters van alle gezinsleden: SOfie (zijn echtgenote), JOhnny en hun twee dochters ZIta en NOor.",
+    "Johnny's passie voor lederbewerking begon in 2018. Hij startte met de hand portefeuilles te naaien. In 2019 vervolgde hij zijn lederavontuur in de Lederstudio (Brugge), waar hij negen modules lederbewerking volgde bij Nathalie Homblé. De geur en het knarsen van het leer, het mooie van het creëren van de lederwaren zorgen ervoor dat hij met veel liefde in zijn atelier kleine lederwaren, riemen, tassen en rugzakken vervaardigt.",
+    "Regelmatig vindt u hem terug op ambachtenmarkten, waar hij onder een opvallende rode tent zijn nieuwste creaties verkoopt. Op deze website kan u zijn creaties online bestellen. Johnny werkt ook op vraag voor persoonlijke en unieke werkstukken — zo maakte hij lederen, gepersonaliseerde sleutelhangers voor een B&B in Damme, een halsband met naam voor Visla Oona en Stafford Stafke, en handtassen voor dames die aan al hun wensen voldoen.",
+    "Neem gerust een kijkje op de website. Bij vragen of suggesties kan u Johnny steeds bereiken via sojozino@gmail.com."
   ],
   "instagramUrl": "https://www.instagram.com/sojozino_leder/",
   "email": "sojozino@gmail.com",
@@ -19,5 +21,5 @@
   "logo": {
     "mark": "assets/logo-mark.png"
   },
-  "accentColor": "#b5502e"
+  "accentColor": "#c31f1f"
 }

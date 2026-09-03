@@ -178,6 +178,18 @@ function renderCategoriesTab() {
   } else {
     list.innerHTML = state.categories.map(c => {
       const count = state.productsIndex.filter(p => p.category === c.slug).length;
+      const subs = c.subcategories || [];
+      const subRows = subs.map(s => {
+        const subCount = state.productsIndex.filter(p => p.category === c.slug && p.subcategory === s.slug).length;
+        return `
+        <div class="row-card sub-row-card" data-cat="${esc(c.slug)}" data-sub="${esc(s.slug)}">
+          <div class="rc-info"><strong>${esc(s.name)}</strong><span>${subCount} product${subCount === 1 ? '' : 'en'}</span></div>
+          <div class="rc-actions">
+            <button class="btn-admin secondary small" data-action="rename-sub">Naam wijzigen</button>
+            <button class="btn-admin danger small" data-action="delete-sub">Verwijderen</button>
+          </div>
+        </div>`;
+      }).join('');
       return `
       <div class="row-card" data-slug="${esc(c.slug)}">
         <div class="rc-info"><strong>${esc(c.name)}</strong><span>${count} product${count === 1 ? '' : 'en'} — ${esc(c.slug)}</span></div>
@@ -185,6 +197,10 @@ function renderCategoriesTab() {
           <button class="btn-admin secondary small" data-action="rename-cat">Naam wijzigen</button>
           <button class="btn-admin danger small" data-action="delete-cat">Verwijderen</button>
         </div>
+      </div>
+      <div class="sub-category-block" data-cat="${esc(c.slug)}">
+        ${subRows}
+        <button class="btn-admin secondary small" data-action="add-sub" data-cat="${esc(c.slug)}">+ Onderverdeling toevoegen</button>
       </div>`;
     }).join('');
   }
@@ -192,7 +208,40 @@ function renderCategoriesTab() {
   list.onclick = async (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
+
+    if (btn.dataset.action === 'add-sub') {
+      const catSlug = btn.dataset.cat;
+      const cat = state.categories.find(c => c.slug === catSlug);
+      const name = prompt('Naam van de nieuwe onderverdeling:');
+      if (!name || !name.trim()) return;
+      cat.subcategories = cat.subcategories || [];
+      const slug = uniqueSubcategorySlug(cat, slugify(name));
+      cat.subcategories.push({ slug, name: name.trim() });
+      await saveCategories(`Onderverdeling toegevoegd: ${name.trim()}`);
+      return;
+    }
+
+    const subRow = btn.closest('.sub-row-card');
+    if (subRow) {
+      const cat = state.categories.find(c => c.slug === subRow.dataset.cat);
+      const sub = (cat.subcategories || []).find(s => s.slug === subRow.dataset.sub);
+      if (btn.dataset.action === 'rename-sub') {
+        const name = prompt('Nieuwe naam voor deze onderverdeling:', sub.name);
+        if (!name || !name.trim()) return;
+        sub.name = name.trim();
+        await saveCategories(`Onderverdeling hernoemd: ${sub.name}`);
+      } else if (btn.dataset.action === 'delete-sub') {
+        const count = state.productsIndex.filter(p => p.category === cat.slug && p.subcategory === sub.slug).length;
+        if (count > 0) { toast(`Kan niet verwijderen: ${count} product(en) zitten nog in "${sub.name}".`, 'err'); return; }
+        if (!confirm(`Onderverdeling "${sub.name}" verwijderen?`)) return;
+        cat.subcategories = cat.subcategories.filter(s => s.slug !== sub.slug);
+        await saveCategories(`Onderverdeling verwijderd: ${sub.name}`);
+      }
+      return;
+    }
+
     const row = btn.closest('.row-card');
+    if (!row) return;
     const slug = row.dataset.slug;
     const cat = state.categories.find(c => c.slug === slug);
     if (btn.dataset.action === 'rename-cat') {
@@ -213,7 +262,7 @@ function renderCategoriesTab() {
     const name = prompt('Naam van de nieuwe categorie:');
     if (!name || !name.trim()) return;
     const slug = uniqueCategorySlug(slugify(name));
-    state.categories.push({ slug, name: name.trim(), order: state.categories.length + 1 });
+    state.categories.push({ slug, name: name.trim(), order: state.categories.length + 1, subcategories: [] });
     await saveCategories(`Categorie toegevoegd: ${name.trim()}`);
   };
 }
@@ -221,6 +270,13 @@ function renderCategoriesTab() {
 function uniqueCategorySlug(base) {
   let slug = base, n = 2;
   const taken = new Set(state.categories.map(c => c.slug));
+  while (taken.has(slug)) { slug = `${base}-${n}`; n++; }
+  return slug;
+}
+
+function uniqueSubcategorySlug(cat, base) {
+  let slug = base, n = 2;
+  const taken = new Set((cat.subcategories || []).map(s => s.slug));
   while (taken.has(slug)) { slug = `${base}-${n}`; n++; }
   return slug;
 }
@@ -315,6 +371,7 @@ async function openProductEditor(slug) {
     $('#pe-name').value = detail.name || '';
     $('#pe-category').value = detail.category || '';
     $('#pe-description').value = detail.description || '';
+    renderSubcategorySelect(detail.subcategory || '');
     editorImages = (detail.images || []).map(img => ({ ...img }));
     const idx = state.productsIndex.find(p => p.slug === slug);
     editorCoverIndex = Math.max(0, editorImages.findIndex(img => img.src === idx?.cover?.src));
@@ -324,10 +381,22 @@ async function openProductEditor(slug) {
     $('#pe-name').value = '';
     $('#pe-category').value = state.categories[0]?.slug || '';
     $('#pe-description').value = '';
+    renderSubcategorySelect('');
     editorImages = [];
     editorCoverIndex = 0;
   }
   renderImageManager();
+}
+
+function renderSubcategorySelect(selected) {
+  const wrap = $('#pe-subcategory-wrap');
+  const sel = $('#pe-subcategory');
+  const cat = state.categories.find(c => c.slug === $('#pe-category').value);
+  const subs = cat?.subcategories || [];
+  if (!subs.length) { wrap.hidden = true; sel.innerHTML = ''; return; }
+  wrap.hidden = false;
+  sel.innerHTML = '<option value="">Geen onderverdeling</option>' +
+    subs.map(s => `<option value="${esc(s.slug)}"${s.slug === selected ? ' selected' : ''}>${esc(s.name)}</option>`).join('');
 }
 
 function closeProductEditor() {
@@ -399,6 +468,7 @@ function initImageUpload() {
 async function saveProduct() {
   const name = $('#pe-name').value.trim();
   const category = $('#pe-category').value;
+  const subcategory = $('#pe-subcategory-wrap').hidden ? null : ($('#pe-subcategory').value || null);
   const description = $('#pe-description').value.trim();
   if (!name) { toast('Geef het product een naam.', 'err'); return; }
   if (!category) { toast('Kies een categorie.', 'err'); return; }
@@ -419,12 +489,12 @@ async function saveProduct() {
     pendingUploads = [];
 
     const cover = editorImages[Math.min(editorCoverIndex, editorImages.length - 1)] || editorImages[0];
-    const productData = { slug, name, category, description, images: editorImages };
+    const productData = { slug, name, category, subcategory, description, images: editorImages };
     files.push({ path: `data/products/${slug}.json`, content: JSON.stringify(productData, null, 2) });
 
     const existingIdx = state.productsIndex.findIndex(p => p.slug === slug);
     const indexEntry = {
-      slug, name, category, cover: { src: cover.src, alt: cover.alt || name },
+      slug, name, category, subcategory, cover: { src: cover.src, alt: cover.alt || name },
       order: existingIdx >= 0 ? state.productsIndex[existingIdx].order : state.productsIndex.length + 1,
       featured: existingIdx >= 0 ? !!state.productsIndex[existingIdx].featured : false,
     };
@@ -561,8 +631,8 @@ function renderSettingsTab() {
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
   $('#s-location').value = s.location || '';
-  $('#s-accent').value = s.accentColor || '#b5502e';
-  $('#s-accentHex').value = s.accentColor || '#b5502e';
+  $('#s-accent').value = s.accentColor || '#c31f1f';
+  $('#s-accentHex').value = s.accentColor || '#c31f1f';
   $('#s-logo-preview').src = s.logo?.mark || 'assets/logo-mark.png';
 }
 
@@ -578,7 +648,7 @@ async function saveSettings() {
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
       location: $('#s-location').value.trim(),
-      accentColor: $('#s-accentHex').value.trim() || '#b5502e',
+      accentColor: $('#s-accentHex').value.trim() || '#c31f1f',
     });
 
     const logoFile = $('#s-logo-input').files[0];
@@ -607,6 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('#saveProductBtn').addEventListener('click', saveProduct);
   $('#cancelProductBtn').addEventListener('click', closeProductEditor);
+  $('#pe-category').addEventListener('change', () => renderSubcategorySelect(''));
   $('#savePresenceBtn').addEventListener('click', savePresenceEntry);
   $('#cancelPresenceBtn').addEventListener('click', () => $('#presenceForm').classList.add('hidden'));
   $('#saveAboutBtn').addEventListener('click', saveAbout);

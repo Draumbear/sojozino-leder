@@ -12,11 +12,12 @@ async function loadJSON(path) {
 
 function productCardHTML(p) {
   const esc = window.SojozinoSite.escapeHTML;
+  const catLabel = p.subcategoryName ? `${p.categoryName} — ${p.subcategoryName}` : (p.categoryName || '');
   return `
     <a class="product-card reveal" href="product.html?slug=${encodeURIComponent(p.slug)}">
       <div class="thumb"><img src="${esc(p.cover?.src)}" alt="${esc(p.cover?.alt || p.name)}" loading="lazy"></div>
       <div class="info">
-        <div class="cat">${esc(p.categoryName || '')}</div>
+        <div class="cat">${esc(catLabel)}</div>
         <h3>${esc(p.name)}</h3>
       </div>
     </a>`;
@@ -72,21 +73,45 @@ async function initGallery() {
     loadJSON('data/products-index.json'),
     loadJSON('data/categories.json'),
   ]);
-  const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c.name]));
+  const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c]));
   const enriched = (products || [])
-    .map(p => ({ ...p, categoryName: catByslug[p.category] || '' }))
+    .map(p => {
+      const cat = catByslug[p.category];
+      const sub = (cat?.subcategories || []).find(s => s.slug === p.subcategory);
+      return { ...p, categoryName: cat?.name || '', subcategoryName: sub?.name || '' };
+    })
     .sort((a, b) => (a.category || '').localeCompare(b.category || '') || (a.order || 0) - (b.order || 0));
 
   const grid = document.getElementById('productGrid');
   const filterBar = document.getElementById('filterBar');
+  const subFilterBar = document.getElementById('subFilterBar');
   if (!grid) return;
 
-  let active = 'all';
+  let activeCat = 'all';
+  let activeSub = 'all';
+
   function render() {
-    const list = active === 'all' ? enriched : enriched.filter(p => p.category === active);
+    let list = activeCat === 'all' ? enriched : enriched.filter(p => p.category === activeCat);
+    if (activeCat !== 'all' && activeSub !== 'all') list = list.filter(p => p.subcategory === activeSub);
     grid.innerHTML = list.map(productCardHTML).join('') ||
       '<p class="empty-note">Geen creaties in deze categorie.</p>';
     window.SojozinoSite.initReveal();
+  }
+
+  function renderSubFilter() {
+    if (!subFilterBar) return;
+    const cat = catByslug[activeCat];
+    const subs = cat?.subcategories || [];
+    // Only show subcategories that actually have at least one product, plus "Alles".
+    const usedSlugs = new Set(enriched.filter(p => p.category === activeCat).map(p => p.subcategory));
+    const usable = subs.filter(s => usedSlugs.has(s.slug));
+    if (!usable.length) { subFilterBar.innerHTML = ''; subFilterBar.hidden = true; return; }
+    subFilterBar.hidden = false;
+    const esc = window.SojozinoSite.escapeHTML;
+    const pills = [{ slug: 'all', name: 'Alles' }, ...usable];
+    subFilterBar.innerHTML = pills.map(s =>
+      `<button class="filter-pill${s.slug === 'all' ? ' active' : ''}" data-sub="${esc(s.slug)}">${esc(s.name)}</button>`
+    ).join('');
   }
 
   if (filterBar) {
@@ -98,12 +123,25 @@ async function initGallery() {
     filterBar.addEventListener('click', (e) => {
       const btn = e.target.closest('.filter-pill');
       if (!btn) return;
-      active = btn.dataset.cat;
+      activeCat = btn.dataset.cat;
+      activeSub = 'all';
       filterBar.querySelectorAll('.filter-pill').forEach(b => b.classList.toggle('active', b === btn));
+      renderSubFilter();
       render();
     });
   }
 
+  if (subFilterBar) {
+    subFilterBar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-pill');
+      if (!btn) return;
+      activeSub = btn.dataset.sub;
+      subFilterBar.querySelectorAll('.filter-pill').forEach(b => b.classList.toggle('active', b === btn));
+      render();
+    });
+  }
+
+  renderSubFilter();
   render();
 }
 

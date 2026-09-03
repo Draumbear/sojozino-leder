@@ -3,6 +3,7 @@
     "slug": "tties",
     "name": "Tties",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/tties/cover.jpg",
       "alt": "Tties"
@@ -14,6 +15,7 @@
     "slug": "clutch",
     "name": "Clutch",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/clutch/cover.jpg",
       "alt": "Clutch"
@@ -25,6 +27,7 @@
     "slug": "den-grace",
     "name": "Den Grace",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/den-grace/cover.jpg",
       "alt": "Den Grace"
@@ -36,6 +39,7 @@
     "slug": "driehoek-handtasje",
     "name": "Driehoek Handtasje",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/driehoek-handtasje/cover.jpg",
       "alt": "Driehoek Handtasje"
@@ -47,6 +51,7 @@
     "slug": "geel-tasje-met-rode-accenten",
     "name": "Geel Tasje Met Rode Accenten",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/geel-tasje-met-rode-accenten/cover.jpg",
       "alt": "Geel Tasje Met Rode Accenten"
@@ -58,6 +63,7 @@
     "slug": "handtas-den-mimi",
     "name": "Handtas Den Mimi",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/handtas-den-mimi/cover.jpg",
       "alt": "Handtas Den Mimi"
@@ -69,6 +75,7 @@
     "slug": "lotustasje",
     "name": "Lotustasje",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/lotustasje/cover.jpg",
       "alt": "Lotustasje"
@@ -80,6 +87,7 @@
     "slug": "paarse-dokterstas-handtas",
     "name": "Paarse Dokterstas Handtas",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/paarse-dokterstas-handtas/cover.jpg",
       "alt": "Paarse Dokterstas Handtas"
@@ -91,6 +99,7 @@
     "slug": "plooitasje-lamsleder",
     "name": "Plooitasje Lamsleder",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/plooitasje-lamsleder/cover.jpg",
       "alt": "Plooitasje Lamsleder"
@@ -102,6 +111,7 @@
     "slug": "rugbyhandtas",
     "name": "Rugbyhandtas",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/rugbyhandtas/cover.jpg",
       "alt": "Rugbyhandtas"
@@ -113,6 +123,7 @@
     "slug": "schimmeltas",
     "name": "Schimmeltas",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/schimmeltas/cover.jpg",
       "alt": "Schimmeltas"
@@ -124,6 +135,7 @@
     "slug": "slingbags",
     "name": "Slingbags",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/slingbags/cover.jpg",
       "alt": "Slingbags"
@@ -135,6 +147,7 @@
     "slug": "stovebuze",
     "name": "Stovebuze",
     "category": "handtassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/stovebuze/cover.jpg",
       "alt": "Stovebuze"
@@ -145,7 +158,8 @@
   {
     "slug": "barrel-bag-lapjes",
     "name": "Barrel Bag Lapjes",
-    "category": "tassen-rugzakken",
+    "category": "tassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/barrel-bag-lapjes/cover.jpg",
       "alt": "Barrel Bag Lapjes"
@@ -156,7 +170,8 @@
   {
     "slug": "lucs-boekentas",
     "name": "Lucs Boekentas",
-    "category": "tassen-rugzakken",
+    "category": "tassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/lucs-boekentas/cover.jpg",
       "alt": "Lucs Boekentas"
@@ -167,7 +182,8 @@
   {
     "slug": "t-tas-fushia",
     "name": "T Tas Fushia",
-    "category": "tassen-rugzakken",
+    "category": "tassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/t-tas-fushia/cover.jpg",
       "alt": "T Tas Fushia"
@@ -178,7 +194,8 @@
   {
     "slug": "rugzak-messengerbag",
     "name": "Rugzak Messengerbag",
-    "category": "tassen-rugzakken",
+    "category": "tassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/rugzak-messengerbag/cover.jpg",
       "alt": "Rugzak Messengerbag"
@@ -189,7 +206,8 @@
   {
     "slug": "tas-metje",
     "name": "Tas Metje",
-    "category": "tassen-rugzakken",
+    "category": "tassen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/tas-metje/cover.jpg",
       "alt": "Tas Metje"
@@ -201,6 +219,7 @@
     "slug": "bordeauxrode-riem",
     "name": "Bordeauxrode Riem",
     "category": "riemen",
+    "subcategory": null,
     "cover": {
       "src": "assets/products/bordeauxrode-riem/cover.jpg",
       "alt": "Bordeauxrode Riem"
@@ -212,6 +231,7 @@
     "slug": "dopp-kit",
     "name": "Dopp Kit",
     "category": "kleine-lederwaren",
+    "subcategory": "toilettassen",
     "cover": {
       "src": "assets/products/dopp-kit/cover.jpg",
       "alt": "Dopp Kit"
@@ -223,6 +243,7 @@
     "slug": "driehoek-geldbeugels",
     "name": "Driehoek Geldbeugels",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/driehoek-geldbeugels/cover.jpg",
       "alt": "Driehoek Geldbeugels"
@@ -234,6 +255,7 @@
     "slug": "henks-gsm-houder",
     "name": "Henks Gsm Houder",
     "category": "kleine-lederwaren",
+    "subcategory": "hoesjes",
     "cover": {
       "src": "assets/products/henks-gsm-houder/cover.jpg",
       "alt": "Henks Gsm Houder"
@@ -245,6 +267,7 @@
     "slug": "inges-longwallet",
     "name": "Inges Longwallet",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/inges-longwallet/cover.jpg",
       "alt": "Inges Longwallet"
@@ -256,6 +279,7 @@
     "slug": "noors-boekenbox",
     "name": "Noors Boekenbox",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/noors-boekenbox/cover.jpg",
       "alt": "Noors Boekenbox"
@@ -267,6 +291,7 @@
     "slug": "peaky-blinders-pet",
     "name": "Peaky Blinders Pet",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/peaky-blinders-pet/cover.jpg",
       "alt": "Peaky Blinders Pet"
@@ -278,6 +303,7 @@
     "slug": "bifold-de-nele-portefeuille",
     "name": "Bifold De Nele Portefeuille",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/bifold-de-nele-portefeuille/cover.jpg",
       "alt": "Bifold De Nele Portefeuille"
@@ -289,6 +315,7 @@
     "slug": "boekenbox-handtas",
     "name": "Boekenbox Handtas",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/boekenbox-handtas/cover.jpg",
       "alt": "Boekenbox Handtas"
@@ -300,6 +327,7 @@
     "slug": "boekenbox-rood-print",
     "name": "Boekenbox Rood Print",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/boekenbox-rood-print/cover.jpg",
       "alt": "Boekenbox Rood Print"
@@ -311,6 +339,7 @@
     "slug": "deksel-koffiemaler-rok",
     "name": "Deksel Koffiemaler Rok",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/deksel-koffiemaler-rok/cover.jpg",
       "alt": "Deksel Koffiemaler Rok"
@@ -322,6 +351,7 @@
     "slug": "kaartenhouder-blauw",
     "name": "Kaartenhouder Blauw",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouder-blauw/cover.jpg",
       "alt": "Kaartenhouder Blauw"
@@ -333,6 +363,7 @@
     "slug": "kaartenhouder-bruin-idem-grofleder",
     "name": "Kaartenhouder Bruin Idem Grofleder",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouder-bruin-idem-grofleder/cover.jpg",
       "alt": "Kaartenhouder Bruin Idem Grofleder"
@@ -344,6 +375,7 @@
     "slug": "kaartenhouder-grof-leder",
     "name": "Kaartenhouder Grof Leder",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouder-grof-leder/cover.jpg",
       "alt": "Kaartenhouder Grof Leder"
@@ -355,6 +387,7 @@
     "slug": "kaartenhouder-origami",
     "name": "Kaartenhouder Origami",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouder-origami/cover.jpg",
       "alt": "Kaartenhouder Origami"
@@ -366,6 +399,7 @@
     "slug": "kaartenhouder-schuifflap",
     "name": "Kaartenhouder Schuifflap",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouder-schuifflap/cover.jpg",
       "alt": "Kaartenhouder Schuifflap"
@@ -377,6 +411,7 @@
     "slug": "kaartenhouders",
     "name": "Kaartenhouders",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouders/cover.jpg",
       "alt": "Kaartenhouders"
@@ -388,6 +423,7 @@
     "slug": "kaartenhouders-duo-kleur",
     "name": "Kaartenhouders Duo Kleur",
     "category": "kleine-lederwaren",
+    "subcategory": "kaartenhouders",
     "cover": {
       "src": "assets/products/kaartenhouders-duo-kleur/cover.jpg",
       "alt": "Kaartenhouders Duo Kleur"
@@ -399,6 +435,7 @@
     "slug": "kleine-geldbeugel",
     "name": "Kleine Geldbeugel",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/kleine-geldbeugel/cover.jpg",
       "alt": "Kleine Geldbeugel"
@@ -410,6 +447,7 @@
     "slug": "mes-tasje",
     "name": "Mes Tasje",
     "category": "kleine-lederwaren",
+    "subcategory": "etuis",
     "cover": {
       "src": "assets/products/mes-tasje/cover.jpg",
       "alt": "Mes Tasje"
@@ -421,6 +459,7 @@
     "slug": "messenbeugel",
     "name": "Messenbeugel",
     "category": "kleine-lederwaren",
+    "subcategory": "etuis",
     "cover": {
       "src": "assets/products/messenbeugel/cover.jpg",
       "alt": "Messenbeugel"
@@ -432,6 +471,7 @@
     "slug": "poepzakjeshouder-handtasje",
     "name": "Poepzakjeshouder Handtasje",
     "category": "kleine-lederwaren",
+    "subcategory": "poepzakjeshouder",
     "cover": {
       "src": "assets/products/poepzakjeshouder-handtasje/cover.jpg",
       "alt": "Poepzakjeshouder Handtasje"
@@ -443,6 +483,7 @@
     "slug": "portefeuille-den-stijn",
     "name": "Portefeuille Den Stijn",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/portefeuille-den-stijn/cover.jpg",
       "alt": "Portefeuille Den Stijn"
@@ -454,6 +495,7 @@
     "slug": "portefeuille-rood-zwart",
     "name": "Portefeuille Rood Zwart",
     "category": "kleine-lederwaren",
+    "subcategory": "portefeuilles",
     "cover": {
       "src": "assets/products/portefeuille-rood-zwart/cover.jpg",
       "alt": "Portefeuille Rood Zwart"
@@ -465,6 +507,7 @@
     "slug": "smartphonetasje",
     "name": "Smartphonetasje",
     "category": "kleine-lederwaren",
+    "subcategory": "hoesjes",
     "cover": {
       "src": "assets/products/smartphonetasje/cover.jpg",
       "alt": "Smartphonetasje"
@@ -476,6 +519,7 @@
     "slug": "tablethoes",
     "name": "Tablethoes",
     "category": "kleine-lederwaren",
+    "subcategory": "hoesjes",
     "cover": {
       "src": "assets/products/tablethoes/cover.jpg",
       "alt": "Tablethoes"
@@ -487,6 +531,7 @@
     "slug": "telefoonhoesje-prosper",
     "name": "Telefoonhoesje Prosper",
     "category": "kleine-lederwaren",
+    "subcategory": "hoesjes",
     "cover": {
       "src": "assets/products/telefoonhoesje-prosper/cover.jpg",
       "alt": "Telefoonhoesje Prosper"
@@ -498,6 +543,7 @@
     "slug": "vide-poche",
     "name": "Vide Poche",
     "category": "kleine-lederwaren",
+    "subcategory": "allerlei",
     "cover": {
       "src": "assets/products/vide-poche/cover.jpg",
       "alt": "Vide Poche"
@@ -509,6 +555,7 @@
     "slug": "zakmeshouder-met-sleutelhanger",
     "name": "Zakmeshouder Met Sleutelhanger",
     "category": "kleine-lederwaren",
+    "subcategory": "sleutelhangers",
     "cover": {
       "src": "assets/products/zakmeshouder-met-sleutelhanger/cover.jpg",
       "alt": "Zakmeshouder Met Sleutelhanger"

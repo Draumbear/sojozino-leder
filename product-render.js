@@ -111,7 +111,9 @@ async function renderProduct() {
   }
 
   images = data.images && data.images.length ? data.images : [{ src: 'assets/logo-mark.png', alt: data.name }];
-  const catName = (categories.find(c => c.slug === data.category) || {}).name || '';
+  const cat = categories.find(c => c.slug === data.category) || {};
+  const sub = (cat.subcategories || []).find(s => s.slug === data.subcategory);
+  const catName = sub ? `${cat.name} — ${sub.name}` : (cat.name || '');
 
   document.title = `${data.name} — Sojozino`;
 

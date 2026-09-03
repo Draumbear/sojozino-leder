@@ -5,8 +5,8 @@
     "order": 1
   },
   {
-    "slug": "tassen-rugzakken",
-    "name": "Tassen & Rugzakken",
+    "slug": "tassen",
+    "name": "Tassen",
     "order": 2
   },
   {
@@ -17,6 +17,56 @@
   {
     "slug": "kleine-lederwaren",
     "name": "Kleine Lederwaren",
-    "order": 4
+    "order": 4,
+    "subcategories": [
+      {
+        "slug": "portefeuilles",
+        "name": "Portefeuilles"
+      },
+      {
+        "slug": "kaartenhouders",
+        "name": "Kaartenhouders"
+      },
+      {
+        "slug": "toilettassen",
+        "name": "Toilettassen"
+      },
+      {
+        "slug": "poepzakjeshouder",
+        "name": "Poepzakjeshouder"
+      },
+      {
+        "slug": "sleutelhangers",
+        "name": "Sleutelhangers"
+      },
+      {
+        "slug": "place-mats",
+        "name": "Place-mats"
+      },
+      {
+        "slug": "onderleggers",
+        "name": "Onderleggers"
+      },
+      {
+        "slug": "hoesjes",
+        "name": "Hoesjes"
+      },
+      {
+        "slug": "brillendozen",
+        "name": "Brillendozen"
+      },
+      {
+        "slug": "etuis",
+        "name": "Etuis"
+      },
+      {
+        "slug": "boekenleggers",
+        "name": "Boekenleggers"
+      },
+      {
+        "slug": "allerlei",
+        "name": "Allerlei"
+      }
+    ]
   }
 ]
