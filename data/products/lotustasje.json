@@ -1,0 +1,48 @@
+{
+  "slug": "lotustasje",
+  "name": "Lotustasje",
+  "category": "handtassen",
+  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over lotustasje.",
+  "images": [
+    {
+      "src": "assets/products/lotustasje/01.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/02.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/03.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/04.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/05.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/06.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/07.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/08.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/09.jpg",
+      "alt": "Lotustasje"
+    },
+    {
+      "src": "assets/products/lotustasje/10.jpg",
+      "alt": "Lotustasje"
+    }
+  ]
+}

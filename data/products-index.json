@@ -1,0 +1,453 @@
+[
+  {
+    "slug": "clutch",
+    "name": "Clutch",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/clutch/cover.jpg",
+      "alt": "Clutch"
+    },
+    "order": 2,
+    "featured": false
+  },
+  {
+    "slug": "den-grace",
+    "name": "Den Grace",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/den-grace/cover.jpg",
+      "alt": "Den Grace"
+    },
+    "order": 3,
+    "featured": false
+  },
+  {
+    "slug": "driehoek-handtasje",
+    "name": "Driehoek Handtasje",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/driehoek-handtasje/cover.jpg",
+      "alt": "Driehoek Handtasje"
+    },
+    "order": 4,
+    "featured": false
+  },
+  {
+    "slug": "geel-tasje-met-rode-accenten",
+    "name": "Geel Tasje Met Rode Accenten",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/geel-tasje-met-rode-accenten/cover.jpg",
+      "alt": "Geel Tasje Met Rode Accenten"
+    },
+    "order": 5,
+    "featured": false
+  },
+  {
+    "slug": "handtas-den-mimi",
+    "name": "Handtas Den Mimi",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/handtas-den-mimi/cover.jpg",
+      "alt": "Handtas Den Mimi"
+    },
+    "order": 6,
+    "featured": false
+  },
+  {
+    "slug": "lotustasje",
+    "name": "Lotustasje",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/lotustasje/cover.jpg",
+      "alt": "Lotustasje"
+    },
+    "order": 7,
+    "featured": false
+  },
+  {
+    "slug": "paarse-dokterstas-handtas",
+    "name": "Paarse Dokterstas Handtas",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/paarse-dokterstas-handtas/cover.jpg",
+      "alt": "Paarse Dokterstas Handtas"
+    },
+    "order": 8,
+    "featured": false
+  },
+  {
+    "slug": "plooitasje-lamsleder",
+    "name": "Plooitasje Lamsleder",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/plooitasje-lamsleder/cover.jpg",
+      "alt": "Plooitasje Lamsleder"
+    },
+    "order": 9,
+    "featured": false
+  },
+  {
+    "slug": "rugbyhandtas",
+    "name": "Rugbyhandtas",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/rugbyhandtas/cover.jpg",
+      "alt": "Rugbyhandtas"
+    },
+    "order": 10,
+    "featured": false
+  },
+  {
+    "slug": "schimmeltas",
+    "name": "Schimmeltas",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/schimmeltas/cover.jpg",
+      "alt": "Schimmeltas"
+    },
+    "order": 11,
+    "featured": false
+  },
+  {
+    "slug": "stovebuze",
+    "name": "Stovebuze",
+    "category": "handtassen",
+    "cover": {
+      "src": "assets/products/stovebuze/cover.jpg",
+      "alt": "Stovebuze"
+    },
+    "order": 13,
+    "featured": false
+  },
+  {
+    "slug": "barrel-bag-lapjes",
+    "name": "Barrel Bag Lapjes",
+    "category": "tassen-rugzakken",
+    "cover": {
+      "src": "assets/products/barrel-bag-lapjes/cover.jpg",
+      "alt": "Barrel Bag Lapjes"
+    },
+    "order": 1,
+    "featured": false
+  },
+  {
+    "slug": "lucs-boekentas",
+    "name": "Lucs Boekentas",
+    "category": "tassen-rugzakken",
+    "cover": {
+      "src": "assets/products/lucs-boekentas/cover.jpg",
+      "alt": "Lucs Boekentas"
+    },
+    "order": 2,
+    "featured": false
+  },
+  {
+    "slug": "t-tas-fushia",
+    "name": "T Tas Fushia",
+    "category": "tassen-rugzakken",
+    "cover": {
+      "src": "assets/products/t-tas-fushia/cover.jpg",
+      "alt": "T Tas Fushia"
+    },
+    "order": 3,
+    "featured": false
+  },
+  {
+    "slug": "rugzak-messengerbag",
+    "name": "Rugzak Messengerbag",
+    "category": "tassen-rugzakken",
+    "cover": {
+      "src": "assets/products/rugzak-messengerbag/cover.jpg",
+      "alt": "Rugzak Messengerbag"
+    },
+    "order": 4,
+    "featured": false
+  },
+  {
+    "slug": "tas-metje",
+    "name": "Tas Metje",
+    "category": "tassen-rugzakken",
+    "cover": {
+      "src": "assets/products/tas-metje/cover.jpg",
+      "alt": "Tas Metje"
+    },
+    "order": 5,
+    "featured": false
+  },
+  {
+    "slug": "henks-gsm-houder",
+    "name": "Henks Gsm Houder",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/henks-gsm-houder/cover.jpg",
+      "alt": "Henks Gsm Houder"
+    },
+    "order": 3,
+    "featured": false
+  },
+  {
+    "slug": "inges-longwallet",
+    "name": "Inges Longwallet",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/inges-longwallet/cover.jpg",
+      "alt": "Inges Longwallet"
+    },
+    "order": 4,
+    "featured": false
+  },
+  {
+    "slug": "noors-boekenbox",
+    "name": "Noors Boekenbox",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/noors-boekenbox/cover.jpg",
+      "alt": "Noors Boekenbox"
+    },
+    "order": 5,
+    "featured": false
+  },
+  {
+    "slug": "peaky-blinders-pet",
+    "name": "Peaky Blinders Pet",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/peaky-blinders-pet/cover.jpg",
+      "alt": "Peaky Blinders Pet"
+    },
+    "order": 6,
+    "featured": false
+  },
+  {
+    "slug": "bifold-de-nele-portefeuille",
+    "name": "Bifold De Nele Portefeuille",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/bifold-de-nele-portefeuille/cover.jpg",
+      "alt": "Bifold De Nele Portefeuille"
+    },
+    "order": 7,
+    "featured": false
+  },
+  {
+    "slug": "boekenbox-handtas",
+    "name": "Boekenbox Handtas",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/boekenbox-handtas/cover.jpg",
+      "alt": "Boekenbox Handtas"
+    },
+    "order": 8,
+    "featured": false
+  },
+  {
+    "slug": "boekenbox-rood-print",
+    "name": "Boekenbox Rood Print",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/boekenbox-rood-print/cover.jpg",
+      "alt": "Boekenbox Rood Print"
+    },
+    "order": 9,
+    "featured": false
+  },
+  {
+    "slug": "deksel-koffiemaler-rok",
+    "name": "Deksel Koffiemaler Rok",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/deksel-koffiemaler-rok/cover.jpg",
+      "alt": "Deksel Koffiemaler Rok"
+    },
+    "order": 10,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouder-blauw",
+    "name": "Kaartenhouder Blauw",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouder-blauw/cover.jpg",
+      "alt": "Kaartenhouder Blauw"
+    },
+    "order": 11,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouder-bruin-idem-grofleder",
+    "name": "Kaartenhouder Bruin Idem Grofleder",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/cover.jpg",
+      "alt": "Kaartenhouder Bruin Idem Grofleder"
+    },
+    "order": 12,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouder-grof-leder",
+    "name": "Kaartenhouder Grof Leder",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouder-grof-leder/cover.jpg",
+      "alt": "Kaartenhouder Grof Leder"
+    },
+    "order": 13,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouder-schuifflap",
+    "name": "Kaartenhouder Schuifflap",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouder-schuifflap/cover.jpg",
+      "alt": "Kaartenhouder Schuifflap"
+    },
+    "order": 15,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouders",
+    "name": "Kaartenhouders",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouders/cover.jpg",
+      "alt": "Kaartenhouders"
+    },
+    "order": 16,
+    "featured": false
+  },
+  {
+    "slug": "kaartenhouders-duo-kleur",
+    "name": "Kaartenhouders Duo Kleur",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kaartenhouders-duo-kleur/cover.jpg",
+      "alt": "Kaartenhouders Duo Kleur"
+    },
+    "order": 17,
+    "featured": false
+  },
+  {
+    "slug": "kleine-geldbeugel",
+    "name": "Kleine Geldbeugel",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/kleine-geldbeugel/cover.jpg",
+      "alt": "Kleine Geldbeugel"
+    },
+    "order": 18,
+    "featured": false
+  },
+  {
+    "slug": "mes-tasje",
+    "name": "Mes Tasje",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/mes-tasje/cover.jpg",
+      "alt": "Mes Tasje"
+    },
+    "order": 19,
+    "featured": false
+  },
+  {
+    "slug": "messenbeugel",
+    "name": "Messenbeugel",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/messenbeugel/cover.jpg",
+      "alt": "Messenbeugel"
+    },
+    "order": 20,
+    "featured": false
+  },
+  {
+    "slug": "poepzakjeshouder-handtasje",
+    "name": "Poepzakjeshouder Handtasje",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/poepzakjeshouder-handtasje/cover.jpg",
+      "alt": "Poepzakjeshouder Handtasje"
+    },
+    "order": 21,
+    "featured": false
+  },
+  {
+    "slug": "portefeuille-den-stijn",
+    "name": "Portefeuille Den Stijn",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/portefeuille-den-stijn/cover.jpg",
+      "alt": "Portefeuille Den Stijn"
+    },
+    "order": 22,
+    "featured": false
+  },
+  {
+    "slug": "portefeuille-rood-zwart",
+    "name": "Portefeuille Rood Zwart",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/portefeuille-rood-zwart/cover.jpg",
+      "alt": "Portefeuille Rood Zwart"
+    },
+    "order": 23,
+    "featured": false
+  },
+  {
+    "slug": "smartphonetasje",
+    "name": "Smartphonetasje",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/smartphonetasje/cover.jpg",
+      "alt": "Smartphonetasje"
+    },
+    "order": 24,
+    "featured": false
+  },
+  {
+    "slug": "tablethoes",
+    "name": "Tablethoes",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/tablethoes/cover.jpg",
+      "alt": "Tablethoes"
+    },
+    "order": 25,
+    "featured": false
+  },
+  {
+    "slug": "telefoonhoesje-prosper",
+    "name": "Telefoonhoesje Prosper",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/telefoonhoesje-prosper/cover.jpg",
+      "alt": "Telefoonhoesje Prosper"
+    },
+    "order": 26,
+    "featured": false
+  },
+  {
+    "slug": "vide-poche",
+    "name": "Vide Poche",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/vide-poche/cover.jpg",
+      "alt": "Vide Poche"
+    },
+    "order": 27,
+    "featured": false
+  },
+  {
+    "slug": "zakmeshouder-met-sleutelhanger",
+    "name": "Zakmeshouder Met Sleutelhanger",
+    "category": "kleine-lederwaren",
+    "cover": {
+      "src": "assets/products/zakmeshouder-met-sleutelhanger/cover.jpg",
+      "alt": "Zakmeshouder Met Sleutelhanger"
+    },
+    "order": 28,
+    "featured": false
+  }
+]

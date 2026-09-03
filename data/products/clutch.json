@@ -1,0 +1,52 @@
+{
+  "slug": "clutch",
+  "name": "Clutch",
+  "category": "handtassen",
+  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over clutch.",
+  "images": [
+    {
+      "src": "assets/products/clutch/01.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/02.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/03.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/04.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/05.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/06.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/07.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/08.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/09.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/10.jpg",
+      "alt": "Clutch"
+    },
+    {
+      "src": "assets/products/clutch/11.jpg",
+      "alt": "Clutch"
+    }
+  ]
+}

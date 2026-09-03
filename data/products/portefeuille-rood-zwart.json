@@ -1,0 +1,24 @@
+{
+  "slug": "portefeuille-rood-zwart",
+  "name": "Portefeuille Rood Zwart",
+  "category": "kleine-lederwaren",
+  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over portefeuille rood zwart.",
+  "images": [
+    {
+      "src": "assets/products/portefeuille-rood-zwart/01.jpg",
+      "alt": "Portefeuille Rood Zwart"
+    },
+    {
+      "src": "assets/products/portefeuille-rood-zwart/02.jpg",
+      "alt": "Portefeuille Rood Zwart"
+    },
+    {
+      "src": "assets/products/portefeuille-rood-zwart/03.jpg",
+      "alt": "Portefeuille Rood Zwart"
+    },
+    {
+      "src": "assets/products/portefeuille-rood-zwart/04.jpg",
+      "alt": "Portefeuille Rood Zwart"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "slug": "mes-tasje",
+  "name": "Mes Tasje",
+  "category": "kleine-lederwaren",
+  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over mes tasje.",
+  "images": [
+    {
+      "src": "assets/products/mes-tasje/01.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/02.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/03.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/04.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/05.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/06.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/07.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/08.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/09.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/10.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/11.jpg",
+      "alt": "Mes Tasje"
+    },
+    {
+      "src": "assets/products/mes-tasje/12.jpg",
+      "alt": "Mes Tasje"
+    }
+  ]
+}

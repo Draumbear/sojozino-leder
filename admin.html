@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Sojozino</title>
+<link rel="icon" href="assets/logo-mark.png" type="image/png">
+<link rel="stylesheet" href="admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="admin-body">
+
+<header class="admin-header">
+  <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
+  <div class="admin-header-right">
+    <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
+    <span class="conn-status off" id="connStatus">Niet verbonden</span>
+  </div>
+</header>
+
+<main class="admin-main">
+
+  <!-- Connect panel -->
+  <div id="connectPanel" class="admin-card">
+    <h2>Verbind met GitHub</h2>
+    <p class="hint" style="margin-bottom:1.2rem;">
+      Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository,
+      waarna GitHub Pages de site automatisch opnieuw publiceert — meestal binnen een minuut.
+      Je hebt een <strong>fine-grained personal access token</strong> nodig, beperkt tot deze ene repository.
+    </p>
+    <ol class="setup-steps">
+      <li>Ga naar <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+      <li>Kies bij "Repository access" &rarr; <strong>Only select repositories</strong> en selecteer je Sojozino-repository</li>
+      <li>Zet bij "Permissions" &rarr; "Repository permissions" &rarr; <strong>Contents</strong> op <strong>Read and write</strong></li>
+      <li>Genereer het token en plak het hieronder (het wordt enkel in deze browser bewaard, nergens anders naartoe gestuurd dan github.com)</li>
+    </ol>
+
+    <div class="admin-row">
+      <div class="admin-field">
+        <label for="ghOwner">GitHub gebruikersnaam</label>
+        <input type="text" id="ghOwner" placeholder="bv. Draumbear">
+      </div>
+      <div class="admin-field">
+        <label for="ghRepo">Repository naam</label>
+        <input type="text" id="ghRepo" placeholder="bv. sojozino-leder">
+      </div>
+    </div>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label for="ghBranch">Branch</label>
+        <input type="text" id="ghBranch" value="main">
+      </div>
+      <div class="admin-field">
+        <label for="ghToken">Personal access token</label>
+        <input type="password" id="ghToken" placeholder="github_pat_...">
+      </div>
+    </div>
+    <button class="btn-admin" id="connectBtn">Verbinden</button>
+    <span id="connectError" class="hint" style="color:var(--a-danger); display:block; margin-top:0.6rem;"></span>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden">
+    <div class="dashboard-toolbar">
+      <div class="admin-tabs">
+        <button data-tab="overview" class="active">Overzicht</button>
+        <button data-tab="products">Producten</button>
+        <button data-tab="categories">Categorieën</button>
+        <button data-tab="about">Over mij</button>
+        <button data-tab="presence">Aanwezigheid</button>
+        <button data-tab="settings">Instellingen</button>
+      </div>
+      <button class="btn-admin secondary small" id="disconnectBtn">Ontkoppelen</button>
+    </div>
+
+    <!-- Overview -->
+    <section id="tab-overview" class="admin-tab">
+      <div class="admin-card">
+        <h2>Welkom terug</h2>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="num" id="statProducts">0</div><div class="label">Producten</div></div>
+          <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
+          <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
+        </div>
+        <p class="hint" style="margin-top:1.4rem;">Elke wijziging die je opslaat wordt meteen naar je website gepubliceerd (via GitHub Pages, meestal binnen een minuut zichtbaar).</p>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="tab-products" class="admin-tab" hidden>
+      <div class="tab-toolbar">
+        <div class="admin-row" style="flex:1;display:flex;gap:0.6rem;">
+          <input type="text" id="productSearch" placeholder="Zoek op naam…" style="max-width:220px;padding:0.6rem 0.8rem;border-radius:6px;border:1px solid rgba(42,28,18,0.24);">
+          <select id="productCatFilter" style="padding:0.6rem 0.8rem;border-radius:6px;border:1px solid rgba(42,28,18,0.24);"></select>
+        </div>
+        <button class="btn-admin small" id="newProductBtn">+ Nieuw product</button>
+      </div>
+      <div id="productsList"></div>
+
+      <div id="productEditor" class="admin-card hidden" style="margin-top:1.5rem;">
+        <h2 id="pe-title">Product bewerken</h2>
+        <div class="admin-field">
+          <label for="pe-name">Naam</label>
+          <input type="text" id="pe-name" placeholder="bv. Handtas Den Mimi">
+        </div>
+        <div class="admin-field">
+          <label for="pe-category">Categorie</label>
+          <select id="pe-category"></select>
+        </div>
+        <div class="admin-field">
+          <label for="pe-description">Beschrijving</label>
+          <textarea id="pe-description" placeholder="Vertel iets over dit stuk: materiaal, afmetingen, bijzonderheden…"></textarea>
+        </div>
+        <div class="admin-field">
+          <label>Foto's <span class="hint">(eerste ster = cover-foto op de overzichtspagina)</span></label>
+          <div class="image-manager" id="imageManager"></div>
+          <div class="upload-drop" id="uploadDrop">
+            Klik of sleep foto's hierheen om toe te voegen
+            <input type="file" id="uploadInput" accept="image/*" multiple>
+          </div>
+        </div>
+        <button class="btn-admin" id="saveProductBtn">Opslaan &amp; publiceren</button>
+        <button class="btn-admin secondary" id="cancelProductBtn">Annuleren</button>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="tab-categories" class="admin-tab" hidden>
+      <div class="tab-toolbar">
+        <span></span>
+        <button class="btn-admin small" id="addCategoryBtn">+ Nieuwe categorie</button>
+      </div>
+      <div id="categoriesList"></div>
+    </section>
+
+    <!-- About -->
+    <section id="tab-about" class="admin-tab" hidden>
+      <div class="admin-card">
+        <h2>Over mij</h2>
+        <div class="admin-field">
+          <label for="a-heading">Titel</label>
+          <input type="text" id="a-heading">
+        </div>
+        <div class="admin-field">
+          <label for="a-paragraphs">Tekst <span class="hint">(laat een lege regel tussen alinea's)</span></label>
+          <textarea id="a-paragraphs" style="min-height:12rem;"></textarea>
+        </div>
+        <div class="admin-field">
+          <label>Foto</label>
+          <img id="a-photo-preview" src="assets/logo-mark.png" alt="" style="width:140px;height:140px;object-fit:cover;border-radius:6px;border:1px solid var(--a-line);margin-bottom:0.6rem;display:block;">
+          <input type="file" id="a-photo-input" accept="image/*">
+        </div>
+        <button class="btn-admin" id="saveAboutBtn">Opslaan &amp; publiceren</button>
+      </div>
+    </section>
+
+    <!-- Presence -->
+    <section id="tab-presence" class="admin-tab" hidden>
+      <div class="tab-toolbar">
+        <span></span>
+        <button class="btn-admin small" id="newPresenceBtn">+ Nieuwe datum</button>
+      </div>
+      <div id="presenceList"></div>
+
+      <div id="presenceForm" class="admin-card hidden" style="margin-top:1.5rem;">
+        <h2>Markt / evenement</h2>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label for="pr-title">Titel</label>
+            <input type="text" id="pr-title" placeholder="bv. Ambachtenmarkt Oostende">
+          </div>
+          <div class="admin-field">
+            <label for="pr-date">Datum</label>
+            <input type="date" id="pr-date">
+          </div>
+        </div>
+        <div class="admin-field">
+          <label for="pr-location">Locatie</label>
+          <input type="text" id="pr-location" placeholder="bv. Wapenplein, Oostende">
+        </div>
+        <div class="admin-field">
+          <label for="pr-description">Beschrijving (optioneel)</label>
+          <textarea id="pr-description"></textarea>
+        </div>
+        <button class="btn-admin" id="savePresenceBtn">Opslaan &amp; publiceren</button>
+        <button class="btn-admin secondary" id="cancelPresenceBtn">Annuleren</button>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="tab-settings" class="admin-tab" hidden>
+      <div class="admin-card">
+        <h2>Bedrijfsgegevens</h2>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-businessName">Bedrijfsnaam</label><input type="text" id="s-businessName"></div>
+          <div class="admin-field"><label for="s-ownerName">Naam</label><input type="text" id="s-ownerName"></div>
+        </div>
+        <div class="admin-field"><label for="s-tagline">Tagline</label><input type="text" id="s-tagline"></div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-email">E-mail</label><input type="email" id="s-email"></div>
+          <div class="admin-field"><label for="s-instagram">Instagram-URL</label><input type="url" id="s-instagram"></div>
+        </div>
+        <div class="admin-field"><label for="s-location">Locatie</label><input type="text" id="s-location"></div>
+        <div class="admin-field">
+          <label for="s-accent">Accentkleur</label>
+          <div style="display:flex;align-items:center;gap:0.6rem;">
+            <input type="color" id="s-accent" style="width:44px;height:38px;padding:2px;border-radius:6px;border:1px solid var(--a-line);">
+            <input type="text" id="s-accentHex" style="max-width:120px;font-family:monospace;">
+          </div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <h2>Logo</h2>
+        <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
+        <input type="file" id="s-logo-input" accept="image/*">
+      </div>
+      <button class="btn-admin" id="saveSettingsBtn">Opslaan &amp; publiceren</button>
+    </section>
+  </div>
+
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="admin-github.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "handtassen",
+    "name": "Handtassen",
+    "order": 1
+  },
+  {
+    "slug": "tassen-rugzakken",
+    "name": "Tassen & Rugzakken",
+    "order": 2
+  },
+  {
+    "slug": "riemen",
+    "name": "Riemen",
+    "order": 3
+  },
+  {
+    "slug": "kleine-lederwaren",
+    "name": "Kleine Lederwaren",
+    "order": 4
+  }
+]

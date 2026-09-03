@@ -1,0 +1,24 @@
+{
+  "slug": "tas-metje",
+  "name": "Tas Metje",
+  "category": "tassen-rugzakken",
+  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over tas metje.",
+  "images": [
+    {
+      "src": "assets/products/tas-metje/01.jpg",
+      "alt": "Tas Metje"
+    },
+    {
+      "src": "assets/products/tas-metje/02.jpg",
+      "alt": "Tas Metje"
+    },
+    {
+      "src": "assets/products/tas-metje/03.jpg",
+      "alt": "Tas Metje"
+    },
+    {
+      "src": "assets/products/tas-metje/04.jpg",
+      "alt": "Tas Metje"
+    }
+  ]
+}

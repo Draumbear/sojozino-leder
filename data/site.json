@@ -1,0 +1,23 @@
+{
+  "businessName": "Sojozino",
+  "ownerName": "Johnny Decoopman",
+  "tagline": "Unieke handgemaakte lederwaren in Oostende",
+  "heroEyebrow": "Handgemaakt leder — Oostende",
+  "aboutHeading": "Over Sojozino",
+  "aboutPhoto": {
+    "src": "assets/about.jpg",
+    "alt": "Johnny Decoopman aan het werk"
+  },
+  "aboutParagraphs": [
+    "Sojozino is het lederatelier van Johnny Decoopman, lederbewerker en ambachtenliefhebber uit Oostende.",
+    "Elk stuk dat hier vandaan komt wordt met de hand gesneden, genaaid en afgewerkt — van handtassen en rugzakken tot riemen en kleine lederwaren zoals portefeuilles en kaartenhouders. Geen twee stukken zijn precies hetzelfde.",
+    "Werk aan een eigen ontwerp, een herstelling of iets op maat? Neem gerust contact op."
+  ],
+  "instagramUrl": "https://www.instagram.com/sojozino_leder/",
+  "email": "sojozino@gmail.com",
+  "location": "Oostende, België",
+  "logo": {
+    "mark": "assets/logo-mark.png"
+  },
+  "accentColor": "#b5502e"
+}
