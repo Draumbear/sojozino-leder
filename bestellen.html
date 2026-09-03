@@ -22,7 +22,27 @@
 </div>
 
 <div class="section" style="padding-top:0;max-width:720px;">
-  <form id="orderForm" class="card order-form" novalidate>
+  <!--
+    Netlify Forms: detected at deploy time straight from this static markup
+    (name="bestelling" + data-netlify="true"), no backend needed — Netlify
+    collects submissions in the site's Forms dashboard and can email a
+    notification for each one (configured there by whoever owns the Netlify
+    site). bestellen.js submits this via fetch() to keep the page from
+    reloading; the plain HTML action="/bestellen-bedankt.html" below is the
+    fallback if JavaScript is unavailable.
+  -->
+  <form id="orderForm" class="card order-form" name="bestelling" method="POST"
+        data-netlify="true" netlify-honeypot="bot-field" action="/bestellen-bedankt.html" novalidate>
+    <input type="hidden" name="form-name" value="bestelling">
+    <p class="hidden-field"><label>Laat dit veld leeg: <input name="bot-field"></label></p>
+    <!-- Hidden mirrors carry the readable text (not the internal slug the
+         visible selects use for filtering) so Johnny's inbox shows
+         "Kleine Lederwaren" / "Kaartenhouder Blauw", not raw slugs. Kept in
+         sync with the visible controls by bestellen.js. -->
+    <input type="hidden" name="categorie" id="of-category-hidden">
+    <input type="hidden" name="onderverdeling" id="of-subcategory-hidden">
+    <input type="hidden" name="stuk" id="of-product-hidden">
+
     <div class="order-field">
       <label for="of-category">Categorie</label>
       <select id="of-category" required>
@@ -43,25 +63,31 @@
     </div>
     <div class="order-field">
       <label for="of-message">Je vraag of wens</label>
-      <textarea id="of-message" rows="5" placeholder="Beschrijf hier je bestelling, wens of vraag op maat — kleur, afmetingen, gravure, timing…" required></textarea>
+      <textarea id="of-message" name="bericht" rows="5" placeholder="Beschrijf hier je bestelling, wens of vraag op maat — kleur, afmetingen, gravure, timing…" required></textarea>
     </div>
     <div class="order-row">
       <div class="order-field">
         <label for="of-name">Naam</label>
-        <input type="text" id="of-name" required>
+        <input type="text" id="of-name" name="naam" required>
       </div>
       <div class="order-field">
         <label for="of-email">E-mailadres</label>
-        <input type="email" id="of-email" required>
+        <input type="email" id="of-email" name="email" required>
       </div>
     </div>
     <div class="order-field">
       <label for="of-phone">Telefoonnummer <span class="hint-inline">(optioneel)</span></label>
-      <input type="tel" id="of-phone">
+      <input type="tel" id="of-phone" name="telefoon">
     </div>
-    <button type="submit" class="btn">Vraag versturen</button>
-    <p class="order-hint">Dit opent je e-mailprogramma met deze gegevens al ingevuld, verstuurd naar Johnny op <span id="of-email-target"></span> — controleer je bericht en verstuur.</p>
+    <button type="submit" class="btn" id="orderSubmitBtn">Vraag versturen</button>
+    <p class="order-hint">Dit formulier gaat rechtstreeks naar Johnny — geen e-mailprogramma nodig.</p>
+    <p class="order-error hidden" id="orderError">Er ging iets mis bij het versturen. Probeer het opnieuw, of mail rechtstreeks naar <a href="mailto:sojozino@gmail.com">sojozino@gmail.com</a>.</p>
   </form>
+
+  <div class="card order-success hidden" id="orderSuccess">
+    <h2>Bedankt!</h2>
+    <p>Je vraag is verstuurd. Johnny neemt zo snel mogelijk contact met je op.</p>
+  </div>
 </div>
 
 <div id="siteFooter"></div>

@@ -11,34 +11,48 @@ upcoming markets — without touching code.
 - `admin.html` is a private dashboard. It edits those same JSON files (and photos in `assets/`)
   by committing straight to this repo via the GitHub API, using a personal access token that's
   only ever stored in the browser it's entered into.
-- Once this repo is on GitHub with **Pages** enabled, every save in the dashboard republishes the
-  live site automatically (usually within a minute) — no separate deploy step.
+- Hosted on **Netlify**, connected to this repo: every save in the dashboard is a commit, and
+  every commit triggers a Netlify redeploy (usually live within a minute) — no separate deploy
+  step, no server to run.
+- The **Bestellen** (order) page is a real form, not a mailto link — Netlify detects and handles
+  it automatically (see "Netlify Forms" below), so submissions land in the Netlify dashboard and
+  can email Johnny directly.
 
 ## One-time setup (for you, or whoever hosts this)
 
 1. Create a new **GitHub repository** and push this folder to it.
-2. In the repo's Settings → Pages, set the source to deploy from the `main` branch, root folder.
-   The site will be live at `https://<username>.github.io/<repo-name>/`.
-3. Open `admin.html` on that live URL (or locally) and connect it:
+2. On [netlify.com](https://app.netlify.com), **Add new site → Import an existing project**, pick
+   this GitHub repo. No build command needed, publish directory is `.` (already set in
+   `netlify.toml`). Netlify gives it a URL immediately; a custom domain can be added later under
+   Site settings → Domain management.
+3. **Netlify Forms**: nothing to configure to start collecting submissions — Netlify detects the
+   `bestellen.html` form automatically on deploy. To get an email for every new order, go to
+   Site settings → Forms → Form notifications → Add notification → Email notification, and enter
+   Johnny's address. Submissions are also always visible under Site → Forms in the Netlify
+   dashboard.
+4. Open `admin.html` on the live URL (or locally) and connect it:
    - Go to [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new)
    - Under "Repository access" choose **Only select repositories** → pick this repo
    - Under "Permissions" → "Repository permissions", set **Contents** to **Read and write**
    - Generate the token, paste it into the dashboard's connect screen along with the GitHub
      username and repo name.
-4. That's it — the dashboard remembers the connection in that browser from then on.
+5. That's it — the dashboard remembers the connection in that browser from then on.
 
 ## Day-to-day use (Tinkie)
 
 Open `admin.html` (bookmark it). From there:
-- **Producten** — add a new item, edit an existing one's name/category/description, add or
-  remove photos, drag the order, pick which photo is the cover shown on the overview page.
-- **Categorieën** — add/rename the four product categories (or more).
+- **Producten** — add a new item, edit an existing one's name/category/subcategory/description,
+  add or remove photos, reorder them, pick which photo is the cover shown on the overview page.
+- **Categorieën** — add/rename the product categories, plus the onderverdelingen (subcategories)
+  nested under Kleine Lederwaren.
 - **Over mij** — edit the About text and photo.
 - **Aanwezigheid** — add/remove upcoming markets; past ones automatically move to "eerder te
   vinden op" on the public site.
 - **Instellingen** — business name, tagline, contact info, accent color, logo.
 
-Every "Opslaan & publiceren" button is one save = one commit = one site update.
+Every "Opslaan & publiceren" button is one save = one commit = one site update. Orders placed via
+the **Bestellen** page don't go through the dashboard at all — they land directly in Netlify's
+Forms dashboard (and Johnny's inbox, once notifications are set up — see above).
 
 ## Local preview (for development)
 
@@ -48,9 +62,10 @@ No install needed beyond Python (already used to import the photos):
 python -m http.server 8123
 ```
 
-Then open `http://localhost:8123`. Note: the admin dashboard's Save buttons need a real GitHub
-connection to work (they commit to the repo) — local preview is for checking the public pages
-and the dashboard's UI, not for saving changes offline.
+Then open `http://localhost:8123`. Two things only work once this is actually live on Netlify,
+not in local preview: the admin dashboard's Save buttons (they commit to the GitHub repo, so need
+a real connection) and the **Bestellen** form (Netlify Forms only exists on Netlify's own
+infrastructure — submitting it locally will show the error message, which is expected).
 
 ## Re-running the photo import
 

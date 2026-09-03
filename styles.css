@@ -603,6 +603,20 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 @media (max-width: 620px) { .order-row { grid-template-columns: 1fr; } }
 .order-hint { font-size: 0.78rem; color: var(--espresso-soft); margin: 1rem 0 0; opacity: 0.8; }
+.order-error { font-size: 0.85rem; color: var(--rust); margin: 0.9rem 0 0; font-weight: 600; }
+.order-error a { text-decoration: underline; }
+.order-success { text-align: center; }
+.order-success h2 { margin-bottom: 0.6rem; }
+
+/* Honeypot field for Netlify's spam filter -- kept in the layout (not
+   display:none, which some bots skip) but moved fully off-screen so real
+   visitors never see or tab into it. */
+.hidden-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
 
 /* ---------- Footer ---------- */
 .site-footer {
