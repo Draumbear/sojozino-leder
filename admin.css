@@ -10,10 +10,10 @@
   --a-line: rgba(23, 20, 15, 0.16);
   --a-success: #3f7d41;
   --a-danger: #b3261e;
-  --a-radius: 8px;
-  --a-radius-sm: 5px;
-  --a-shadow-sm: 0 3px 10px rgba(23, 20, 15, 0.1);
-  --a-shadow: 0 10px 26px rgba(23, 20, 15, 0.14);
+  --a-radius: 4px;
+  --a-radius-sm: 3px;
+  --a-shadow-sm: 3px 3px 0 rgba(23, 20, 15, 0.9);
+  --a-shadow: 5px 5px 0 rgba(23, 20, 15, 0.9);
 }
 
 * { box-sizing: border-box; }
@@ -47,8 +47,8 @@
 .admin-header .conn-status {
   font-size: 0.78rem; font-weight: 700;
   padding: 0.35rem 0.8rem 0.35rem 0.6rem;
-  border-radius: 999px; background: var(--a-cream);
-  border: 1px solid var(--a-line);
+  border-radius: var(--a-radius-sm); background: var(--a-cream);
+  border: 1.5px solid var(--a-espresso);
   display: inline-flex; align-items: center; gap: 0.4rem;
 }
 .admin-header .conn-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; display: block; }
@@ -59,7 +59,7 @@
 
 .admin-card {
   background: var(--a-cream);
-  border: 1.5px dashed rgba(23,20,15,0.28);
+  border: 1.5px solid var(--a-espresso);
   border-radius: var(--a-radius);
   padding: 1.6rem 1.8rem;
   margin-bottom: 1.6rem;
@@ -108,25 +108,25 @@
   display: inline-flex; align-items: center; gap: 0.5rem;
   font: inherit; font-weight: 700; font-size: 0.85rem;
   padding: 0.65rem 1.3rem;
-  border-radius: 999px;
+  border-radius: var(--a-radius-sm);
   background: var(--a-rust); color: #fff;
-  border: 1px solid var(--a-rust);
+  border: 1.5px solid var(--a-espresso);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.12s ease;
 }
-.btn-admin:hover { background: var(--a-rust-hover); border-color: var(--a-rust-hover); box-shadow: var(--a-shadow-sm); }
-.btn-admin.secondary { background: transparent; color: var(--a-rust); }
-.btn-admin.secondary:hover { background: rgba(195,31,31,0.08); }
-.btn-admin.danger { background: transparent; color: var(--a-danger); border-color: rgba(179,38,30,0.5); }
-.btn-admin.danger:hover { background: var(--a-danger); color: #fff; border-color: var(--a-danger); }
+.btn-admin:hover { background: var(--a-rust-hover); box-shadow: var(--a-shadow-sm); transform: translate(-2px, -2px); }
+.btn-admin.secondary { background: var(--a-cream); color: var(--a-espresso); }
+.btn-admin.secondary:hover { background: var(--a-espresso); color: #fff; }
+.btn-admin.danger { background: var(--a-cream); color: var(--a-danger); border-color: var(--a-danger); }
+.btn-admin.danger:hover { background: var(--a-danger); color: #fff; }
 .btn-admin.small { padding: 0.42rem 0.95rem; font-size: 0.76rem; }
 .btn-admin:disabled { opacity: 0.45; cursor: not-allowed; }
 
-.admin-tabs { display: flex; gap: 0.3rem; margin-bottom: 1.4rem; padding: 0.3rem; background: var(--a-cream); border: 1px solid var(--a-line); border-radius: 999px; width: fit-content; flex-wrap: wrap; }
+.admin-tabs { display: flex; gap: 0.3rem; margin-bottom: 1.4rem; padding: 0.3rem; background: var(--a-cream); border: 1.5px solid var(--a-espresso); border-radius: var(--a-radius-sm); width: fit-content; flex-wrap: wrap; }
 .admin-tabs button {
   border: none; background: transparent; cursor: pointer;
   font: inherit; font-size: 0.82rem; font-weight: 700;
-  padding: 0.5rem 1.1rem; border-radius: 999px; color: var(--a-ink-soft);
+  padding: 0.5rem 1.1rem; border-radius: var(--a-radius-sm); color: var(--a-ink-soft);
 }
 .admin-tabs button:hover:not(.active) { color: var(--a-espresso); }
 .admin-tabs button.active { background: var(--a-espresso); color: #fff; }
@@ -160,7 +160,7 @@
 .row-card .rc-info span { font-size: 0.78rem; color: var(--a-ink-faint); }
 .row-card .rc-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
 
-.sub-category-block { margin: -0.2rem 0 1rem 1.6rem; padding-left: 0.8rem; border-left: 2px dashed var(--a-line); }
+.sub-category-block { margin: -0.2rem 0 1rem 1.6rem; padding-left: 0.8rem; border-left: 2px solid var(--a-line); }
 .sub-category-block .sub-row-card { background: var(--a-parchment); }
 .sub-category-block > .btn-admin { margin-top: 0.2rem; }
 
@@ -179,11 +179,12 @@
 .image-tile button:hover { border-color: var(--a-rust); color: var(--a-rust); }
 .image-tile .cover-badge { position: absolute; top: 4px; left: 4px; background: var(--a-rust); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 3px; }
 .upload-drop {
-  border: 2px dashed rgba(23,20,15,0.28); border-radius: var(--a-radius-sm);
+  border: 2px solid var(--a-espresso); border-radius: var(--a-radius-sm);
+  background: var(--a-parchment);
   padding: 1.4rem; text-align: center; font-size: 0.85rem; color: var(--a-ink-faint);
   cursor: pointer;
 }
-.upload-drop:hover { border-color: var(--a-rust); color: var(--a-rust); }
+.upload-drop:hover { border-color: var(--a-rust); color: var(--a-rust); background: #fff; }
 .upload-drop input { display: none; }
 
 .spinner {

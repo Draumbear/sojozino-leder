@@ -10,9 +10,9 @@
   --cream-ink: #ffffff;
   --line: rgba(23, 20, 15, 0.16);
   --line-strong: rgba(23, 20, 15, 0.32);
-  --shadow: 0 12px 28px rgba(23, 20, 15, 0.14);
-  --shadow-sm: 0 4px 12px rgba(23, 20, 15, 0.12);
-  --radius: 6px;
+  --shadow: 6px 6px 0 var(--espresso);
+  --shadow-sm: 4px 4px 0 var(--espresso);
+  --radius: 3px;
   --serif: 'Zilla Slab', Georgia, 'Times New Roman', serif;
   --sans: 'Karla', 'Helvetica Neue', Arial, sans-serif;
 }
@@ -67,23 +67,23 @@ h1, h2, h3, h4 {
 
 p { margin: 0 0 1rem; color: var(--espresso-soft); }
 
-/* Punch-dot divider: a row of small circles, like a leather-punch pattern
-   used as decorative stitching between sections. */
+/* Section divider: a solid black rule with a red tab centered on it —
+   a stamped brand mark rather than a decorative dotted line. */
 .punch-divider {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.55rem;
   margin: 0 auto;
   padding: 0;
   list-style: none;
+  height: 3px;
+  background: var(--espresso);
 }
 .punch-divider span {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--line-strong);
+  width: 46px; height: 11px;
+  background: var(--rust);
   display: block;
 }
-.punch-divider span:nth-child(3n) { background: var(--rust); opacity: 0.55; }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -96,20 +96,21 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   letter-spacing: 0.03em;
   text-transform: uppercase;
   padding: 0.85rem 1.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--rust);
-  color: var(--cream-ink);
-  border: 1px solid var(--rust);
+  color: #fff;
+  border: 2px solid var(--espresso);
+  box-shadow: 3px 3px 0 var(--espresso);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
-.btn:hover { background: var(--rust-dark); border-color: var(--rust-dark); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.btn:hover { background: var(--rust-dark); transform: translate(3px, 3px); box-shadow: 0 0 0 var(--espresso); }
 .btn.outline {
-  background: transparent;
+  background: var(--cream-ink);
   color: var(--espresso);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
 }
-.btn.outline:hover { border-color: var(--rust); color: var(--rust); background: transparent; }
+.btn.outline:hover { background: var(--espresso); color: var(--cream-ink); }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -221,22 +222,40 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .hero {
   position: relative;
   padding: 9.5rem 2rem 5rem;
-  max-width: 1000px;
-  margin: 0 auto;
   text-align: center;
+  background: var(--espresso);
+  color: var(--cream-ink);
 }
-.hero-mark { width: 68px; height: 68px; object-fit: contain; margin: 0 auto 1.4rem; }
+.hero-inner { max-width: 1000px; margin: 0 auto; }
+.hero-mark-badge {
+  width: 84px; height: 84px;
+  margin: 0 auto 1.6rem;
+  background: var(--cream-ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--rust);
+}
+.hero-mark { width: 52px; height: 52px; object-fit: contain; }
+.hero .eyebrow { color: var(--rust); }
 .hero h1 {
   font-size: clamp(2.4rem, 5.5vw, 4.2rem);
   line-height: 1.05;
+  color: var(--cream-ink);
 }
 .hero .tagline {
   font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--espresso-soft);
+  color: rgba(255,255,255,0.72);
   max-width: 44ch;
   margin: 1.2rem auto 2.2rem;
 }
 .hero-actions { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; }
+.hero .btn { box-shadow: 3px 3px 0 rgba(255,255,255,0.3); }
+.hero .btn.outline {
+  background: transparent;
+  color: var(--cream-ink);
+  border-color: var(--cream-ink);
+}
+.hero .btn.outline:hover { background: var(--cream-ink); color: var(--espresso); }
 
 /* ---------- Page header (non-home pages) ---------- */
 .page-hero {
@@ -259,21 +278,13 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 3rem; }
 .section-head p { margin-top: 0.8rem; }
 
-/* ---------- Leather card: stitched dashed border ---------- */
+/* ---------- Card ---------- */
 .card {
   background: var(--cream-ink);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
   border-radius: var(--radius);
   padding: 1.6rem;
   position: relative;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  pointer-events: none;
 }
 
 /* ---------- Product grid ---------- */
@@ -287,10 +298,10 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   background: var(--cream-ink);
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid var(--line);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  border: 1.5px solid var(--espresso);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.product-card:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow); }
 .product-card .thumb {
   aspect-ratio: 4/5;
   overflow: hidden;
@@ -324,9 +335,9 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  border: 1.5px solid var(--line-strong);
-  background: transparent;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--espresso);
+  background: var(--cream-ink);
   color: var(--espresso-soft);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -351,7 +362,8 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   aspect-ratio: 4/5;
   object-fit: cover;
   border-radius: var(--radius);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
+  box-shadow: var(--shadow-sm);
 }
 @media (max-width: 820px) {
   .about-teaser { grid-template-columns: 1fr; gap: 2rem; }
@@ -375,7 +387,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   position: relative;
   aspect-ratio: 1/1;
   background: var(--cream-ink);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
@@ -437,10 +449,10 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--cognac-dark);
-  background: var(--parchment-2);
+  color: #fff;
+  background: var(--espresso);
   padding: 0.35rem 0.8rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   margin-bottom: 1rem;
 }
 .product-info h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 1.1rem; }
@@ -527,7 +539,8 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   aspect-ratio: 4/5;
   object-fit: cover;
   border-radius: var(--radius);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
+  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 6.5rem;
 }
@@ -552,14 +565,15 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   gap: 0.6rem;
   padding: 1rem 1.4rem;
   background: var(--cream-ink);
-  border: 1.5px dashed var(--line-strong);
+  border: 2px solid var(--espresso);
   border-radius: var(--radius);
   font-weight: 700;
   font-size: 0.92rem;
   min-width: 220px;
   justify-content: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
-.contact-link:hover { border-color: var(--rust); color: var(--rust); }
+.contact-link:hover { border-color: var(--rust); color: var(--rust); box-shadow: var(--shadow-sm); transform: translate(-2px, -2px); }
 
 /* ---------- Order form ---------- */
 .order-form { max-width: 100%; text-align: left; }
