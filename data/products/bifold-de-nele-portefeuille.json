@@ -4,54 +4,59 @@
   "category": "kleine-lederwaren",
   "subcategory": "portefeuilles",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over bifold de nele portefeuille.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/bifold-de-nele-portefeuille/01.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/02.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/03.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/04.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/05.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/06.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/07.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/08.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/09.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/10.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/11.jpg",
-      "alt": "Bifold De Nele Portefeuille"
-    },
-    {
-      "src": "assets/products/bifold-de-nele-portefeuille/12.jpg",
-      "alt": "Bifold De Nele Portefeuille"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/01.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/02.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/03.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/04.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/05.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/06.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/07.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/08.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/09.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/10.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/11.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        },
+        {
+          "src": "assets/products/bifold-de-nele-portefeuille/12.jpg",
+          "alt": "Bifold De Nele Portefeuille"
+        }
+      ]
     }
   ]
 }

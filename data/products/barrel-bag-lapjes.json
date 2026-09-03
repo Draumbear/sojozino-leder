@@ -4,102 +4,107 @@
   "category": "tassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over barrel bag lapjes.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/barrel-bag-lapjes/01.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/02.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/03.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/04.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/05.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/06.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/07.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/08.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/09.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/10.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/11.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/12.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/13.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/14.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/15.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/16.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/17.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/18.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/19.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/20.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/21.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/22.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/23.jpg",
-      "alt": "Barrel Bag Lapjes"
-    },
-    {
-      "src": "assets/products/barrel-bag-lapjes/24.jpg",
-      "alt": "Barrel Bag Lapjes"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/barrel-bag-lapjes/01.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/02.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/03.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/04.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/05.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/06.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/07.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/08.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/09.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/10.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/11.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/12.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/13.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/14.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/15.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/16.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/17.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/18.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/19.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/20.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/21.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/22.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/23.jpg",
+          "alt": "Barrel Bag Lapjes"
+        },
+        {
+          "src": "assets/products/barrel-bag-lapjes/24.jpg",
+          "alt": "Barrel Bag Lapjes"
+        }
+      ]
     }
   ]
 }

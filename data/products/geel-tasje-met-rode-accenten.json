@@ -4,90 +4,95 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over geel tasje met rode accenten.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/geel-tasje-met-rode-accenten/01.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/02.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/03.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/04.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/05.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/06.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/07.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/08.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/09.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/10.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/11.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/12.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/13.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/14.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/15.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/16.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/17.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/18.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/19.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/20.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
-    },
-    {
-      "src": "assets/products/geel-tasje-met-rode-accenten/21.jpg",
-      "alt": "Geel Tasje Met Rode Accenten"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/01.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/02.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/03.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/04.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/05.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/06.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/07.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/08.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/09.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/10.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/11.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/12.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/13.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/14.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/15.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/16.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/17.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/18.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/19.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/20.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        },
+        {
+          "src": "assets/products/geel-tasje-met-rode-accenten/21.jpg",
+          "alt": "Geel Tasje Met Rode Accenten"
+        }
+      ]
     }
   ]
 }

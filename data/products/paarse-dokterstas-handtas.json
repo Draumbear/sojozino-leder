@@ -4,86 +4,91 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over paarse dokterstas handtas.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/paarse-dokterstas-handtas/01.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/02.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/03.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/04.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/05.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/06.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/07.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/08.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/09.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/10.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/11.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/12.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/13.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/14.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/15.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/16.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/17.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/18.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/19.jpg",
-      "alt": "Paarse Dokterstas Handtas"
-    },
-    {
-      "src": "assets/products/paarse-dokterstas-handtas/20.jpg",
-      "alt": "Paarse Dokterstas Handtas"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/01.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/02.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/03.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/04.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/05.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/06.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/07.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/08.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/09.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/10.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/11.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/12.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/13.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/14.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/15.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/16.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/17.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/18.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/19.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        },
+        {
+          "src": "assets/products/paarse-dokterstas-handtas/20.jpg",
+          "alt": "Paarse Dokterstas Handtas"
+        }
+      ]
     }
   ]
 }

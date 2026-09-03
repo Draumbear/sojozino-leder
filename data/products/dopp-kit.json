@@ -4,90 +4,120 @@
   "category": "kleine-lederwaren",
   "subcategory": "toilettassen",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over dopp kit.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/dopp-kit/01.jpg",
-      "alt": "Dopp Kit"
+      "name": "Bruin",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/bruin/01.jpg",
+          "alt": "Dopp Kit — Bruin"
+        },
+        {
+          "src": "assets/products/dopp-kit/bruin/02.jpg",
+          "alt": "Dopp Kit — Bruin"
+        },
+        {
+          "src": "assets/products/dopp-kit/bruin/03.jpg",
+          "alt": "Dopp Kit — Bruin"
+        }
+      ]
     },
     {
-      "src": "assets/products/dopp-kit/02.jpg",
-      "alt": "Dopp Kit"
+      "name": "Fuchsia",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/fuchsia/01.jpg",
+          "alt": "Dopp Kit — Fuchsia"
+        },
+        {
+          "src": "assets/products/dopp-kit/fuchsia/02.jpg",
+          "alt": "Dopp Kit — Fuchsia"
+        },
+        {
+          "src": "assets/products/dopp-kit/fuchsia/03.jpg",
+          "alt": "Dopp Kit — Fuchsia"
+        },
+        {
+          "src": "assets/products/dopp-kit/fuchsia/04.jpg",
+          "alt": "Dopp Kit — Fuchsia"
+        }
+      ]
     },
     {
-      "src": "assets/products/dopp-kit/03.jpg",
-      "alt": "Dopp Kit"
+      "name": "Grof Leder",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/grof-leder/01.jpg",
+          "alt": "Dopp Kit — Grof Leder"
+        },
+        {
+          "src": "assets/products/dopp-kit/grof-leder/02.jpg",
+          "alt": "Dopp Kit — Grof Leder"
+        },
+        {
+          "src": "assets/products/dopp-kit/grof-leder/03.jpg",
+          "alt": "Dopp Kit — Grof Leder"
+        }
+      ]
     },
     {
-      "src": "assets/products/dopp-kit/04.jpg",
-      "alt": "Dopp Kit"
+      "name": "Lichtbruin",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/lichtbruin/01.jpg",
+          "alt": "Dopp Kit — Lichtbruin"
+        },
+        {
+          "src": "assets/products/dopp-kit/lichtbruin/02.jpg",
+          "alt": "Dopp Kit — Lichtbruin"
+        },
+        {
+          "src": "assets/products/dopp-kit/lichtbruin/03.jpg",
+          "alt": "Dopp Kit — Lichtbruin"
+        },
+        {
+          "src": "assets/products/dopp-kit/lichtbruin/04.jpg",
+          "alt": "Dopp Kit — Lichtbruin"
+        }
+      ]
     },
     {
-      "src": "assets/products/dopp-kit/05.jpg",
-      "alt": "Dopp Kit"
+      "name": "Roze",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/roze/01.jpg",
+          "alt": "Dopp Kit — Roze"
+        },
+        {
+          "src": "assets/products/dopp-kit/roze/02.jpg",
+          "alt": "Dopp Kit — Roze"
+        },
+        {
+          "src": "assets/products/dopp-kit/roze/03.jpg",
+          "alt": "Dopp Kit — Roze"
+        },
+        {
+          "src": "assets/products/dopp-kit/roze/04.jpg",
+          "alt": "Dopp Kit — Roze"
+        }
+      ]
     },
     {
-      "src": "assets/products/dopp-kit/06.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/07.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/08.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/09.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/10.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/11.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/12.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/13.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/14.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/15.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/16.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/17.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/18.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/19.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/20.jpg",
-      "alt": "Dopp Kit"
-    },
-    {
-      "src": "assets/products/dopp-kit/21.jpg",
-      "alt": "Dopp Kit"
+      "name": "Zwart",
+      "images": [
+        {
+          "src": "assets/products/dopp-kit/zwart/01.jpg",
+          "alt": "Dopp Kit — Zwart"
+        },
+        {
+          "src": "assets/products/dopp-kit/zwart/02.jpg",
+          "alt": "Dopp Kit — Zwart"
+        },
+        {
+          "src": "assets/products/dopp-kit/zwart/03.jpg",
+          "alt": "Dopp Kit — Zwart"
+        }
+      ]
     }
   ]
 }

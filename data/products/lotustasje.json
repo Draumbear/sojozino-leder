@@ -4,46 +4,51 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over lotustasje.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/lotustasje/01.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/02.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/03.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/04.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/05.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/06.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/07.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/08.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/09.jpg",
-      "alt": "Lotustasje"
-    },
-    {
-      "src": "assets/products/lotustasje/10.jpg",
-      "alt": "Lotustasje"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/lotustasje/01.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/02.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/03.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/04.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/05.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/06.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/07.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/08.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/09.jpg",
+          "alt": "Lotustasje"
+        },
+        {
+          "src": "assets/products/lotustasje/10.jpg",
+          "alt": "Lotustasje"
+        }
+      ]
     }
   ]
 }

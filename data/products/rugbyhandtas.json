@@ -4,118 +4,123 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over rugbyhandtas.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/rugbyhandtas/01.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/02.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/03.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/04.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/05.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/06.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/07.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/08.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/09.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/10.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/11.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/12.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/13.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/14.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/15.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/16.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/17.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/18.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/19.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/20.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/21.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/22.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/23.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/24.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/25.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/26.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/27.jpg",
-      "alt": "Rugbyhandtas"
-    },
-    {
-      "src": "assets/products/rugbyhandtas/28.jpg",
-      "alt": "Rugbyhandtas"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/rugbyhandtas/01.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/02.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/03.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/04.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/05.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/06.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/07.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/08.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/09.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/10.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/11.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/12.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/13.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/14.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/15.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/16.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/17.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/18.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/19.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/20.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/21.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/22.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/23.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/24.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/25.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/26.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/27.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/28.jpg",
+          "alt": "Rugbyhandtas"
+        }
+      ]
     }
   ]
 }

@@ -14,11 +14,15 @@ let state = {
 };
 // slug -> full product detail, fetched on demand when a product is opened.
 const productCache = {};
-// Files staged for the currently-open product editor: File objects not yet uploaded.
-let pendingUploads = [];
-// Existing images (already in the product) currently shown in the editor, in order.
-let editorImages = [];
-let editorCoverIndex = 0;
+// Product being edited: an array of variants, each { name: string|null, images: [{src,alt}] }.
+// A product with no real colour/style variants still has exactly one entry
+// here (name: null) -- the variant picker only shows on the public site once
+// there's more than one.
+let editorVariants = [];
+// Staged uploads not yet sent: [{ variantIdx, file }].
+let editorPendingUploads = [];
+// Which image is the product's cover (shown on the overview grid).
+let editorCoverKey = { variantIdx: 0, imageIdx: 0 };
 let editingSlug = null; // null while creating a new product
 
 function $(sel, root = document) { return root.querySelector(sel); }
@@ -338,9 +342,12 @@ async function deleteProduct(slug) {
   if (!confirm(`"${p.name}" en al zijn foto's definitief verwijderen?`)) return;
   try {
     const detail = productCache[slug] || await api.getJSON(`data/products/${slug}.json`);
+    const allImages = (detail?.variants || []).flatMap(v => v.images || []).length
+      ? (detail.variants || []).flatMap(v => v.images || [])
+      : (detail?.images || []); // backward-compat for pre-variant product files
     const files = [
       { path: `data/products/${slug}.json`, delete: true },
-      ...((detail?.images || []).map(img => ({ path: img.src, delete: true }))),
+      ...allImages.map(img => ({ path: img.src, delete: true })),
     ];
     state.productsIndex = state.productsIndex.filter(x => x.slug !== slug);
     files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
@@ -356,7 +363,7 @@ async function deleteProduct(slug) {
 // ---------- Product editor ----------
 async function openProductEditor(slug) {
   editingSlug = slug;
-  pendingUploads = [];
+  editorPendingUploads = [];
   const panel = $('#productEditor');
   panel.classList.remove('hidden');
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -372,20 +379,34 @@ async function openProductEditor(slug) {
     $('#pe-category').value = detail.category || '';
     $('#pe-description').value = detail.description || '';
     renderSubcategorySelect(detail.subcategory || '');
-    editorImages = (detail.images || []).map(img => ({ ...img }));
-    const idx = state.productsIndex.find(p => p.slug === slug);
-    editorCoverIndex = Math.max(0, editorImages.findIndex(img => img.src === idx?.cover?.src));
-    if (editorCoverIndex < 0) editorCoverIndex = 0;
+    // Backward-compatible: a product saved before variants existed only has
+    // a flat `images` array -- treat it as one unnamed variant.
+    const source = (detail.variants && detail.variants.length)
+      ? detail.variants
+      : [{ name: null, images: detail.images || [] }];
+    editorVariants = source.map(v => ({ name: v.name || null, images: (v.images || []).map(img => ({ ...img })) }));
+
+    const idxEntry = state.productsIndex.find(p => p.slug === slug);
+    editorCoverKey = findImageRef(idxEntry?.cover?.src) || { variantIdx: 0, imageIdx: 0 };
   } else {
     $('#pe-title').textContent = 'Nieuw product';
     $('#pe-name').value = '';
     $('#pe-category').value = state.categories[0]?.slug || '';
     $('#pe-description').value = '';
     renderSubcategorySelect('');
-    editorImages = [];
-    editorCoverIndex = 0;
+    editorVariants = [{ name: null, images: [] }];
+    editorCoverKey = { variantIdx: 0, imageIdx: 0 };
   }
-  renderImageManager();
+  renderVariantsManager();
+}
+
+function findImageRef(src) {
+  if (!src) return null;
+  for (let vi = 0; vi < editorVariants.length; vi++) {
+    const ii = editorVariants[vi].images.findIndex(img => img.src === src);
+    if (ii >= 0) return { variantIdx: vi, imageIdx: ii };
+  }
+  return null;
 }
 
 function renderSubcategorySelect(selected) {
@@ -402,67 +423,147 @@ function renderSubcategorySelect(selected) {
 function closeProductEditor() {
   $('#productEditor').classList.add('hidden');
   editingSlug = null;
-  pendingUploads = [];
-  editorImages = [];
+  editorPendingUploads = [];
+  editorVariants = [];
 }
 
-function renderImageManager() {
-  const wrap = $('#imageManager');
-  const existingTiles = editorImages.map((img, i) => `
-    <div class="image-tile${i === editorCoverIndex ? ' is-cover' : ''}" data-idx="${i}" data-kind="existing">
-      ${i === editorCoverIndex ? '<span class="cover-badge">Cover</span>' : ''}
-      <img src="${esc(img.src)}" alt="">
-      <div class="tile-actions">
-        <button data-action="cover" title="Als cover instellen">★</button>
-        <button data-action="left" title="Naar links">←</button>
-        <button data-action="right" title="Naar rechts">→</button>
-        <button data-action="remove" title="Verwijderen">✕</button>
-      </div>
-    </div>`).join('');
-  const pendingTiles = pendingUploads.map((f, i) => `
-    <div class="image-tile" data-idx="${i}" data-kind="pending">
-      <img src="${URL.createObjectURL(f)}" alt="">
-      <div class="tile-actions"><button data-action="remove-pending">✕ nieuw</button></div>
-    </div>`).join('');
-  wrap.innerHTML = existingTiles + pendingTiles;
-
-  wrap.onclick = (e) => {
-    const btn = e.target.closest('button');
-    if (!btn) return;
-    const tile = btn.closest('.image-tile');
-    const idx = Number(tile.dataset.idx);
-    if (btn.dataset.action === 'cover') editorCoverIndex = idx;
-    else if (btn.dataset.action === 'left' && idx > 0) {
-      [editorImages[idx - 1], editorImages[idx]] = [editorImages[idx], editorImages[idx - 1]];
-      if (editorCoverIndex === idx) editorCoverIndex--; else if (editorCoverIndex === idx - 1) editorCoverIndex++;
-    } else if (btn.dataset.action === 'right' && idx < editorImages.length - 1) {
-      [editorImages[idx + 1], editorImages[idx]] = [editorImages[idx], editorImages[idx + 1]];
-      if (editorCoverIndex === idx) editorCoverIndex++; else if (editorCoverIndex === idx + 1) editorCoverIndex--;
-    } else if (btn.dataset.action === 'remove') {
-      editorImages.splice(idx, 1);
-      if (editorCoverIndex >= editorImages.length) editorCoverIndex = Math.max(0, editorImages.length - 1);
-    } else if (btn.dataset.action === 'remove-pending') {
-      pendingUploads.splice(idx, 1);
-    }
-    renderImageManager();
-  };
+function adjustCoverOnSwap(vi, from, to) {
+  if (editorCoverKey.variantIdx !== vi) return;
+  if (editorCoverKey.imageIdx === from) editorCoverKey.imageIdx = to;
+  else if (editorCoverKey.imageIdx === to) editorCoverKey.imageIdx = from;
 }
 
-function initImageUpload() {
-  const drop = $('#uploadDrop');
-  const input = $('#uploadInput');
-  drop.addEventListener('click', () => input.click());
-  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.style.borderColor = 'var(--a-rust)'; });
-  drop.addEventListener('dragleave', () => { drop.style.borderColor = ''; });
-  drop.addEventListener('drop', (e) => {
-    e.preventDefault(); drop.style.borderColor = '';
-    addFiles(e.dataTransfer.files);
-  });
-  input.addEventListener('change', () => { addFiles(input.files); input.value = ''; });
-  function addFiles(fileList) {
-    Array.from(fileList).filter(f => f.type.startsWith('image/')).forEach(f => pendingUploads.push(f));
-    renderImageManager();
+function firstAvailableCover() {
+  for (let vi = 0; vi < editorVariants.length; vi++) {
+    if (editorVariants[vi].images.length) return { variantIdx: vi, imageIdx: 0 };
   }
+  return { variantIdx: 0, imageIdx: 0 };
+}
+
+function renderVariantsManager() {
+  const wrap = $('#variantsManager');
+  const multi = editorVariants.length > 1;
+
+  wrap.innerHTML = editorVariants.map((v, vi) => {
+    const existingTiles = v.images.map((img, ii) => {
+      const isCover = editorCoverKey.variantIdx === vi && editorCoverKey.imageIdx === ii;
+      return `
+      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing">
+        ${isCover ? '<span class="cover-badge">Cover</span>' : ''}
+        <img src="${esc(img.src)}" alt="">
+        <div class="tile-actions">
+          <button data-action="cover" title="Als cover instellen">★</button>
+          <button data-action="left" title="Naar links">←</button>
+          <button data-action="right" title="Naar rechts">→</button>
+          <button data-action="remove" title="Verwijderen">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+    const pendingTiles = editorPendingUploads
+      .map((p, gi) => ({ p, gi }))
+      .filter(({ p }) => p.variantIdx === vi)
+      .map(({ p, gi }) => `
+      <div class="image-tile" data-kind="pending">
+        <img src="${URL.createObjectURL(p.file)}" alt="">
+        <div class="tile-actions"><button data-action="remove-pending" data-pending-idx="${gi}">✕ nieuw</button></div>
+      </div>`).join('');
+
+    return `
+    <div class="variant-editor">
+      ${multi ? `
+      <div class="variant-editor-head">
+        <input type="text" class="variant-name-input" data-vidx="${vi}" placeholder="Naam (bv. Blauw)" value="${esc(v.name || '')}">
+        <button class="btn-admin danger small" type="button" data-action="remove-variant" data-vidx="${vi}">Variant verwijderen</button>
+      </div>` : ''}
+      <div class="image-manager">${existingTiles}${pendingTiles}</div>
+      <div class="upload-drop" data-vidx="${vi}">
+        Klik of sleep foto's hierheen${multi ? ` om toe te voegen aan ${esc(v.name || `variant ${vi + 1}`)}` : ' om toe te voegen'}
+        <input type="file" class="upload-input" data-vidx="${vi}" accept="image/*" multiple hidden>
+      </div>
+    </div>`;
+  }).join('');
+
+  bindVariantsManagerEvents(wrap);
+}
+
+function bindVariantsManagerEvents(wrap) {
+  wrap.onclick = (e) => {
+    const removeVariantBtn = e.target.closest('[data-action="remove-variant"]');
+    if (removeVariantBtn) {
+      const vi = Number(removeVariantBtn.dataset.vidx);
+      if (editorVariants.length <= 1) return;
+      if (!confirm('Deze variant en zijn foto\'s verwijderen?')) return;
+      editorVariants.splice(vi, 1);
+      editorPendingUploads = editorPendingUploads
+        .filter(p => p.variantIdx !== vi)
+        .map(p => ({ ...p, variantIdx: p.variantIdx > vi ? p.variantIdx - 1 : p.variantIdx }));
+      if (editorCoverKey.variantIdx === vi) editorCoverKey = firstAvailableCover();
+      else if (editorCoverKey.variantIdx > vi) editorCoverKey.variantIdx--;
+      renderVariantsManager();
+      return;
+    }
+
+    const pendingRemoveBtn = e.target.closest('[data-action="remove-pending"]');
+    if (pendingRemoveBtn) {
+      editorPendingUploads.splice(Number(pendingRemoveBtn.dataset.pendingIdx), 1);
+      renderVariantsManager();
+      return;
+    }
+
+    const tile = e.target.closest('.image-tile[data-kind="existing"]');
+    const btn = e.target.closest('button');
+    if (tile && btn) {
+      const vi = Number(tile.dataset.vidx), ii = Number(tile.dataset.idx);
+      const images = editorVariants[vi].images;
+      if (btn.dataset.action === 'cover') {
+        editorCoverKey = { variantIdx: vi, imageIdx: ii };
+      } else if (btn.dataset.action === 'left' && ii > 0) {
+        [images[ii - 1], images[ii]] = [images[ii], images[ii - 1]];
+        adjustCoverOnSwap(vi, ii, ii - 1);
+      } else if (btn.dataset.action === 'right' && ii < images.length - 1) {
+        [images[ii + 1], images[ii]] = [images[ii], images[ii + 1]];
+        adjustCoverOnSwap(vi, ii, ii + 1);
+      } else if (btn.dataset.action === 'remove') {
+        images.splice(ii, 1);
+        if (editorCoverKey.variantIdx === vi) {
+          if (editorCoverKey.imageIdx === ii) editorCoverKey = firstAvailableCover();
+          else if (editorCoverKey.imageIdx > ii) editorCoverKey.imageIdx--;
+        }
+      }
+      renderVariantsManager();
+      return;
+    }
+
+    const drop = e.target.closest('.upload-drop');
+    if (drop && !e.target.closest('input')) {
+      wrap.querySelector(`.upload-input[data-vidx="${drop.dataset.vidx}"]`).click();
+    }
+  };
+
+  wrap.oninput = (e) => {
+    const nameInput = e.target.closest('.variant-name-input');
+    if (nameInput) editorVariants[Number(nameInput.dataset.vidx)].name = nameInput.value.trim() || null;
+  };
+
+  wrap.onchange = (e) => {
+    const input = e.target.closest('.upload-input');
+    if (!input) return;
+    const vi = Number(input.dataset.vidx);
+    Array.from(input.files).filter(f => f.type.startsWith('image/')).forEach(f => editorPendingUploads.push({ variantIdx: vi, file: f }));
+    input.value = '';
+    renderVariantsManager();
+  };
+
+  wrap.querySelectorAll('.upload-drop').forEach(drop => {
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.style.borderColor = 'var(--a-rust)'; });
+    drop.addEventListener('dragleave', () => { drop.style.borderColor = ''; });
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault(); drop.style.borderColor = '';
+      const vi = Number(drop.dataset.vidx);
+      Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(f => editorPendingUploads.push({ variantIdx: vi, file: f }));
+      renderVariantsManager();
+    });
+  });
 }
 
 async function saveProduct() {
@@ -472,29 +573,44 @@ async function saveProduct() {
   const description = $('#pe-description').value.trim();
   if (!name) { toast('Geef het product een naam.', 'err'); return; }
   if (!category) { toast('Kies een categorie.', 'err'); return; }
-  if (editorImages.length === 0 && pendingUploads.length === 0) { toast('Voeg minstens één foto toe.', 'err'); return; }
+  const totalExisting = editorVariants.reduce((n, v) => n + v.images.length, 0);
+  if (totalExisting === 0 && editorPendingUploads.length === 0) { toast('Voeg minstens één foto toe.', 'err'); return; }
 
   const btn = $('#saveProductBtn');
   setBusy(btn, true, 'Opslaan…');
   try {
     const slug = editingSlug || uniqueSlug(slugify(name), null);
     const files = [];
+    const multi = editorVariants.length > 1;
 
-    // Upload any newly-added photos.
-    for (const file of pendingUploads) {
-      const prepared = await api.prepareUpload(file, `assets/products/${slug}`);
+    // Unnamed variants get a fallback label once there's more than one --
+    // only matters for the folder an upload lands in and the swatch label.
+    if (multi) editorVariants.forEach((v, i) => { if (!v.name) v.name = `Variant ${i + 1}`; });
+
+    // Upload any newly-added photos into their variant's own folder.
+    for (const pending of editorPendingUploads) {
+      const v = editorVariants[pending.variantIdx];
+      const folder = multi ? `assets/products/${slug}/${slugify(v.name)}` : `assets/products/${slug}`;
+      const prepared = await api.prepareUpload(pending.file, folder);
       files.push({ path: prepared.path, content: prepared.content });
-      editorImages.push({ src: prepared.path, alt: name });
+      v.images.push({ src: prepared.path, alt: multi ? `${name} — ${v.name}` : name });
     }
-    pendingUploads = [];
+    editorPendingUploads = [];
 
-    const cover = editorImages[Math.min(editorCoverIndex, editorImages.length - 1)] || editorImages[0];
-    const productData = { slug, name, category, subcategory, description, images: editorImages };
+    const coverVariant = editorVariants[editorCoverKey.variantIdx] || editorVariants[0];
+    const coverImage = coverVariant.images[editorCoverKey.imageIdx]
+      || coverVariant.images[0]
+      || editorVariants.flatMap(v => v.images)[0];
+
+    // Drop any variant that ended up with no photos (e.g. its only image got removed).
+    const cleanedVariants = editorVariants.filter(v => v.images.length > 0);
+
+    const productData = { slug, name, category, subcategory, description, variants: cleanedVariants };
     files.push({ path: `data/products/${slug}.json`, content: JSON.stringify(productData, null, 2) });
 
     const existingIdx = state.productsIndex.findIndex(p => p.slug === slug);
     const indexEntry = {
-      slug, name, category, subcategory, cover: { src: cover.src, alt: cover.alt || name },
+      slug, name, category, subcategory, cover: { src: coverImage.src, alt: coverImage.alt || name },
       order: existingIdx >= 0 ? state.productsIndex[existingIdx].order : state.productsIndex.length + 1,
       featured: existingIdx >= 0 ? !!state.productsIndex[existingIdx].featured : false,
     };
@@ -673,11 +789,14 @@ async function saveSettings() {
 document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
-  initImageUpload();
 
   $('#saveProductBtn').addEventListener('click', saveProduct);
   $('#cancelProductBtn').addEventListener('click', closeProductEditor);
   $('#pe-category').addEventListener('change', () => renderSubcategorySelect(''));
+  $('#addVariantBtn').addEventListener('click', () => {
+    editorVariants.push({ name: `Variant ${editorVariants.length + 1}`, images: [] });
+    renderVariantsManager();
+  });
   $('#savePresenceBtn').addEventListener('click', savePresenceEntry);
   $('#cancelPresenceBtn').addEventListener('click', () => $('#presenceForm').classList.add('hidden'));
   $('#saveAboutBtn').addEventListener('click', saveAbout);

@@ -4,98 +4,103 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder grof leder.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouder-grof-leder/01.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/02.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/03.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/04.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/05.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/06.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/07.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/08.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/09.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/10.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/11.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/12.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/13.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/14.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/15.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/16.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/17.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/18.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/19.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/20.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/21.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/22.jpg",
-      "alt": "Kaartenhouder Grof Leder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-grof-leder/23.jpg",
-      "alt": "Kaartenhouder Grof Leder"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/01.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/02.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/03.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/04.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/05.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/06.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/07.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/08.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/09.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/10.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/11.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/12.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/13.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/14.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/15.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/16.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/17.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/18.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/19.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/20.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/21.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/22.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-grof-leder/23.jpg",
+          "alt": "Kaartenhouder Grof Leder"
+        }
+      ]
     }
   ]
 }

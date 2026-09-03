@@ -4,58 +4,63 @@
   "category": "kleine-lederwaren",
   "subcategory": "hoesjes",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over telefoonhoesje prosper.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/telefoonhoesje-prosper/01.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/02.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/03.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/04.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/05.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/06.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/07.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/08.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/09.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/10.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/11.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/12.jpg",
-      "alt": "Telefoonhoesje Prosper"
-    },
-    {
-      "src": "assets/products/telefoonhoesje-prosper/13.jpg",
-      "alt": "Telefoonhoesje Prosper"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/telefoonhoesje-prosper/01.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/02.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/03.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/04.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/05.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/06.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/07.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/08.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/09.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/10.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/11.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/12.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        },
+        {
+          "src": "assets/products/telefoonhoesje-prosper/13.jpg",
+          "alt": "Telefoonhoesje Prosper"
+        }
+      ]
     }
   ]
 }

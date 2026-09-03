@@ -4,70 +4,75 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over plooitasje lamsleder.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/plooitasje-lamsleder/01.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/02.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/03.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/04.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/05.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/06.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/07.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/08.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/09.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/10.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/11.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/12.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/13.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/14.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/15.jpg",
-      "alt": "Plooitasje Lamsleder"
-    },
-    {
-      "src": "assets/products/plooitasje-lamsleder/16.jpg",
-      "alt": "Plooitasje Lamsleder"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/plooitasje-lamsleder/01.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/02.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/03.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/04.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/05.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/06.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/07.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/08.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/09.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/10.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/11.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/12.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/13.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/14.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/15.jpg",
+          "alt": "Plooitasje Lamsleder"
+        },
+        {
+          "src": "assets/products/plooitasje-lamsleder/16.jpg",
+          "alt": "Plooitasje Lamsleder"
+        }
+      ]
     }
   ]
 }

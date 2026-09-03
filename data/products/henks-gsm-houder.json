@@ -4,54 +4,59 @@
   "category": "kleine-lederwaren",
   "subcategory": "hoesjes",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over henks gsm houder.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/henks-gsm-houder/01.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/02.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/03.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/04.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/05.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/06.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/07.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/08.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/09.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/10.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/11.jpg",
-      "alt": "Henks Gsm Houder"
-    },
-    {
-      "src": "assets/products/henks-gsm-houder/12.jpg",
-      "alt": "Henks Gsm Houder"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/henks-gsm-houder/01.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/02.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/03.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/04.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/05.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/06.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/07.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/08.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/09.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/10.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/11.jpg",
+          "alt": "Henks Gsm Houder"
+        },
+        {
+          "src": "assets/products/henks-gsm-houder/12.jpg",
+          "alt": "Henks Gsm Houder"
+        }
+      ]
     }
   ]
 }

@@ -4,98 +4,103 @@
   "category": "handtassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over handtas den mimi.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/handtas-den-mimi/01.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/02.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/03.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/04.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/05.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/06.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/07.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/08.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/09.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/10.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/11.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/12.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/13.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/14.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/15.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/16.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/17.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/18.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/19.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/20.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/21.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/22.jpg",
-      "alt": "Handtas Den Mimi"
-    },
-    {
-      "src": "assets/products/handtas-den-mimi/23.jpg",
-      "alt": "Handtas Den Mimi"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/handtas-den-mimi/01.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/02.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/03.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/04.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/05.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/06.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/07.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/08.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/09.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/10.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/11.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/12.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/13.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/14.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/15.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/16.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/17.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/18.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/19.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/20.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/21.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/22.jpg",
+          "alt": "Handtas Den Mimi"
+        },
+        {
+          "src": "assets/products/handtas-den-mimi/23.jpg",
+          "alt": "Handtas Den Mimi"
+        }
+      ]
     }
   ]
 }

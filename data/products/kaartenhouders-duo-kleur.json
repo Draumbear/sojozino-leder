@@ -4,94 +4,99 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouders duo kleur.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouders-duo-kleur/01.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/02.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/03.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/04.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/05.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/06.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/07.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/08.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/09.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/10.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/11.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/12.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/13.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/14.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/15.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/16.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/17.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/18.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/19.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/20.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/21.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
-    },
-    {
-      "src": "assets/products/kaartenhouders-duo-kleur/22.jpg",
-      "alt": "Kaartenhouders Duo Kleur"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/01.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/02.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/03.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/04.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/05.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/06.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/07.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/08.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/09.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/10.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/11.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/12.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/13.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/14.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/15.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/16.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/17.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/18.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/19.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/20.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/21.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        },
+        {
+          "src": "assets/products/kaartenhouders-duo-kleur/22.jpg",
+          "alt": "Kaartenhouders Duo Kleur"
+        }
+      ]
     }
   ]
 }

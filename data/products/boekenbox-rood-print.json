@@ -4,50 +4,55 @@
   "category": "kleine-lederwaren",
   "subcategory": "allerlei",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over boekenbox rood print.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/boekenbox-rood-print/01.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/02.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/03.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/04.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/05.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/06.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/07.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/08.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/09.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/10.jpg",
-      "alt": "Boekenbox Rood Print"
-    },
-    {
-      "src": "assets/products/boekenbox-rood-print/11.jpg",
-      "alt": "Boekenbox Rood Print"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/boekenbox-rood-print/01.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/02.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/03.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/04.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/05.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/06.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/07.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/08.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/09.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/10.jpg",
+          "alt": "Boekenbox Rood Print"
+        },
+        {
+          "src": "assets/products/boekenbox-rood-print/11.jpg",
+          "alt": "Boekenbox Rood Print"
+        }
+      ]
     }
   ]
 }

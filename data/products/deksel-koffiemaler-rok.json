@@ -4,90 +4,95 @@
   "category": "kleine-lederwaren",
   "subcategory": "allerlei",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over deksel koffiemaler rok.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/deksel-koffiemaler-rok/01.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/02.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/03.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/04.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/05.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/06.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/07.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/08.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/09.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/10.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/11.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/12.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/13.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/14.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/15.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/16.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/17.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/18.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/19.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/20.jpg",
-      "alt": "Deksel Koffiemaler Rok"
-    },
-    {
-      "src": "assets/products/deksel-koffiemaler-rok/21.jpg",
-      "alt": "Deksel Koffiemaler Rok"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/01.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/02.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/03.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/04.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/05.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/06.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/07.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/08.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/09.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/10.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/11.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/12.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/13.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/14.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/15.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/16.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/17.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/18.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/19.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/20.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        },
+        {
+          "src": "assets/products/deksel-koffiemaler-rok/21.jpg",
+          "alt": "Deksel Koffiemaler Rok"
+        }
+      ]
     }
   ]
 }

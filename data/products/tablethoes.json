@@ -4,70 +4,75 @@
   "category": "kleine-lederwaren",
   "subcategory": "hoesjes",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over tablethoes.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/tablethoes/01.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/02.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/03.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/04.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/05.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/06.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/07.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/08.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/09.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/10.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/11.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/12.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/13.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/14.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/15.jpg",
-      "alt": "Tablethoes"
-    },
-    {
-      "src": "assets/products/tablethoes/16.jpg",
-      "alt": "Tablethoes"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/tablethoes/01.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/02.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/03.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/04.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/05.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/06.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/07.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/08.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/09.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/10.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/11.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/12.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/13.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/14.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/15.jpg",
+          "alt": "Tablethoes"
+        },
+        {
+          "src": "assets/products/tablethoes/16.jpg",
+          "alt": "Tablethoes"
+        }
+      ]
     }
   ]
 }

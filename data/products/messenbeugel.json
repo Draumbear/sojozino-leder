@@ -4,122 +4,127 @@
   "category": "kleine-lederwaren",
   "subcategory": "etuis",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over messenbeugel.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/messenbeugel/01.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/02.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/03.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/04.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/05.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/06.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/07.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/08.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/09.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/10.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/11.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/12.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/13.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/14.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/15.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/16.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/17.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/18.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/19.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/20.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/21.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/22.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/23.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/24.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/25.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/26.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/27.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/28.jpg",
-      "alt": "Messenbeugel"
-    },
-    {
-      "src": "assets/products/messenbeugel/29.jpg",
-      "alt": "Messenbeugel"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/messenbeugel/01.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/02.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/03.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/04.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/05.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/06.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/07.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/08.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/09.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/10.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/11.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/12.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/13.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/14.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/15.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/16.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/17.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/18.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/19.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/20.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/21.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/22.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/23.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/24.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/25.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/26.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/27.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/28.jpg",
+          "alt": "Messenbeugel"
+        },
+        {
+          "src": "assets/products/messenbeugel/29.jpg",
+          "alt": "Messenbeugel"
+        }
+      ]
     }
   ]
 }

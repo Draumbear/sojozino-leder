@@ -4,38 +4,43 @@
   "category": "kleine-lederwaren",
   "subcategory": "allerlei",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over peaky blinders pet.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/peaky-blinders-pet/01.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/02.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/03.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/04.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/05.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/06.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/07.jpg",
-      "alt": "Peaky Blinders Pet"
-    },
-    {
-      "src": "assets/products/peaky-blinders-pet/08.jpg",
-      "alt": "Peaky Blinders Pet"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/peaky-blinders-pet/01.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/02.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/03.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/04.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/05.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/06.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/07.jpg",
+          "alt": "Peaky Blinders Pet"
+        },
+        {
+          "src": "assets/products/peaky-blinders-pet/08.jpg",
+          "alt": "Peaky Blinders Pet"
+        }
+      ]
     }
   ]
 }

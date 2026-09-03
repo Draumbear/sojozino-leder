@@ -4,30 +4,35 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder bruin idem grofleder.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/01.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/02.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/03.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/04.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/05.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
-    },
-    {
-      "src": "assets/products/kaartenhouder-bruin-idem-grofleder/06.jpg",
-      "alt": "Kaartenhouder Bruin Idem Grofleder"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/01.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/02.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/03.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/04.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/05.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        },
+        {
+          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/06.jpg",
+          "alt": "Kaartenhouder Bruin Idem Grofleder"
+        }
+      ]
     }
   ]
 }

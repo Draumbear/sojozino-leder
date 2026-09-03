@@ -4,134 +4,144 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder origami.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouder-origami/01.jpg",
-      "alt": "Kaartenhouder Origami"
+      "name": "Achteraan",
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/01.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/02.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/03.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/04.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/05.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/06.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/07.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/08.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/09.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/10.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/achteraan/11.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan"
+        }
+      ]
     },
     {
-      "src": "assets/products/kaartenhouder-origami/02.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/03.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/04.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/05.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/06.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/07.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/08.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/09.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/10.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/11.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/12.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/13.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/14.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/15.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/16.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/17.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/18.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/19.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/20.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/21.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/22.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/23.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/24.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/25.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/26.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/27.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/28.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/29.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/30.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/31.jpg",
-      "alt": "Kaartenhouder Origami"
-    },
-    {
-      "src": "assets/products/kaartenhouder-origami/32.jpg",
-      "alt": "Kaartenhouder Origami"
+      "name": "Vooraan",
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/01.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/02.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/03.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/04.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/05.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/06.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/07.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/08.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/09.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/10.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/11.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/12.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/13.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/14.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/15.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/16.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/17.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/18.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/19.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/20.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan/21.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan"
+        }
+      ]
     }
   ]
 }

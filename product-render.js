@@ -1,7 +1,13 @@
 // Product detail page: reads ?slug=<slug> from the URL, fetches
-// data/products/<slug>.json, and renders the spotlight gallery (main image +
-// thumbnail strip + prev/next + keyboard arrows + click-to-zoom lightbox)
-// plus name/category/description.
+// data/products/<slug>.json, and renders:
+//   - a variant picker (colour/style swatches) when the product has more
+//     than one variant -- picking one swaps the whole spotlight gallery,
+//     the way Amazon's colour swatches do, instead of mixing every
+//     variant's photos into one long scroll
+//   - the spotlight gallery for whichever variant is active: main image +
+//     thumbnail strip + prev/next arrows + keyboard arrows + swipe +
+//     click-to-zoom lightbox
+//   - name/category/description
 
 function escapeHTML(str) {
   const div = document.createElement('div');
@@ -9,19 +15,58 @@ function escapeHTML(str) {
   return div.innerHTML;
 }
 
-let images = [];
-let index = 0;
+let product = null;
+let variantIndex = 0;
+let photoIndex = 0;
 
-function setActive(i) {
-  index = ((i % images.length) + images.length) % images.length;
-  const img = images[index];
+function currentVariant() { return product.variants[variantIndex]; }
+function currentImages() { return currentVariant().images; }
+
+function renderGallery() {
+  const images = currentImages();
+  photoIndex = 0;
+  const img = images[0];
+
   const main = document.getElementById('spotlightImg');
+  main.src = img.src; main.alt = img.alt || '';
   const lb = document.getElementById('lightboxImg');
-  if (main) { main.src = img.src; main.alt = img.alt || ''; }
-  if (lb) { lb.src = img.src; lb.alt = img.alt || ''; }
-  document.querySelectorAll('.spotlight-thumbs img').forEach((t, i2) => {
-    t.classList.toggle('active', i2 === index);
+  lb.src = img.src; lb.alt = img.alt || '';
+
+  const multi = images.length > 1;
+  document.getElementById('spotlightPrev').hidden = !multi;
+  document.getElementById('spotlightNext').hidden = !multi;
+
+  const thumbsEl = document.getElementById('spotlightThumbs');
+  if (multi) {
+    thumbsEl.hidden = false;
+    thumbsEl.innerHTML = images.map((im, i) =>
+      `<img src="${escapeHTML(im.src)}" alt="${escapeHTML(im.alt || '')}" class="${i === 0 ? 'active' : ''}" data-idx="${i}">`).join('');
+  } else {
+    thumbsEl.hidden = true;
+    thumbsEl.innerHTML = '';
+  }
+}
+
+function setPhoto(i) {
+  const images = currentImages();
+  photoIndex = ((i % images.length) + images.length) % images.length;
+  const img = images[photoIndex];
+  document.getElementById('spotlightImg').src = img.src;
+  document.getElementById('spotlightImg').alt = img.alt || '';
+  document.getElementById('lightboxImg').src = img.src;
+  document.getElementById('lightboxImg').alt = img.alt || '';
+  document.querySelectorAll('#spotlightThumbs img').forEach((t, i2) => {
+    t.classList.toggle('active', i2 === photoIndex);
   });
+}
+
+function setVariant(vi) {
+  if (vi === variantIndex) return;
+  variantIndex = ((vi % product.variants.length) + product.variants.length) % product.variants.length;
+  document.querySelectorAll('.variant-swatch').forEach((el, i) => {
+    el.classList.toggle('active', i === variantIndex);
+  });
+  renderGallery();
 }
 
 // Swipe threshold in px before a touch gesture counts as prev/next rather
@@ -47,44 +92,53 @@ function addSwipe(el, onPrev, onNext) {
 }
 
 function initSpotlight() {
-  const prev = document.querySelector('.spotlight-nav.prev');
-  const next = document.querySelector('.spotlight-nav.next');
+  const prev = document.getElementById('spotlightPrev');
+  const next = document.getElementById('spotlightNext');
   const main = document.getElementById('spotlightMain');
   const zoomBtn = document.getElementById('spotlightZoom');
   const lightbox = document.getElementById('lightbox');
   const closeBtn = document.getElementById('lightboxClose');
+  const thumbsEl = document.getElementById('spotlightThumbs');
+  const swatchesEl = document.getElementById('variantSwatches');
 
-  if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); setActive(index - 1); });
-  if (next) next.addEventListener('click', (e) => { e.stopPropagation(); setActive(index + 1); });
+  prev.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex - 1); });
+  next.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex + 1); });
 
   // Clicking the photo itself steps through the gallery — left half = previous,
   // right half = next — so browsing a product's photos doesn't require aiming
   // for the small arrow buttons. Zooming in has its own dedicated control.
-  if (main) {
-    main.addEventListener('click', (e) => {
-      if (e.target.closest('.spotlight-nav') || e.target.closest('#spotlightZoom')) return;
-      if (images.length < 2) return;
-      const rect = main.getBoundingClientRect();
-      const clickedLeftHalf = (e.clientX - rect.left) < rect.width / 2;
-      setActive(clickedLeftHalf ? index - 1 : index + 1);
-    });
-  }
-  if (zoomBtn && lightbox) zoomBtn.addEventListener('click', (e) => { e.stopPropagation(); lightbox.hidden = false; });
-  if (closeBtn && lightbox) closeBtn.addEventListener('click', () => { lightbox.hidden = true; });
-  if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.hidden = true; });
+  main.addEventListener('click', (e) => {
+    if (e.target.closest('.spotlight-nav') || e.target.closest('#spotlightZoom')) return;
+    if (currentImages().length < 2) return;
+    const rect = main.getBoundingClientRect();
+    const clickedLeftHalf = (e.clientX - rect.left) < rect.width / 2;
+    setPhoto(clickedLeftHalf ? photoIndex - 1 : photoIndex + 1);
+  });
+  zoomBtn.addEventListener('click', (e) => { e.stopPropagation(); lightbox.hidden = false; });
+  closeBtn.addEventListener('click', () => { lightbox.hidden = true; });
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.hidden = true; });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') setActive(index - 1);
-    if (e.key === 'ArrowRight') setActive(index + 1);
-    if (e.key === 'Escape' && lightbox) lightbox.hidden = true;
+    if (e.key === 'ArrowLeft') setPhoto(photoIndex - 1);
+    if (e.key === 'ArrowRight') setPhoto(photoIndex + 1);
+    if (e.key === 'Escape') lightbox.hidden = true;
   });
 
-  document.querySelectorAll('.spotlight-thumbs img').forEach((t, i) => {
-    t.addEventListener('click', () => setActive(i));
+  // Delegated (not bound per-<img>) since the thumbnail strip's contents
+  // are replaced whenever the active variant changes.
+  thumbsEl.addEventListener('click', (e) => {
+    const t = e.target.closest('img[data-idx]');
+    if (t) setPhoto(Number(t.dataset.idx));
   });
+  if (swatchesEl) {
+    swatchesEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.variant-swatch');
+      if (btn) setVariant(Number(btn.dataset.idx));
+    });
+  }
 
-  addSwipe(main, () => setActive(index - 1), () => setActive(index + 1));
-  addSwipe(lightbox, () => setActive(index - 1), () => setActive(index + 1));
+  addSwipe(main, () => setPhoto(photoIndex - 1), () => setPhoto(photoIndex + 1));
+  addSwipe(lightbox, () => setPhoto(photoIndex - 1), () => setPhoto(photoIndex + 1));
 }
 
 function renderError(message) {
@@ -110,27 +164,45 @@ async function renderProduct() {
     return;
   }
 
-  images = data.images && data.images.length ? data.images : [{ src: 'assets/logo-mark.png', alt: data.name }];
+  // Backward-compatible: older product files (or hand-edited ones) may still
+  // use a flat `images` array instead of `variants`.
+  product = data;
+  if (!product.variants || !product.variants.length) {
+    const images = (data.images && data.images.length) ? data.images : [{ src: 'assets/logo-mark.png', alt: data.name }];
+    product = { ...data, variants: [{ name: null, images }] };
+  }
+  variantIndex = 0;
+
   const cat = categories.find(c => c.slug === data.category) || {};
   const sub = (cat.subcategories || []).find(s => s.slug === data.subcategory);
   const catName = sub ? `${cat.name} — ${sub.name}` : (cat.name || '');
 
   document.title = `${data.name} — Sojozino`;
 
-  const thumbs = images.map((img, i) =>
-    `<img src="${escapeHTML(img.src)}" alt="${escapeHTML(img.alt || '')}" class="${i === 0 ? 'active' : ''}">`).join('');
+  const hasVariants = product.variants.length > 1;
+  const swatchesHTML = hasVariants ? `
+    <div class="variant-picker">
+      <p class="eyebrow">Kies een variant</p>
+      <div class="variant-swatches" id="variantSwatches">
+        ${product.variants.map((v, i) => `
+          <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}">
+            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="${escapeHTML(v.name || data.name)}">
+            <span>${escapeHTML(v.name || `Variant ${i + 1}`)}</span>
+          </button>`).join('')}
+      </div>
+    </div>` : '';
 
   document.getElementById('productRoot').innerHTML = `
     <div class="product-detail">
       <div class="spotlight">
+        ${swatchesHTML}
         <div class="spotlight-main" id="spotlightMain">
-          <img id="spotlightImg" src="${escapeHTML(images[0].src)}" alt="${escapeHTML(images[0].alt || '')}">
+          <img id="spotlightImg" src="" alt="">
           <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button">&#128269;</button>
-          ${images.length > 1 ? `
-            <div class="spotlight-nav prev" aria-label="Vorige foto">&#8249;</div>
-            <div class="spotlight-nav next" aria-label="Volgende foto">&#8250;</div>` : ''}
+          <div class="spotlight-nav prev" id="spotlightPrev" aria-label="Vorige foto">&#8249;</div>
+          <div class="spotlight-nav next" id="spotlightNext" aria-label="Volgende foto">&#8250;</div>
         </div>
-        ${images.length > 1 ? `<div class="spotlight-thumbs">${thumbs}</div>` : ''}
+        <div class="spotlight-thumbs" id="spotlightThumbs"></div>
       </div>
       <div class="product-info">
         <a class="back-link" href="creaties.html">&larr; Terug naar creaties</a>
@@ -141,10 +213,11 @@ async function renderProduct() {
     </div>
     <div class="lightbox" id="lightbox" hidden>
       <button class="lightbox-close" id="lightboxClose" aria-label="Sluiten">&times;</button>
-      <img id="lightboxImg" src="${escapeHTML(images[0].src)}" alt="${escapeHTML(images[0].alt || '')}">
+      <img id="lightboxImg" src="" alt="">
     </div>`;
 
   initSpotlight();
+  renderGallery();
 }
 
 document.addEventListener('site:loaded', renderProduct);

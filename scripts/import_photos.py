@@ -100,6 +100,25 @@ def clean_name(folder_name):
     return " ".join(out)
 
 
+def clean_variant_name(folder_name):
+    # Some variant folders have an explanatory suffix after "=", e.g.
+    # "den Sofie = kleine versie" -- keep just the short label for the swatch.
+    return clean_name(folder_name.split("=")[0].strip())
+
+
+def collect_images_recursive(dir_path):
+    """All image files anywhere under dir_path, sorted by relative path so
+    photos from the same sub-subfolder stay grouped together."""
+    found = []
+    for root, _dirs, fnames in os.walk(dir_path):
+        for fname in fnames:
+            if os.path.splitext(fname)[1].lower() in IMAGE_EXT:
+                full = os.path.join(root, fname)
+                found.append((os.path.relpath(full, dir_path), full))
+    found.sort(key=lambda t: t[0])
+    return [full for _rel, full in found]
+
+
 def resize_save(src_path, dst_path, max_dim):
     img = Image.open(src_path)
     img = ImageOps.exif_transpose(img)
@@ -180,35 +199,64 @@ def main():
             prod_order += 1
 
             # Photos aren't always directly inside the product folder -- some
-            # products have nested subfolders for colour/view variants (e.g.
-            # "Bordeauxrode riem/1", "2", or "Tties/den Sofie/lichtbruin").
-            # Walk the whole subtree so nothing gets silently skipped, sorted
-            # by full relative path so photos from the same subfolder stay
-            # grouped together in a stable order.
+            # products have separate subfolders per colour/size/style variant
+            # (e.g. "Driehoek geldbeugels/{blauwe geit, kaki, ...}" or
+            # "Bordeauxrode riem/1", "2"). Two or more subfolders that each
+            # contain at least one photo are treated as real variants, shown
+            # as swatches on the product page rather than one long mixed
+            # gallery; anything with 0 or 1 such subfolders is just a single
+            # flat gallery (its own subtree walked recursively either way, so
+            # a variant's own nested sub-subfolders -- e.g. front/back shots
+            # -- still all end up in that variant's photo set).
             src_dir = os.path.join(cat_path, pf)
-            found = []
-            for root, _dirs, fnames in os.walk(src_dir):
-                for fname in fnames:
-                    if os.path.splitext(fname)[1].lower() in IMAGE_EXT:
-                        full = os.path.join(root, fname)
-                        found.append((os.path.relpath(full, src_dir), full))
-            found.sort(key=lambda t: t[0])
-            files = [full for _rel, full in found]
-            if not files:
+            subfolders = sorted(
+                d for d in os.listdir(src_dir) if os.path.isdir(os.path.join(src_dir, d))
+            )
+            variant_candidates = []
+            for vf in subfolders:
+                vfiles = collect_images_recursive(os.path.join(src_dir, vf))
+                if vfiles:
+                    variant_candidates.append((vf, vfiles))
+
+            if len(variant_candidates) >= 2:
+                variant_sources = variant_candidates
+            else:
+                all_files = collect_images_recursive(src_dir)
+                variant_sources = [(None, all_files)] if all_files else []
+
+            if not variant_sources:
                 continue
 
-            images = []
-            for i, src_path in enumerate(files, start=1):
-                out_name = f"{i:02d}.jpg"
-                dst_path = os.path.join(ASSETS, slug, out_name)
-                resize_save(src_path, dst_path, MAX_DIM)
-                images.append({
-                    "src": f"assets/products/{slug}/{out_name}",
-                    "alt": name,
-                })
+            variants = []
+            seen_variant_slugs = set()
+            for vfolder, vfiles in variant_sources:
+                vname = clean_variant_name(vfolder) if vfolder else None
+                if vfolder:
+                    vslug_base = slugify(vname)
+                    vslug = vslug_base
+                    n = 2
+                    while vslug in seen_variant_slugs:
+                        vslug = f"{vslug_base}-{n}"
+                        n += 1
+                    seen_variant_slugs.add(vslug)
+                    out_dir_rel = f"{slug}/{vslug}"
+                else:
+                    out_dir_rel = slug
 
-            # Cover thumbnail (separate, smaller file for grid views).
-            cover_src = files[0]
+                images = []
+                for i, src_path in enumerate(vfiles, start=1):
+                    out_name = f"{i:02d}.jpg"
+                    dst_path = os.path.join(ASSETS, out_dir_rel, out_name)
+                    resize_save(src_path, dst_path, MAX_DIM)
+                    images.append({
+                        "src": f"assets/products/{out_dir_rel}/{out_name}",
+                        "alt": f"{name} — {vname}" if vname else name,
+                    })
+                variants.append({"name": vname, "images": images})
+
+            # Cover thumbnail (separate, smaller file for grid views) -- always
+            # the first photo of the first variant.
+            cover_src = variant_sources[0][1][0]
             cover_dst = os.path.join(ASSETS, slug, "cover.jpg")
             resize_save(cover_src, cover_dst, THUMB_DIM)
             cover = {"src": f"assets/products/{slug}/cover.jpg", "alt": name}
@@ -239,10 +287,12 @@ def main():
                     "category": cat_slug,
                     "subcategory": subcategory,
                     "description": description,
-                    "images": images,
+                    "variants": variants,
                 }, f, ensure_ascii=False, indent=2)
 
-            print(f"  {cat_name} / {name} ({len(images)} photos)")
+            total_photos = sum(len(v["images"]) for v in variants)
+            variant_note = f", {len(variants)} varianten" if len(variants) > 1 else ""
+            print(f"  {cat_name} / {name} ({total_photos} photos{variant_note})")
 
     with open(os.path.join(DATA, "categories.json"), "w", encoding="utf-8") as f:
         json.dump(categories, f, ensure_ascii=False, indent=2)

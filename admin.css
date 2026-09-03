@@ -185,6 +185,27 @@
   cursor: pointer;
 }
 .upload-drop:hover { border-color: var(--a-rust); color: var(--a-rust); background: #fff; }
+
+/* Variant editor: one block per colour/style variant, each with its own
+   image manager + upload dropzone. */
+.variant-editor {
+  border: 1.5px solid var(--a-line);
+  border-radius: var(--a-radius-sm);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--a-parchment);
+}
+.variant-editor-head { display: flex; gap: 0.6rem; margin-bottom: 0.9rem; }
+.variant-name-input {
+  flex: 1;
+  font: inherit; font-size: 0.9rem; font-weight: 700;
+  padding: 0.55rem 0.8rem;
+  border-radius: var(--a-radius-sm);
+  border: 1px solid rgba(23,20,15,0.24);
+  background: #fff;
+}
+.variant-editor-head .btn-admin { flex-shrink: 0; }
+.variant-editor .upload-drop { padding: 0.9rem; font-size: 0.8rem; }
 .upload-drop input { display: none; }
 
 .spinner {

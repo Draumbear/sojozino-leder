@@ -4,34 +4,39 @@
   "category": "kleine-lederwaren",
   "subcategory": "portefeuilles",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kleine geldbeugel.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kleine-geldbeugel/01.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/02.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/03.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/04.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/05.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/06.jpg",
-      "alt": "Kleine Geldbeugel"
-    },
-    {
-      "src": "assets/products/kleine-geldbeugel/07.jpg",
-      "alt": "Kleine Geldbeugel"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kleine-geldbeugel/01.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/02.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/03.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/04.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/05.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/06.jpg",
+          "alt": "Kleine Geldbeugel"
+        },
+        {
+          "src": "assets/products/kleine-geldbeugel/07.jpg",
+          "alt": "Kleine Geldbeugel"
+        }
+      ]
     }
   ]
 }

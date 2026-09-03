@@ -4,22 +4,27 @@
   "category": "tassen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over rugzak messengerbag.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/rugzak-messengerbag/01.jpg",
-      "alt": "Rugzak Messengerbag"
-    },
-    {
-      "src": "assets/products/rugzak-messengerbag/02.jpg",
-      "alt": "Rugzak Messengerbag"
-    },
-    {
-      "src": "assets/products/rugzak-messengerbag/03.jpg",
-      "alt": "Rugzak Messengerbag"
-    },
-    {
-      "src": "assets/products/rugzak-messengerbag/04.jpg",
-      "alt": "Rugzak Messengerbag"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/rugzak-messengerbag/01.jpg",
+          "alt": "Rugzak Messengerbag"
+        },
+        {
+          "src": "assets/products/rugzak-messengerbag/02.jpg",
+          "alt": "Rugzak Messengerbag"
+        },
+        {
+          "src": "assets/products/rugzak-messengerbag/03.jpg",
+          "alt": "Rugzak Messengerbag"
+        },
+        {
+          "src": "assets/products/rugzak-messengerbag/04.jpg",
+          "alt": "Rugzak Messengerbag"
+        }
+      ]
     }
   ]
 }

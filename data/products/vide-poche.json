@@ -4,38 +4,43 @@
   "category": "kleine-lederwaren",
   "subcategory": "allerlei",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over vide poche.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/vide-poche/01.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/02.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/03.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/04.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/05.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/06.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/07.jpg",
-      "alt": "Vide Poche"
-    },
-    {
-      "src": "assets/products/vide-poche/08.jpg",
-      "alt": "Vide Poche"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/vide-poche/01.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/02.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/03.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/04.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/05.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/06.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/07.jpg",
+          "alt": "Vide Poche"
+        },
+        {
+          "src": "assets/products/vide-poche/08.jpg",
+          "alt": "Vide Poche"
+        }
+      ]
     }
   ]
 }

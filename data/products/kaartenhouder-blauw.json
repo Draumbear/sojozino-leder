@@ -4,46 +4,51 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder blauw.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouder-blauw/01.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/02.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/03.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/04.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/05.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/06.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/07.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/08.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/09.jpg",
-      "alt": "Kaartenhouder Blauw"
-    },
-    {
-      "src": "assets/products/kaartenhouder-blauw/10.jpg",
-      "alt": "Kaartenhouder Blauw"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-blauw/01.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/02.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/03.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/04.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/05.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/06.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/07.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/08.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/09.jpg",
+          "alt": "Kaartenhouder Blauw"
+        },
+        {
+          "src": "assets/products/kaartenhouder-blauw/10.jpg",
+          "alt": "Kaartenhouder Blauw"
+        }
+      ]
     }
   ]
 }

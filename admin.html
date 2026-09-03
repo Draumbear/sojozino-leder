@@ -119,12 +119,9 @@
           <textarea id="pe-description" placeholder="Vertel iets over dit stuk: materiaal, afmetingen, bijzonderheden…"></textarea>
         </div>
         <div class="admin-field">
-          <label>Foto's <span class="hint">(eerste ster = cover-foto op de overzichtspagina)</span></label>
-          <div class="image-manager" id="imageManager"></div>
-          <div class="upload-drop" id="uploadDrop">
-            Klik of sleep foto's hierheen om toe te voegen
-            <input type="file" id="uploadInput" accept="image/*" multiple>
-          </div>
+          <label>Foto's &amp; varianten <span class="hint">(ster = cover-foto op de overzichtspagina. Heeft dit stuk kleuren of uitvoeringen die apart getoond moeten worden, zoals op Amazon? Voeg een variant toe per kleur/uitvoering.)</span></label>
+          <div id="variantsManager"></div>
+          <button class="btn-admin secondary small" id="addVariantBtn" type="button">+ Variant toevoegen</button>
         </div>
         <button class="btn-admin" id="saveProductBtn">Opslaan &amp; publiceren</button>
         <button class="btn-admin secondary" id="cancelProductBtn">Annuleren</button>

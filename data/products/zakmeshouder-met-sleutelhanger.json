@@ -4,78 +4,83 @@
   "category": "kleine-lederwaren",
   "subcategory": "sleutelhangers",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over zakmeshouder met sleutelhanger.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/01.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/02.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/03.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/04.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/05.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/06.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/07.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/08.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/09.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/10.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/11.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/12.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/13.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/14.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/15.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/16.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/17.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
-    },
-    {
-      "src": "assets/products/zakmeshouder-met-sleutelhanger/18.jpg",
-      "alt": "Zakmeshouder Met Sleutelhanger"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/01.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/02.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/03.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/04.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/05.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/06.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/07.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/08.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/09.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/10.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/11.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/12.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/13.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/14.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/15.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/16.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/17.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        },
+        {
+          "src": "assets/products/zakmeshouder-met-sleutelhanger/18.jpg",
+          "alt": "Zakmeshouder Met Sleutelhanger"
+        }
+      ]
     }
   ]
 }

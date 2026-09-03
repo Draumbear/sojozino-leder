@@ -4,26 +4,31 @@
   "category": "kleine-lederwaren",
   "subcategory": "kaartenhouders",
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder schuifflap.",
-  "images": [
+  "variants": [
     {
-      "src": "assets/products/kaartenhouder-schuifflap/01.jpg",
-      "alt": "Kaartenhouder Schuifflap"
-    },
-    {
-      "src": "assets/products/kaartenhouder-schuifflap/02.jpg",
-      "alt": "Kaartenhouder Schuifflap"
-    },
-    {
-      "src": "assets/products/kaartenhouder-schuifflap/03.jpg",
-      "alt": "Kaartenhouder Schuifflap"
-    },
-    {
-      "src": "assets/products/kaartenhouder-schuifflap/04.jpg",
-      "alt": "Kaartenhouder Schuifflap"
-    },
-    {
-      "src": "assets/products/kaartenhouder-schuifflap/05.jpg",
-      "alt": "Kaartenhouder Schuifflap"
+      "name": null,
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-schuifflap/01.jpg",
+          "alt": "Kaartenhouder Schuifflap"
+        },
+        {
+          "src": "assets/products/kaartenhouder-schuifflap/02.jpg",
+          "alt": "Kaartenhouder Schuifflap"
+        },
+        {
+          "src": "assets/products/kaartenhouder-schuifflap/03.jpg",
+          "alt": "Kaartenhouder Schuifflap"
+        },
+        {
+          "src": "assets/products/kaartenhouder-schuifflap/04.jpg",
+          "alt": "Kaartenhouder Schuifflap"
+        },
+        {
+          "src": "assets/products/kaartenhouder-schuifflap/05.jpg",
+          "alt": "Kaartenhouder Schuifflap"
+        }
+      ]
     }
   ]
 }
