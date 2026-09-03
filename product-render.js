@@ -45,6 +45,8 @@ function renderGallery() {
     thumbsEl.hidden = true;
     thumbsEl.innerHTML = '';
   }
+
+  updateLightboxChrome();
 }
 
 function setPhoto(i) {
@@ -58,6 +60,19 @@ function setPhoto(i) {
   document.querySelectorAll('#spotlightThumbs img').forEach((t, i2) => {
     t.classList.toggle('active', i2 === photoIndex);
   });
+  updateLightboxChrome();
+}
+
+// The lightbox's arrows and counter only make sense with more than one photo
+// in the active variant, and the count changes when variants are swapped.
+function updateLightboxChrome() {
+  const images = currentImages();
+  const multi = images.length > 1;
+  document.getElementById('lightboxPrev').hidden = !multi;
+  document.getElementById('lightboxNext').hidden = !multi;
+  const counter = document.getElementById('lightboxCounter');
+  counter.hidden = !multi;
+  counter.textContent = multi ? `${photoIndex + 1} / ${images.length}` : '';
 }
 
 function setVariant(vi) {
@@ -100,19 +115,19 @@ function initSpotlight() {
   const closeBtn = document.getElementById('lightboxClose');
   const thumbsEl = document.getElementById('spotlightThumbs');
   const swatchesEl = document.getElementById('variantSwatches');
+  const lbPrev = document.getElementById('lightboxPrev');
+  const lbNext = document.getElementById('lightboxNext');
 
   prev.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex - 1); });
   next.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex + 1); });
+  lbPrev.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex - 1); });
+  lbNext.addEventListener('click', (e) => { e.stopPropagation(); setPhoto(photoIndex + 1); });
 
-  // Clicking the photo itself steps through the gallery — left half = previous,
-  // right half = next — so browsing a product's photos doesn't require aiming
-  // for the small arrow buttons. Zooming in has its own dedicated control.
+  // Clicking the photo opens the full-size lightbox — stepping through the
+  // gallery is what the prev/next arrows are for, not a click on the image.
   main.addEventListener('click', (e) => {
-    if (e.target.closest('.spotlight-nav') || e.target.closest('#spotlightZoom')) return;
-    if (currentImages().length < 2) return;
-    const rect = main.getBoundingClientRect();
-    const clickedLeftHalf = (e.clientX - rect.left) < rect.width / 2;
-    setPhoto(clickedLeftHalf ? photoIndex - 1 : photoIndex + 1);
+    if (e.target.closest('.spotlight-nav')) return;
+    lightbox.hidden = false;
   });
   zoomBtn.addEventListener('click', (e) => { e.stopPropagation(); lightbox.hidden = false; });
   closeBtn.addEventListener('click', () => { lightbox.hidden = true; });
@@ -213,7 +228,10 @@ async function renderProduct() {
     </div>
     <div class="lightbox" id="lightbox" hidden>
       <button class="lightbox-close" id="lightboxClose" aria-label="Sluiten">&times;</button>
+      <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Vorige foto" type="button">&#8249;</button>
       <img id="lightboxImg" src="" alt="">
+      <button class="lightbox-nav next" id="lightboxNext" aria-label="Volgende foto" type="button">&#8250;</button>
+      <div class="lightbox-counter" id="lightboxCounter"></div>
     </div>`;
 
   initSpotlight();

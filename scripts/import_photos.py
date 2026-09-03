@@ -119,6 +119,37 @@ def collect_images_recursive(dir_path):
     return [full for _rel, full in found]
 
 
+def detect_variants(dir_path):
+    """Returns [(label_or_None, [file_paths])] describing the real variant
+    structure under dir_path, recursing wherever a variant itself splits
+    further (see the call site for the "Tties/den Zita/{blauw, zwart croco}"
+    example this is for)."""
+    subfolders = sorted(
+        d for d in os.listdir(dir_path) if os.path.isdir(os.path.join(dir_path, d))
+    )
+    non_empty = [
+        sf for sf in subfolders
+        if collect_images_recursive(os.path.join(dir_path, sf))
+    ]
+
+    if len(non_empty) < 2:
+        files = collect_images_recursive(dir_path)
+        return [(None, files)] if files else []
+
+    result = []
+    for sf in non_empty:
+        sf_path = os.path.join(dir_path, sf)
+        label = clean_variant_name(sf)
+        deeper = detect_variants(sf_path)
+        if len(deeper) > 1:
+            for sub_label, sub_files in deeper:
+                combined = f"{label} - {sub_label}" if sub_label else label
+                result.append((combined, sub_files))
+        else:
+            result.append((label, collect_images_recursive(sf_path)))
+    return result
+
+
 def resize_save(src_path, dst_path, max_dim):
     img = Image.open(src_path)
     img = ImageOps.exif_transpose(img)
@@ -201,37 +232,27 @@ def main():
             # Photos aren't always directly inside the product folder -- some
             # products have separate subfolders per colour/size/style variant
             # (e.g. "Driehoek geldbeugels/{blauwe geit, kaki, ...}" or
-            # "Bordeauxrode riem/1", "2"). Two or more subfolders that each
-            # contain at least one photo are treated as real variants, shown
-            # as swatches on the product page rather than one long mixed
-            # gallery; anything with 0 or 1 such subfolders is just a single
-            # flat gallery (its own subtree walked recursively either way, so
-            # a variant's own nested sub-subfolders -- e.g. front/back shots
-            # -- still all end up in that variant's photo set).
+            # "Bordeauxrode riem/1", "2"), and some of those variants split
+            # further still (e.g. "Tties/den Zita/{blauw, zwart croco}" --
+            # one size that itself comes in two colours). detect_variants()
+            # below handles this recursively: a folder with 2+ subfolders
+            # that each contain a photo is a real split, and if one of THOSE
+            # subfolders splits again the same way, it's expanded into
+            # separate variants labelled "<parent> - <child>" rather than
+            # merged into one mixed gallery. A folder with 0 or 1 such
+            # subfolders is just a single flat variant (its whole subtree
+            # walked recursively either way, so e.g. front/back shots with no
+            # further split still all land in that one variant's photo set).
             src_dir = os.path.join(cat_path, pf)
-            subfolders = sorted(
-                d for d in os.listdir(src_dir) if os.path.isdir(os.path.join(src_dir, d))
-            )
-            variant_candidates = []
-            for vf in subfolders:
-                vfiles = collect_images_recursive(os.path.join(src_dir, vf))
-                if vfiles:
-                    variant_candidates.append((vf, vfiles))
-
-            if len(variant_candidates) >= 2:
-                variant_sources = variant_candidates
-            else:
-                all_files = collect_images_recursive(src_dir)
-                variant_sources = [(None, all_files)] if all_files else []
+            variant_sources = detect_variants(src_dir)
 
             if not variant_sources:
                 continue
 
             variants = []
             seen_variant_slugs = set()
-            for vfolder, vfiles in variant_sources:
-                vname = clean_variant_name(vfolder) if vfolder else None
-                if vfolder:
+            for vname, vfiles in variant_sources:
+                if vname:
                     vslug_base = slugify(vname)
                     vslug = vslug_base
                     n = 2

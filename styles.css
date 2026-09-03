@@ -387,10 +387,9 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   position: relative;
   aspect-ratio: 1/1;
   background: var(--cream-ink);
-  border: 2px solid var(--espresso);
   border-radius: var(--radius);
   overflow: hidden;
-  cursor: pointer;
+  cursor: zoom-in;
   touch-action: pan-y;
 }
 .spotlight-main img {
@@ -449,7 +448,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   gap: 0.7rem;
 }
 .variant-swatch {
-  width: 60px;
+  width: 74px;
   background: none;
   border: none;
   padding: 0;
@@ -457,22 +456,25 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   font: inherit;
 }
 .variant-swatch img {
-  width: 60px; height: 60px;
+  width: 74px; height: 74px;
   object-fit: cover;
   border-radius: var(--radius);
   border: 2px solid var(--espresso);
   display: block;
 }
+/* Labels wrap rather than truncate -- a variant name like
+   "Den Zita - Zwart Croco" is the only thing distinguishing two swatches of
+   the same product, so cutting it to "Den Zita -…" makes them
+   indistinguishable. */
 .variant-swatch span {
   display: block;
   font-size: 0.68rem;
+  line-height: 1.25;
   font-weight: 600;
   text-align: center;
   margin-top: 0.3rem;
   color: var(--espresso-soft);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 .variant-swatch:hover img { border-color: var(--rust); }
 .variant-swatch.active img { border-color: var(--rust); box-shadow: 0 0 0 2px var(--rust); }
@@ -524,7 +526,9 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   touch-action: pan-y;
 }
 .lightbox[hidden] { display: none; }
-.lightbox img { max-width: 92vw; max-height: 86vh; object-fit: contain; }
+/* Leaves room for the nav arrows sitting at the left/right edges so a wide
+   photo doesn't render underneath them. */
+.lightbox img { max-width: min(92vw, calc(100vw - 10rem)); max-height: 82vh; object-fit: contain; }
 .lightbox-close {
   position: absolute; top: 1.4rem; right: 1.6rem;
   width: 42px; height: 42px;
@@ -536,6 +540,39 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   cursor: pointer;
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.3); }
+.lightbox-nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-size: 1.7rem;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.lightbox-nav:hover { background: var(--rust); border-color: var(--rust); }
+.lightbox-nav[hidden] { display: none; }
+.lightbox-nav.prev { left: 1.6rem; }
+.lightbox-nav.next { right: 1.6rem; }
+.lightbox-counter {
+  position: absolute;
+  bottom: 1.6rem; left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.lightbox-counter[hidden] { display: none; }
+@media (max-width: 600px) {
+  .lightbox-nav { width: 44px; height: 44px; font-size: 1.4rem; }
+  .lightbox-nav.prev { left: 0.5rem; }
+  .lightbox-nav.next { right: 0.5rem; }
+}
 
 /* ---------- Presence / markets ---------- */
 .presence-grid {

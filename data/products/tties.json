@@ -55,71 +55,76 @@
       ]
     },
     {
-      "name": "Den Zita",
+      "name": "Den Zita - Blauw",
       "images": [
         {
-          "src": "assets/products/tties/den-zita/01.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-blauw/01.jpg",
+          "alt": "Tties — Den Zita - Blauw"
         },
         {
-          "src": "assets/products/tties/den-zita/02.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-blauw/02.jpg",
+          "alt": "Tties — Den Zita - Blauw"
         },
         {
-          "src": "assets/products/tties/den-zita/03.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-blauw/03.jpg",
+          "alt": "Tties — Den Zita - Blauw"
         },
         {
-          "src": "assets/products/tties/den-zita/04.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-blauw/04.jpg",
+          "alt": "Tties — Den Zita - Blauw"
+        }
+      ]
+    },
+    {
+      "name": "Den Zita - Zwart Croco",
+      "images": [
+        {
+          "src": "assets/products/tties/den-zita-zwart-croco/01.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/05.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/02.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/06.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/03.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/07.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/04.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/08.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/05.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/09.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/06.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/10.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/07.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/11.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/08.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/12.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/09.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/13.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/10.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/14.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/11.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         },
         {
-          "src": "assets/products/tties/den-zita/15.jpg",
-          "alt": "Tties — Den Zita"
-        },
-        {
-          "src": "assets/products/tties/den-zita/16.jpg",
-          "alt": "Tties — Den Zita"
+          "src": "assets/products/tties/den-zita-zwart-croco/12.jpg",
+          "alt": "Tties — Den Zita - Zwart Croco"
         }
       ]
     }

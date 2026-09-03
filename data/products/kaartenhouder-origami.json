@@ -6,140 +6,155 @@
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over kaartenhouder origami.",
   "variants": [
     {
-      "name": "Achteraan",
+      "name": "Achteraan - Groene Kroko",
       "images": [
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/01.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/01.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/02.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/02.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/03.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/03.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/04.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/04.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/05.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/05.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/06.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/06.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/achteraan/07.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
-        },
-        {
-          "src": "assets/products/kaartenhouder-origami/achteraan/08.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
-        },
-        {
-          "src": "assets/products/kaartenhouder-origami/achteraan/09.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
-        },
-        {
-          "src": "assets/products/kaartenhouder-origami/achteraan/10.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
-        },
-        {
-          "src": "assets/products/kaartenhouder-origami/achteraan/11.jpg",
-          "alt": "Kaartenhouder Origami — Achteraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-groene-kroko/07.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Groene Kroko"
         }
       ]
     },
     {
-      "name": "Vooraan",
+      "name": "Achteraan - Grof Leder",
       "images": [
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/01.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-grof-leder/01.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/02.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-grof-leder/02.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/03.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-grof-leder/03.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/04.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/achteraan-grof-leder/04.jpg",
+          "alt": "Kaartenhouder Origami — Achteraan - Grof Leder"
+        }
+      ]
+    },
+    {
+      "name": "Vooraan - Bruin",
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan-bruin/01.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/05.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-bruin/02.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/06.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-bruin/03.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/07.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-bruin/04.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Bruin"
+        }
+      ]
+    },
+    {
+      "name": "Vooraan - Grof Leder",
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/01.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/08.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/02.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/09.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/03.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/10.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/04.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/11.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/05.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/12.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/06.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/13.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/07.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/14.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/08.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/15.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/09.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/16.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-grof-leder/10.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Grof Leder"
+        }
+      ]
+    },
+    {
+      "name": "Vooraan - Lichte Croco Bruin",
+      "images": [
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/01.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/17.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/02.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/18.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/03.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/19.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/04.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/20.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/05.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         },
         {
-          "src": "assets/products/kaartenhouder-origami/vooraan/21.jpg",
-          "alt": "Kaartenhouder Origami — Vooraan"
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/06.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
+        },
+        {
+          "src": "assets/products/kaartenhouder-origami/vooraan-lichte-croco-bruin/07.jpg",
+          "alt": "Kaartenhouder Origami — Vooraan - Lichte Croco Bruin"
         }
       ]
     }
