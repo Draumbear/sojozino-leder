@@ -239,6 +239,36 @@ class GitHubAPI {
     return this._commitTreeEntries([], message);
   }
 
+  // Undo, for anything. Rather than reconstructing what a change contained --
+  // impossible for deleted photos, whose bytes are gone from the working set --
+  // this points each path the commit touched back at the blob it had in the
+  // parent commit. Git still has those blobs, so the restore is exact and no
+  // file content has to be downloaded or re-uploaded. A path that did not exist
+  // in the parent was added by the change, so undoing it means deleting it.
+  async revertCommit(sha, message) {
+    const res = await fetch(`${this.base}/commits/${sha}?_=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
+    if (!res.ok) throw new Error(`Kon de wijziging niet ophalen (${res.status})`);
+    const detail = await res.json();
+    const parent = detail.parents && detail.parents[0];
+    if (!parent) throw new Error('Deze wijziging heeft niets om naar terug te keren.');
+
+    const entries = await Promise.all((detail.files || []).map(async (f) => {
+      const before = await this.blobShaAt(f.filename, parent.sha);
+      return { path: f.filename, mode: '100644', type: 'blob', sha: before };
+    }));
+    if (!entries.length) throw new Error('Deze wijziging raakte geen bestanden aan.');
+    return this._commitTreeEntries(entries, this._saveMessage(message));
+  }
+
+  // Blob sha of a path at a given commit, or null when it did not exist there.
+  async blobShaAt(path, ref) {
+    const url = `${this.base}/contents/${encodeURI(path)}?ref=${ref}&_=${Date.now()}`;
+    const res = await fetch(url, { headers: this.headers(), cache: 'no-store' });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`Kon ${path} niet lezen (${res.status})`);
+    return (await res.json()).sha;
+  }
+
   // Everything saved since the last published (marker-free) commit, newest
   // first. Read from the branch history rather than kept locally, so the list
   // is right across browsers and devices. Returns null if the history can't be
@@ -255,6 +285,7 @@ class GitHubAPI {
       if (!isDeferredSave(message)) break;
       const target = (message.match(/\[target: ([^\]]+)\]/) || [])[1] || null;
       pending.push({
+        sha: c.sha,
         summary: message.split('\n')[0],
         target,
         date: c.commit.author && c.commit.author.date || null

@@ -45,13 +45,71 @@ function uniqueSlug(base, excludeSlug) {
 }
 
 // ---------- Toasts ----------
-function toast(message, type = 'info') {
+function toast(message, type = 'info', action) {
   const container = $('#toastContainer');
   const el = document.createElement('div');
   el.className = `toast ${type}`;
   el.textContent = message;
+  if (action) {
+    const btn = document.createElement('button');
+    btn.className = 'toast-action';
+    btn.type = 'button';
+    btn.textContent = action.label;
+    btn.addEventListener('click', () => { el.remove(); action.onClick(); });
+    el.appendChild(btn);
+  }
   container.appendChild(el);
-  setTimeout(() => el.remove(), 4200);
+  // An offer to undo is no use if it disappears before it has been read.
+  setTimeout(() => el.remove(), action ? 12000 : 4200);
+}
+
+// Replaces confirm(). `lines` are shown as a list under the question, so a
+// destructive step has to state what it destroys. Resolves true only on the
+// confirm button: Escape, the backdrop and Annuleren all mean no, and Annuleren
+// takes focus so an absent-minded enter cancels rather than deletes.
+function askConfirm({ title, lines = [], confirmLabel = 'Ja, doorgaan', danger = false }) {
+  const overlay = $('#confirmModal');
+  $('#cmTitle').textContent = title;
+  $('#cmBody').innerHTML = lines.length
+    ? `<ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul>`
+    : '';
+  const ok = $('#cmOk');
+  ok.textContent = confirmLabel;
+  ok.className = `btn-admin ${danger ? 'danger' : ''}`;
+  overlay.hidden = false;
+  $('#cmCancel').focus();
+
+  return new Promise(resolve => {
+    const done = (answer) => {
+      overlay.hidden = true;
+      ok.removeEventListener('click', onOk);
+      $('#cmCancel').removeEventListener('click', onCancel);
+      overlay.removeEventListener('click', onBackdrop);
+      document.removeEventListener('keydown', onKey);
+      resolve(answer);
+    };
+    const onOk = () => done(true);
+    const onCancel = () => done(false);
+    const onBackdrop = (e) => { if (e.target === overlay) done(false); };
+    const onKey = (e) => { if (e.key === 'Escape') done(false); };
+    ok.addEventListener('click', onOk);
+    $('#cmCancel').addEventListener('click', onCancel);
+    overlay.addEventListener('click', onBackdrop);
+    document.addEventListener('keydown', onKey);
+  });
+}
+
+// Puts a change back by restoring every path it touched to its previous state.
+// Used both by the undo offered right after a delete and by the publish bar.
+async function undoChange(sha, what) {
+  try {
+    await api.revertCommit(sha, `Ongedaan gemaakt: ${what}`);
+    toast('Teruggezet.', 'ok');
+    await loadAll();
+    await refreshPublishBar();
+  } catch (e) {
+    toast(`Terugzetten mislukt: ${e.message}`, 'err');
+  }
 }
 
 function setBusy(btn, busy, busyLabel = 'Bezig…') {
@@ -105,7 +163,10 @@ async function refreshPublishBar() {
       <span>
         <span class="pc-what">${esc(c.summary)}</span>${c.date ? `<span class="pc-when">${esc(relativeTime(c.date))}</span>` : ''}
       </span>
-      ${canGoTo(c.target) ? `<button class="pc-goto" type="button" data-target="${esc(c.target)}">Ga erheen</button>` : ''}
+      <span class="pc-buttons">
+        ${canGoTo(c.target) ? `<button class="pc-goto" type="button" data-target="${esc(c.target)}">Ga erheen</button>` : ''}
+        <button class="pc-undo" type="button" data-sha="${esc(c.sha)}" data-what="${esc(c.summary)}">Ongedaan maken</button>
+      </span>
     </li>`).join('')
     + (rest > 0 ? `<li class="pc-more">en nog ${rest} ${rest === 1 ? 'wijziging' : 'wijzigingen'}</li>` : '');
 
@@ -347,7 +408,16 @@ function renderCategoriesTab() {
       } else if (btn.dataset.action === 'delete-sub') {
         const count = state.productsIndex.filter(p => p.category === cat.slug && p.subcategory === sub.slug).length;
         if (count > 0) { toast(`Kan niet verwijderen: ${count} product(en) zitten nog in "${sub.name}".`, 'err'); return; }
-        if (!confirm(`Onderverdeling "${sub.name}" verwijderen?`)) return;
+        const go = await askConfirm({
+          title: `Onderverdeling "${sub.name}" verwijderen?`,
+          lines: [
+            `Deze onderverdeling verdwijnt uit <strong>${esc(cat.name)}</strong>.`,
+            'Er staan geen producten meer in, dus er gaan geen foto\u2019s verloren.'
+          ],
+          confirmLabel: 'Ja, verwijder deze onderverdeling',
+          danger: true
+        });
+        if (!go) return;
         cat.subcategories = cat.subcategories.filter(s => s.slug !== sub.slug);
         await saveCategories(`Onderverdeling verwijderd: ${sub.name}`);
       }
@@ -368,7 +438,18 @@ function renderCategoriesTab() {
     } else if (btn.dataset.action === 'delete-cat') {
       const count = state.productsIndex.filter(p => p.category === slug).length;
       if (count > 0) { toast(`Kan niet verwijderen: ${count} product(en) zitten nog in "${cat.name}".`, 'err'); return; }
-      if (!confirm(`Categorie "${cat.name}" verwijderen?`)) return;
+      const subCount = (cat.subcategories || []).length;
+      const go = await askConfirm({
+        title: `Categorie "${cat.name}" verwijderen?`,
+        lines: [
+          'De categorie verdwijnt uit het menu en uit de filters op de Creaties-pagina.',
+          subCount ? `<span class="warn">${subCount} onderverdeling${subCount === 1 ? '' : 'en'}</span> ${subCount === 1 ? 'verdwijnt' : 'verdwijnen'} mee.` : 'Er hangen geen onderverdelingen aan.',
+          'Er staan geen producten meer in, dus er gaan geen foto\u2019s verloren.'
+        ],
+        confirmLabel: 'Ja, verwijder deze categorie',
+        danger: true
+      });
+      if (!go) return;
       state.categories = state.categories.filter(c => c.slug !== slug);
       await saveCategories(`Categorie verwijderd: ${cat.name}`);
     }
@@ -500,22 +581,39 @@ async function toggleFeatured(slug, rerender) {
 async function deleteProduct(slug) {
   const p = state.productsIndex.find(x => x.slug === slug);
   if (!p) return;
-  if (!confirm(`"${p.name}" en al zijn foto's definitief verwijderen?`)) return;
   try {
+    // Read the product before asking, not after: the question should say how
+    // many photos go with it, and "en al zijn foto's" doesn't tell her that.
     const detail = productCache[slug] || await api.getJSON(`data/products/${slug}.json`);
     const allImages = (detail?.variants || []).flatMap(v => v.images || []).length
       ? (detail.variants || []).flatMap(v => v.images || [])
       : (detail?.images || []); // backward-compat for pre-variant product files
+
+    const lines = [`Het product <strong>${esc(p.name)}</strong> wordt van de website gehaald.`];
+    if (allImages.length) {
+      lines.push(`<span class="warn">${allImages.length} foto${allImages.length === 1 ? '' : "'s"}</span> ${allImages.length === 1 ? 'wordt' : 'worden'} mee verwijderd.`);
+    }
+    if (p.featured) lines.push('Het staat nu uitgelicht op de homepagina.');
+    lines.push('Je kunt dit meteen daarna ongedaan maken.');
+
+    const go = await askConfirm({
+      title: `"${p.name}" verwijderen?`,
+      lines,
+      confirmLabel: 'Ja, verwijder dit product',
+      danger: true
+    });
+    if (!go) return;
+
     const files = [
       { path: `data/products/${slug}.json`, delete: true },
       ...allImages.map(img => ({ path: img.src, delete: true })),
     ];
     state.productsIndex = state.productsIndex.filter(x => x.slug !== slug);
     files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
-    await api.commitBatch(files, `Product verwijderd: ${p.name}`, 'products');
-    toast('Product verwijderd.', 'ok');
+    const sha = await api.commitBatch(files, `Product verwijderd: ${p.name}`, 'products');
     renderProductsTab();
     renderOverview();
+    toast('Product verwijderd.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, `Product verwijderd: ${p.name}`) });
   } catch (e) {
     toast(e.message, 'err');
   }
@@ -562,6 +660,8 @@ async function openProductEditor(slug) {
     editorCoverKey = { variantIdx: 0, imageIdx: 0 };
   }
   renderVariantsManager();
+  // Taken last, once every field is filled in, so it reflects what she sees.
+  editorSnapshot = slug ? snapshotProductEditor() : null;
 }
 
 function findImageRef(src) {
@@ -765,7 +865,8 @@ function initPhotoLightbox() {
 }
 
 function bindVariantsManagerEvents(wrap) {
-  wrap.onclick = (e) => {
+  // async because deleting a variant asks for confirmation first.
+  wrap.onclick = async (e) => {
     const photo = e.target.closest('.image-tile img');
     if (photo) { openPhotoLightbox(photo); return; }
 
@@ -773,7 +874,20 @@ function bindVariantsManagerEvents(wrap) {
     if (removeVariantBtn) {
       const vi = Number(removeVariantBtn.dataset.vidx);
       if (editorVariants.length <= 1) return;
-      if (!confirm('Deze variant en zijn foto\'s verwijderen?')) return;
+      const variant = editorVariants[vi];
+      const photoCount = (variant.images || []).length;
+      const go = await askConfirm({
+        title: `Variant "${variant.name || `variant ${vi + 1}`}" verwijderen?`,
+        lines: [
+          photoCount
+            ? `<span class="warn">${photoCount} foto${photoCount === 1 ? '' : "'s"}</span> in deze variant ${photoCount === 1 ? 'verdwijnt' : 'verdwijnen'} uit het product.`
+            : 'Deze variant heeft nog geen foto\u2019s.',
+          'Dit gebeurt pas echt wanneer je het product opslaat.'
+        ],
+        confirmLabel: 'Ja, verwijder deze variant',
+        danger: true
+      });
+      if (!go) return;
       editorVariants.splice(vi, 1);
       editorPendingUploads = editorPendingUploads
         .filter(p => p.variantIdx !== vi)
@@ -847,6 +961,112 @@ function bindVariantsManagerEvents(wrap) {
   });
 }
 
+// ---------- Review before saving ----------
+// Saving commits straight to the live site, so the last step is a plain-language
+// list of what is about to change. Built by comparing against a snapshot taken
+// when the form was opened, rather than tracking edits as they happen -- fewer
+// places to forget to record something.
+let editorSnapshot = null;
+let settingsSnapshot = null;
+
+function snapshotProductEditor() {
+  return {
+    name: $('#pe-name').value.trim(),
+    category: $('#pe-category').value,
+    subcategory: $('#pe-subcategory-wrap').hidden ? null : ($('#pe-subcategory').value || null),
+    description: $('#pe-description').value.trim(),
+    variants: editorVariants.map(v => ({ name: v.name, images: v.images.map(i => i.src) })),
+    coverSrc: (editorVariants[editorCoverKey.variantIdx]?.images[editorCoverKey.imageIdx] || {}).src || null,
+  };
+}
+
+function categoryNameFor(slug) {
+  const c = state.categories.find(x => x.slug === slug);
+  return c ? c.name : slug || '—';
+}
+
+function changedField(label, before, after) {
+  if ((before || '') === (after || '')) return null;
+  if (!before) return `${label}: <strong>${esc(after)}</strong> toegevoegd`;
+  if (!after) return `${label}: <strong>${esc(before)}</strong> gewist`;
+  return `${label}: ${esc(before)} &rarr; <strong>${esc(after)}</strong>`;
+}
+
+// Returns the list of human-readable changes; empty means nothing to save.
+function describeProductChanges() {
+  const before = editorSnapshot;
+  const after = snapshotProductEditor();
+  const lines = [];
+  if (!before) {
+    // New product: there is no "before", so describe what is being created.
+    const photos = editorPendingUploads.length;
+    lines.push(`Nieuw product <strong>${esc(after.name)}</strong> in ${esc(categoryNameFor(after.category))}`);
+    if (photos) lines.push(`${photos} foto${photos === 1 ? '' : "'s"} worden geüpload`);
+    return lines;
+  }
+
+  const field = (label, a, b) => { const l = changedField(label, a, b); if (l) lines.push(l); };
+  field('Naam', before.name, after.name);
+  field('Categorie', categoryNameFor(before.category), categoryNameFor(after.category));
+  field('Onderverdeling', before.subcategory, after.subcategory);
+  if (before.description !== after.description) lines.push('Beschrijving aangepast');
+
+  const srcs = (snap) => snap.variants.flatMap(v => v.images);
+  const beforeSrcs = srcs(before), afterSrcs = srcs(after);
+  const removed = beforeSrcs.filter(s => !afterSrcs.includes(s)).length;
+  if (removed) lines.push(`<span class="warn">${removed} foto${removed === 1 ? '' : "'s"}</span> ${removed === 1 ? 'wordt' : 'worden'} verwijderd`);
+  if (editorPendingUploads.length) lines.push(`${editorPendingUploads.length} foto${editorPendingUploads.length === 1 ? '' : "'s"} ${editorPendingUploads.length === 1 ? 'wordt' : 'worden'} toegevoegd`);
+  if (!removed && beforeSrcs.length === afterSrcs.length && beforeSrcs.join() !== afterSrcs.join()) {
+    lines.push("Volgorde van de foto's gewijzigd");
+  }
+
+  const beforeNames = before.variants.map(v => v.name || '').join('|');
+  const afterNames = after.variants.map(v => v.name || '').join('|');
+  if (before.variants.length !== after.variants.length) {
+    const diff = after.variants.length - before.variants.length;
+    lines.push(diff > 0 ? `${diff} variant${diff === 1 ? '' : 'en'} toegevoegd` : `<span class="warn">${-diff} variant${diff === -1 ? '' : 'en'}</span> verwijderd`);
+  } else if (beforeNames !== afterNames) {
+    lines.push('Variantnamen aangepast');
+  }
+
+  if (before.coverSrc !== after.coverSrc) lines.push('Andere cover gekozen');
+  return lines;
+}
+
+function snapshotSettings() {
+  const s = state.site;
+  return {
+    'Bedrijfsnaam': s.businessName, 'Naam': s.ownerName,
+    'Kleine regel boven de titel': s.heroEyebrow, 'Grote titel': s.heroTitle,
+    'Zin onder de titel': s.heroTagline,
+    'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
+    'Tagline': s.tagline, 'E-mail': s.email, 'Instagram': s.instagramUrl,
+    'Locatie': s.location, 'Website-adres': s.siteUrl, 'Accentkleur': s.accentColor,
+  };
+}
+
+function describeSettingsChanges(after) {
+  const before = settingsSnapshot || {};
+  const lines = [];
+  for (const label of Object.keys(after)) {
+    const line = changedField(label, before[label], after[label]);
+    if (line) lines.push(line);
+  }
+  if ($('#s-logo-input').files[0]) lines.push('Nieuw logo (dragon) geüpload');
+  if ($('#s-logofull-input').files[0]) lines.push('Nieuw logo (volledig) geüpload');
+  return lines;
+}
+
+// Shows the list and waits for a yes. Returns false when there is nothing to
+// save -- pressing Opslaan with no edits should say so, not make an empty commit.
+async function confirmSave(title, lines) {
+  if (!lines.length) {
+    toast('Er is niets gewijzigd.', 'info');
+    return false;
+  }
+  return askConfirm({ title, lines, confirmLabel: 'Ja, opslaan' });
+}
+
 async function saveProduct() {
   const name = $('#pe-name').value.trim();
   const category = $('#pe-category').value;
@@ -856,6 +1076,8 @@ async function saveProduct() {
   if (!category) { toast('Kies een categorie.', 'err'); return; }
   const totalExisting = editorVariants.reduce((n, v) => n + v.images.length, 0);
   if (totalExisting === 0 && editorPendingUploads.length === 0) { toast('Voeg minstens één foto toe.', 'err'); return; }
+
+  if (!await confirmSave(editingSlug ? 'Deze wijzigingen opslaan?' : 'Dit product toevoegen?', describeProductChanges())) return;
 
   const btn = $('#saveProductBtn');
   setBusy(btn, true, 'Opslaan…');
@@ -921,6 +1143,17 @@ function renderAboutTab() {
 }
 
 async function saveAbout() {
+  const lines = [];
+  const headingLine = changedField('Titel', state.site.aboutHeading, $('#a-heading').value.trim());
+  if (headingLine) lines.push(headingLine);
+  const paragraphs = $('#a-paragraphs').value.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  if (paragraphs.join('|') !== (state.site.aboutParagraphs || []).join('|')) {
+    const was = (state.site.aboutParagraphs || []).length;
+    lines.push(`Tekst aangepast (${was} &rarr; ${paragraphs.length} alinea's)`);
+  }
+  if ($('#a-photo-input').files[0]) lines.push('Nieuwe foto geüpload');
+  if (!await confirmSave('Deze wijzigingen opslaan?', lines)) return;
+
   const btn = $('#saveAboutBtn');
   setBusy(btn, true, 'Opslaan…');
   try {
@@ -966,7 +1199,15 @@ function renderPresenceTab() {
     const id = btn.closest('.row-card').dataset.id;
     if (btn.dataset.action === 'edit') openPresenceForm(state.presence.find(p => p.id === id));
     else if (btn.dataset.action === 'delete') {
-      if (!confirm('Deze datum verwijderen?')) return;
+      const entry = state.presence.find(p => p.id === id);
+      const when = entry ? new Date(entry.date + 'T00:00:00').toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' }) : 'deze datum';
+      const go = await askConfirm({
+        title: 'Deze datum verwijderen?',
+        lines: [`<strong>${esc(entry?.title || entry?.location || 'Markt')}</strong> op ${esc(when)} verdwijnt van "Waar vind je mij".`],
+        confirmLabel: 'Ja, verwijder deze datum',
+        danger: true
+      });
+      if (!go) return;
       state.presence = state.presence.filter(p => p.id !== id);
       await savePresence('Aanwezigheid verwijderd');
     }
@@ -1038,9 +1279,23 @@ function renderSettingsTab() {
   $('#s-accentHex').value = s.accentColor || '#c31f1f';
   $('#s-logo-preview').src = s.logo?.mark || 'assets/logo-mark.png';
   $('#s-logofull-preview').src = s.logo?.full || 'assets/logo-full.png';
+  settingsSnapshot = snapshotSettings();
 }
 
 async function saveSettings() {
+  // Read the form into the same shape as the snapshot so the two compare
+  // field by field, then let her see the list before any of it is committed.
+  const proposed = {
+    'Bedrijfsnaam': $('#s-businessName').value.trim(), 'Naam': $('#s-ownerName').value.trim(),
+    'Kleine regel boven de titel': $('#s-heroEyebrow').value.trim(), 'Grote titel': $('#s-heroTitle').value.trim(),
+    'Zin onder de titel': $('#s-heroTagline').value.trim(),
+    'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
+    'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
+    'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
+    'Website-adres': $('#s-siteUrl').value.trim(), 'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
+  };
+  if (!await confirmSave('Deze instellingen opslaan?', describeSettingsChanges(proposed))) return;
+
   const btn = $('#saveSettingsBtn');
   setBusy(btn, true, 'Opslaan…');
   try {
@@ -1104,9 +1359,30 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
   $('#publishBtn').addEventListener('click', publishChanges);
-  $('#publishList').addEventListener('click', (e) => {
-    const btn = e.target.closest('.pc-goto');
-    if (btn) goToChange(btn.dataset.target);
+  $('#publishList').addEventListener('click', async (e) => {
+    const goto = e.target.closest('.pc-goto');
+    if (goto) { goToChange(goto.dataset.target); return; }
+
+    const undo = e.target.closest('.pc-undo');
+    if (!undo) return;
+    // Undoing an older change also rolls back anything newer that touched the
+    // same files, so say so rather than letting her find out afterwards.
+    const rows = [...$('#publishList').querySelectorAll('.pc-undo')];
+    const newer = rows.indexOf(undo);
+    const lines = ['Alles wat deze wijziging aanpaste gaat terug naar hoe het daarvoor was.'];
+    if (newer > 0) {
+      lines.push(newer === 1
+        ? `<span class="warn">Let op:</span> er is 1 nieuwere wijziging. Raakte die dezelfde producten of foto's aan, dan gaat die ook terug.`
+        : `<span class="warn">Let op:</span> er zijn ${newer} nieuwere wijzigingen. Raakten die dezelfde producten of foto's aan, dan gaan die ook terug.`);
+    }
+    lines.push('Je kunt daarna gewoon opnieuw wijzigen.');
+    const go = await askConfirm({
+      title: `"${undo.dataset.what}" ongedaan maken?`,
+      lines,
+      confirmLabel: 'Ja, zet terug',
+      danger: true
+    });
+    if (go) await undoChange(undo.dataset.sha, undo.dataset.what);
   });
 
   $('#s-accent').addEventListener('input', (e) => { $('#s-accentHex').value = e.target.value; });
