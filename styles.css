@@ -349,6 +349,17 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .product-card:hover .thumb img { transform: scale(1.04); }
 
 /* Grouped view (the unfiltered "Alles" listing) */
+/* The homepage picks at most eight, so four across gives a tidy two rows. Left
+   to auto-fill it went to five or six on a wide screen and the last row was a
+   ragged one or two. The gallery keeps filling the width -- it has far more to
+   show and no fixed count to balance. */
+#featuredGrid {
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  max-width: calc(4 * 240px + 3 * 1.6rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .product-grid.grouped { display: block; }
 .product-group + .product-group { margin-top: 3.2rem; }
 .product-group-title {
