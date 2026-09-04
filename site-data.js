@@ -72,6 +72,23 @@ function renderFooter(site) {
     </footer>`;
 }
 
+// Hero wording, so it can be changed from the dashboard rather than by
+// editing index.html. Each field is left alone when it's missing or empty,
+// so the markup's own text stays as the fallback. The title is the one place
+// a line break matters -- she controls where the line turns -- so newlines
+// become <br> after escaping, never before.
+function renderHero(site) {
+  const set = (id, value, { allowBreaks = false } = {}) => {
+    const el = document.getElementById(id);
+    if (!el || !value) return;
+    const safe = escapeHTML(value);
+    el.innerHTML = allowBreaks ? safe.replace(/\r?\n/g, '<br>') : safe;
+  };
+  set('heroEyebrow', site.heroEyebrow);
+  set('heroTitle', site.heroTitle, { allowBreaks: true });
+  set('heroTagline', site.heroTagline);
+}
+
 function applyAccent(site) {
   if (site.accentColor) {
     document.documentElement.style.setProperty('--rust', site.accentColor);
@@ -107,6 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderFooter(site);
   applyAccent(site);
   applyHeroLogo(site);
+  renderHero(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after
   // this fires) call initReveal() again themselves; call once now for pages

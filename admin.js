@@ -1024,6 +1024,9 @@ function renderSettingsTab() {
   const s = state.site;
   $('#s-businessName').value = s.businessName || '';
   $('#s-ownerName').value = s.ownerName || '';
+  $('#s-heroEyebrow').value = s.heroEyebrow || '';
+  $('#s-heroTitle').value = s.heroTitle || '';
+  $('#s-heroTagline').value = s.heroTagline || '';
   $('#s-tagline').value = s.tagline || '';
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
@@ -1043,6 +1046,9 @@ async function saveSettings() {
     Object.assign(state.site, {
       businessName: $('#s-businessName').value.trim(),
       ownerName: $('#s-ownerName').value.trim(),
+      heroEyebrow: $('#s-heroEyebrow').value.trim(),
+      heroTitle: $('#s-heroTitle').value.trim(),
+      heroTagline: $('#s-heroTagline').value.trim(),
       tagline: $('#s-tagline').value.trim(),
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
