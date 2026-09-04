@@ -970,7 +970,6 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .order-field textarea { resize: vertical; min-height: 7rem; font-family: inherit; }
 .order-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 @media (max-width: 620px) { .order-row { grid-template-columns: 1fr; } }
-.order-hint { font-size: 0.78rem; color: var(--espresso-soft); margin: 1rem 0 0; opacity: 0.8; }
 .order-error { font-size: 0.85rem; color: var(--rust); margin: 0.9rem 0 0; font-weight: 600; }
 .order-error a { text-decoration: underline; }
 .order-success { text-align: center; }
