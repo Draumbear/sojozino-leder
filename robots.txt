@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /404.html
+Disallow: /bestellen-bedankt.html
+
+Sitemap: https://draumbear.github.io/sojozino-leder/sitemap.xml

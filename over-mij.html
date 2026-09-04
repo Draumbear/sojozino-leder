@@ -6,8 +6,9 @@
 <title>Over mij — Sojozino</title>
 <meta name="description" content="Maak kennis met Johnny Decoopman, lederbewerker achter Sojozino in Oostende.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=bf51654d">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=bf51654d">
+<link rel="stylesheet" href="styles.css?v=37136eef">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=37136eef">
+<link rel="canonical" href="https://draumbear.github.io/sojozino-leder/over-mij.html">
 </head>
 <body>
 <div class="grain"></div>
@@ -28,18 +29,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=bf51654d"></script>
-<script>
-document.addEventListener('site:loaded', (e) => {
-  const site = e.detail;
-  const esc = window.SojozinoSite.escapeHTML;
-  document.getElementById('aboutHeading').textContent = site.aboutHeading || 'Over Sojozino';
-  document.getElementById('aboutParagraphs').innerHTML =
-    (site.aboutParagraphs || []).map(p => `<p class="reveal">${esc(p)}</p>`).join('');
-  const img = document.querySelector('.about-page img');
-  if (img && site.aboutPhoto?.src) { img.src = site.aboutPhoto.src; img.alt = site.aboutPhoto.alt || site.ownerName || ''; }
-  window.SojozinoSite.initReveal();
-});
-</script>
+<script src="site-data.js?v=37136eef"></script>
+<script src="page-over-mij.js?v=37136eef"></script>
 </body>
 </html>

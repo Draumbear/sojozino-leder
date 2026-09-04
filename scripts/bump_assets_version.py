@@ -15,6 +15,7 @@ import re
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = ["styles.css", "admin.css", "site-data.js", "script.js",
           "product-render.js", "bestellen.js", "admin.js", "admin-github.js",
+          "page-contact.js", "page-over-mij.js", "page-privacy.js",
           "assets/fonts/fonts.css"]
 
 

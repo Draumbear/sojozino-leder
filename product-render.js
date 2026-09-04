@@ -40,7 +40,8 @@ function renderGallery() {
   if (multi) {
     thumbsEl.hidden = false;
     thumbsEl.innerHTML = images.map((im, i) =>
-      `<img src="${escapeHTML(im.src)}" alt="${escapeHTML(im.alt || '')}" class="${i === 0 ? 'active' : ''}" data-idx="${i}">`).join('');
+      `<img src="${escapeHTML(im.src)}" alt="${escapeHTML(im.alt || '')}" class="${i === 0 ? 'active' : ''}" data-idx="${i}"
+            loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async">`).join('');
   } else {
     thumbsEl.hidden = true;
     thumbsEl.innerHTML = '';
@@ -204,6 +205,11 @@ async function renderProduct() {
   const catName = sub ? catLabel(sub) : catLabel(cat);
 
   document.title = `${data.name} — Sojozino`;
+  const canonical = document.querySelector('link[rel="canonical"]') ||
+    document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
+  canonical.href = `${location.origin}${location.pathname}?slug=${encodeURIComponent(slug)}`;
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc && data.description) desc.content = data.description.slice(0, 300);
 
   // Variant names live in a hover/focus tooltip rather than under each
   // swatch: printed labels wrap to two or three lines at different lengths,
@@ -218,7 +224,7 @@ async function renderProduct() {
           return `
           <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
                   title="${escapeHTML(label)}" aria-label="${escapeHTML(label)}">
-            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="">
+            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="" loading="lazy" decoding="async">
             <span>${escapeHTML(label)}</span>
           </button>`;
         }).join('')}
@@ -231,7 +237,7 @@ async function renderProduct() {
       <a class="back-link" href="creaties.html">&larr; Terug naar creaties</a>
       <div class="spotlight">
         <div class="spotlight-main" id="spotlightMain">
-          <img id="spotlightImg" src="" alt="">
+          <img id="spotlightImg" src="" alt="" fetchpriority="high" decoding="async">
           <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.8-4.8"></path></svg></button>
           <div class="spotlight-nav prev" id="spotlightPrev" aria-label="Vorige foto">&#8249;</div>
           <div class="spotlight-nav next" id="spotlightNext" aria-label="Volgende foto">&#8250;</div>

@@ -6,8 +6,9 @@
 <title>Contact — Sojozino</title>
 <meta name="description" content="Neem contact op met Sojozino voor vragen, herstellingen of werk op maat.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=bf51654d">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=bf51654d">
+<link rel="stylesheet" href="styles.css?v=37136eef">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=37136eef">
+<link rel="canonical" href="https://draumbear.github.io/sojozino-leder/contact.html">
 </head>
 <body>
 <div class="grain"></div>
@@ -23,18 +24,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=bf51654d"></script>
-<script>
-document.addEventListener('site:loaded', (e) => {
-  const site = e.detail;
-  const esc = window.SojozinoSite.escapeHTML;
-  const links = [];
-  if (site.email) links.push(`<a class="contact-link reveal" href="mailto:${esc(site.email)}">&#9993; ${esc(site.email)}</a>`);
-  if (site.instagramUrl) links.push(`<a class="contact-link reveal" href="${esc(site.instagramUrl)}" target="_blank" rel="noopener">&#64; Instagram</a>`);
-  if (site.location) links.push(`<span class="contact-link reveal">&#128205; ${esc(site.location)}</span>`);
-  document.getElementById('contactLinks').innerHTML = links.join('');
-  window.SojozinoSite.initReveal();
-});
-</script>
+<script src="site-data.js?v=37136eef"></script>
+<script src="page-contact.js?v=37136eef"></script>
 </body>
 </html>
