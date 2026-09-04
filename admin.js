@@ -331,7 +331,11 @@ function initConnect() {
     menu.hidden = !menu.hidden;
     chip.setAttribute('aria-expanded', String(!menu.hidden));
   });
-  document.addEventListener('click', closeMenu);
+  document.addEventListener('click', () => {
+    closeMenu();
+    const body = $('#publishBody');
+    if (body && !body.hidden) { body.hidden = true; $('#publishToggle').setAttribute('aria-expanded', 'false'); }
+  });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
   $('#disconnectBtn').addEventListener('click', async () => {
@@ -1847,23 +1851,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
   $('#publishBtn').addEventListener('click', publishChanges);
-  // The dock and the toasts both live in the bottom-right corner, and the dock
-  // changes height as it is expanded, collapsed, filled or hidden. Measuring it
-  // is the only way the toasts can reliably clear it; a fixed offset would be
-  // wrong in three of those four states.
-  const dock = $('#publishBar');
-  const trackDockHeight = () => {
-    const visible = !dock.classList.contains('hidden');
-    const height = visible ? dock.offsetHeight + 12 : 0;
-    document.documentElement.style.setProperty('--dock-height', `${height}px`);
-  };
-  new ResizeObserver(trackDockHeight).observe(dock);
-  new MutationObserver(trackDockHeight).observe(dock, { attributes: true, attributeFilter: ['class'] });
-  trackDockHeight();
-
-  $('#publishToggle').addEventListener('click', () => {
-    const dock = $('#publishBar');
-    const open = dock.classList.toggle('open');
+  $('#publishToggle').addEventListener('click', (e) => {
+    e.stopPropagation();  // the document listener below closes both menus
+    const open = $('#publishBody').hidden;
     $('#publishBody').hidden = !open;
     $('#publishToggle').setAttribute('aria-expanded', String(open));
   });

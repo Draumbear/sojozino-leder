@@ -192,74 +192,52 @@ button.conn-status.off { cursor: default; }
 /* Saves are deliberately not published straight away (they'd each cost a
    Netlify build), so this bar is the standing reminder that work is waiting
    and the one place to actually put it live. */
-/* Docked in the corner: she saves from deep inside the editor, so the reminder
-   has to be reachable from anywhere -- but a full-width bar pinned to the top
-   charges every screen for a message that is usually just "yes, still pending".
-   Collapsed it is one line; the detail is a click away. */
-.publish-dock {
-  position: fixed;
-  right: 1.1rem; bottom: 1.1rem;
-  z-index: 300;
-  width: min(360px, calc(100vw - 2.2rem));
-  display: flex; flex-direction: column; gap: 0.7rem;
-  background: var(--a-espresso); color: #fff;
-  border-radius: var(--a-radius); box-shadow: var(--a-shadow);
-  padding: 0.9rem 1rem;
+/* The change list lives in the header now. It is a history with an undo on
+   each line, not something to act on urgently -- floating it over the editing
+   area cost her a corner of every screen to say so. Collapsed it is a count;
+   the panel drops down like the connection menu beside it. */
+.header-chip {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  background: none;
+  border: 1px solid var(--a-line);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font: inherit; font-size: 0.78rem; font-weight: 700;
+  color: var(--a-ink-soft);
+  cursor: pointer;
 }
-.pd-summary {
-  display: flex; align-items: center; gap: 0.6rem;
-  background: none; border: none; padding: 0;
-  color: #fff; font: inherit; font-weight: 700; font-size: 0.9rem;
-  cursor: pointer; text-align: left; width: 100%;
-}
+.header-chip:hover { border-color: var(--a-espresso); color: var(--a-espresso); }
 .pd-dot {
-  width: 8px; height: 8px; border-radius: 50%;
+  width: 6px; height: 6px; border-radius: 50%;
   background: var(--a-rust); flex-shrink: 0;
 }
-.pd-chevron {
-  margin-left: auto; font-size: 0.8rem;
-  transition: transform 0.18s ease;
-}
-.publish-dock.open .pd-chevron { transform: rotate(180deg); }
+.pd-body { width: min(360px, calc(100vw - 2rem)); }
 .pd-body[hidden] { display: none; }
-.pd-note {
-  margin: 0 0 0.6rem;
-  font-size: 0.78rem; color: rgba(255, 255, 255, 0.7);
-}
-/* Capped so a long backlog scrolls inside the dock instead of growing up the
-   page and covering the work it is reporting on. */
-.pd-body .publish-list { max-height: 40vh; overflow-y: auto; }
-/* What is actually waiting. Without this the bar states a number and leaves her
-   to remember which three things she changed. */
+.pd-note { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--a-ink-faint); }
+
 .publish-list {
   list-style: none; margin: 0; padding: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  max-height: 50vh; overflow-y: auto;
 }
 .publish-list li {
   display: flex; flex-direction: column; align-items: flex-start;
   gap: 0.3rem; padding: 0.6rem 0;
   font-size: 0.82rem;
 }
-.publish-list li + li { border-top: 1px solid rgba(255, 255, 255, 0.08); }
-.publish-list .pc-what { color: rgba(255, 255, 255, 0.9); }
-.publish-list .pc-when { color: rgba(255, 255, 255, 0.45); font-size: 0.75rem; margin-left: 0.5rem; }
-.publish-list .pc-goto {
-  background: none; border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #fff; border-radius: var(--a-radius-sm);
-  padding: 0.25rem 0.7rem; font-size: 0.75rem; font-weight: 700;
-  cursor: pointer; flex-shrink: 0;
-}
-.publish-list .pc-goto:hover { background: var(--a-rust); border-color: var(--a-rust); }
+.publish-list li + li { border-top: 1px solid var(--a-line); }
+.publish-list .pc-what { color: var(--a-ink-soft); }
+.publish-list .pc-when { color: var(--a-ink-faint); font-size: 0.75rem; margin-left: 0.5rem; }
 .publish-list .pc-buttons { display: flex; gap: 0.4rem; flex-shrink: 0; }
+.publish-list .pc-goto,
 .publish-list .pc-undo {
-  background: none; border: 1px solid rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.75); border-radius: var(--a-radius-sm);
-  padding: 0.25rem 0.7rem; font-size: 0.75rem; font-weight: 700;
+  background: none; border: 1px solid var(--a-line);
+  color: var(--a-ink-soft); border-radius: var(--a-radius-sm);
+  padding: 0.2rem 0.6rem; font: inherit; font-size: 0.72rem; font-weight: 700;
   cursor: pointer; white-space: nowrap;
 }
+.publish-list .pc-goto:hover,
 .publish-list .pc-undo:hover { background: var(--a-rust); border-color: var(--a-rust); color: #fff; }
-
-.publish-list .pc-more { color: rgba(255, 255, 255, 0.5); font-size: 0.78rem; }
+.publish-list .pc-more { color: var(--a-ink-faint); font-size: 0.78rem; }
 
 .publish-bar-text { display: flex; flex-direction: column; gap: 0.25rem; }
 .publish-bar-text strong { font-size: 1rem; }
@@ -307,7 +285,7 @@ button.conn-status.off { cursor: default; }
 /* Printing it turns it into the paper version, so there is no second document
    to keep in step with this one. */
 @media print {
-  .admin-header, .admin-tabs, .dashboard-toolbar, .publish-dock, .toast-container,
+  .admin-header, .admin-tabs, .dashboard-toolbar, .toast-container,
   .admin-tab[hidden], #printHelpBtn, #connectPanel { display: none !important; }
   .admin-main { padding: 0; }
   .admin-card { border: none; box-shadow: none; padding: 0; }
@@ -355,11 +333,8 @@ button.conn-status.off { cursor: default; }
 }
 .toast-action:hover { background: rgba(255, 255, 255, 0.18); }
 
-/* Toasts share the bottom-right corner with the publish dock, so they sit on
-   top of whatever height the dock currently is -- see the observer in admin.js
-   that keeps --dock-height honest through collapsing, expanding and hiding. */
-/* What is uploading, and what is behind it. Sits in the toast stack so it
-   clears the publish dock without a second position to keep in step. */
+/* What is uploading, and what is behind it. Bottom-right, where transient
+   status belongs -- unlike the change list, this one is about right now. */
 .queue-status {
   background: var(--a-espresso); color: #fff;
   border-radius: var(--a-radius-sm);
@@ -380,7 +355,7 @@ button.conn-status.off { cursor: default; }
 
 .toast-container {
   position: fixed;
-  bottom: calc(1.4rem + var(--dock-height, 0px));
+  bottom: 1.4rem;
   right: 1.4rem; z-index: 400;
   display: flex; flex-direction: column; gap: 0.6rem;
 }

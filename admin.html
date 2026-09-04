@@ -15,6 +15,20 @@
   <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
   <div class="admin-header-right">
     <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
+    <!-- A history with an undo against each line, so it belongs in the chrome
+         rather than floating over the work. Collapsed to a quiet count until
+         she asks for it. -->
+    <div class="conn-menu hidden" id="publishBar">
+      <button class="header-chip" id="publishToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="publishBody">
+        <span class="pd-dot" aria-hidden="true"></span>
+        <span id="publishCount"></span>
+      </button>
+      <div class="conn-menu-items pd-body" id="publishBody" hidden>
+        <p class="pd-note" id="publishNote"></p>
+        <ul class="publish-list" id="publishList"></ul>
+        <button class="btn-admin small" id="publishBtn">Publiceer wijzigingen</button>
+      </div>
+    </div>
     <!-- Ontkoppelen used to sit beside the tabs, one stray click from logging
          her out mid-edit. It lives behind the status chip now: still there,
          no longer in the way. -->
@@ -78,20 +92,6 @@
 
   <!-- Dashboard -->
   <div id="dashboard" class="hidden">
-    <!-- Docked bottom-right rather than across the top: it has to stay reachable
-         from anywhere on the page without taking a slice of every screen. -->
-    <div id="publishBar" class="publish-dock hidden">
-      <button class="pd-summary" id="publishToggle" type="button" aria-expanded="false" aria-controls="publishBody">
-        <span class="pd-dot" aria-hidden="true"></span>
-        <span id="publishCount"></span>
-        <span class="pd-chevron" aria-hidden="true">⌃</span>
-      </button>
-      <div class="pd-body" id="publishBody" hidden>
-        <p class="pd-note" id="publishNote"></p>
-        <ul class="publish-list" id="publishList"></ul>
-      </div>
-      <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
-    </div>
     <div class="dashboard-toolbar">
       <div class="admin-tabs">
         <button data-tab="overview" class="active">Overzicht</button>
