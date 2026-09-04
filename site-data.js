@@ -92,6 +92,29 @@ function renderHero(site) {
   set('heroSecondaryBtn', site.heroSecondaryLabel);
 }
 
+// The Instagram call to action. Only ever lived in the footer and on the
+// contact page, which is nowhere near the moment someone has just looked
+// through his work. Rendered from site.instagramUrl so it follows the
+// dashboard, and skipped entirely when no URL is set.
+function renderInstagramCta(site) {
+  const el = document.getElementById('instagramCta');
+  if (!el) return;
+  const url = (site.instagramUrl || '').trim();
+  if (!url) { el.remove(); return; }
+  const handle = url.replace(/\/+$/, '').split('/').pop();
+  el.innerHTML = `
+    <section class="section insta-cta">
+      <div class="section-inner">
+        <p class="eyebrow reveal">Volg het atelier</p>
+        <h2 class="reveal">Nieuw werk zie je hier het eerst.</h2>
+        <p class="reveal">Elk stuk dat de deur uitgaat passeert eerst op Instagram — samen met de markten waar je ${escapeHTML(site.businessName || 'Sojozino')} kan vinden.</p>
+        <a class="btn reveal" href="${escapeHTML(url)}" target="_blank" rel="noopener">
+          Volg ${escapeHTML(handle ? '@' + handle : 'op Instagram')}
+        </a>
+      </div>
+    </section>`;
+}
+
 function applyAccent(site) {
   if (site.accentColor) {
     document.documentElement.style.setProperty('--rust', site.accentColor);
@@ -128,6 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyAccent(site);
   applyHeroLogo(site);
   renderHero(site);
+  renderInstagramCta(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after
   // this fires) call initReveal() again themselves; call once now for pages
