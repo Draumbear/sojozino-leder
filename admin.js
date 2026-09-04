@@ -74,7 +74,8 @@ function applyPublishWording() {
          <p>Ben je klaar? Klik daarop en dan op <strong>Publiceer wijzigingen</strong>. Alles gaat in één keer online, meestal binnen een minuut.</p>
          <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
       : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
-         <p class="hint">Ververs de pagina op de website als je ze nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
+         <p>Onderaan het scherm zie je <strong>Wordt online gezet</strong> staan, en zodra het gelukt is <strong>Staat online</strong>. Je hoeft dus niet zelf te gaan kijken.</p>
+         <p class="hint">Ververs de pagina op de website als je ze daarna nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
 
   // Hidden here rather than only in refreshPublishBar: that runs on demand, so
@@ -188,6 +189,7 @@ function watchWrites(gh) {
     gh[name] = async (...args) => {
       const result = await original(...args);
       refreshPublishBar();
+      if (name === 'commitBatch') trackDeployment(args[0]);
       return result;
     };
   }
@@ -1240,6 +1242,66 @@ function bindVariantsManagerEvents(wrap) {
   });
 }
 
+// ---------- Is it actually online? ----------
+// GitHub can report whether a build succeeded, but only to a token carrying
+// Deployments or Actions permission -- and asking for more permissions is the
+// trap the sign-in screen just stopped being. The dashboard is served from the
+// same origin as the site, so it can simply read the published file back and
+// see whether the change is in it. No token, no permission, and it answers the
+// question that actually matters: can a visitor see it yet.
+const DEPLOY_POLL_MS = 4000;
+const DEPLOY_TIMEOUT_MS = 4 * 60 * 1000;
+let deployWatch = null;
+
+function deployStatusRow() {
+  if (!deployWatch) return '';
+  if (deployWatch.state === 'waiting') {
+    return `<li class="qs-active"><span class="spinner"></span><span>Wordt online gezet<span class="qs-step"> — even geduld</span></span></li>`;
+  }
+  if (deployWatch.state === 'live') {
+    return `<li class="qs-done"><span class="qs-tick">&#10003;</span><span>Staat online</span></li>`;
+  }
+  return `<li class="qs-waiting"><span class="qs-dot"></span><span>Nog niet online<span class="qs-step"> — ververs de website over een minuutje</span></span></li>`;
+}
+
+// Only meaningful where the dashboard and the site are the same origin. Opened
+// from a local copy, a relative fetch would read the local file and always say
+// "online", which is worse than saying nothing.
+function canCheckDeploys() {
+  return !['localhost', '127.0.0.1', ''].includes(location.hostname);
+}
+
+async function trackDeployment(files) {
+  if (!canCheckDeploys() || !Array.isArray(files)) return;
+  // Any text file the commit touched will do; photos cannot be compared this
+  // cheaply, and a product save always writes the index alongside them.
+  const probe = files.find(f => !f.delete && (typeof f.content === 'string' || typeof f.content === 'function'));
+  if (!probe) return;
+  const expected = (typeof probe.content === 'function' ? probe.content() : probe.content).trim();
+
+  const watch = { state: 'waiting', path: probe.path };
+  deployWatch = watch;
+  renderQueueStatus();
+
+  const until = Date.now() + DEPLOY_TIMEOUT_MS;
+  while (Date.now() < until) {
+    await new Promise(r => setTimeout(r, DEPLOY_POLL_MS));
+    if (deployWatch !== watch) return; // a newer save took over
+    try {
+      const res = await fetch(`${probe.path}?cb=${Date.now()}`, { cache: 'no-store' });
+      if (res.ok && (await res.text()).trim() === expected) {
+        watch.state = 'live';
+        renderQueueStatus();
+        // Long enough to notice, short enough not to become furniture.
+        setTimeout(() => { if (deployWatch === watch) { deployWatch = null; renderQueueStatus(); } }, 6000);
+        return;
+      }
+    } catch { /* offline or a hiccup: keep waiting rather than crying wolf */ }
+  }
+  watch.state = 'slow';
+  renderQueueStatus();
+}
+
 // ---------- What is being saved ----------
 // A queued write is invisible from the outside: she presses Opslaan, the page
 // looks idle, and nothing separates "uploading twelve photos" from "stuck". So
@@ -1259,7 +1321,8 @@ function renderQueueStatus() {
   if (!el) return;
   const { active, waiting } = queueState;
   const timerLabel = pendingTimerLabel();
-  if (!active && !waiting.length && !timerLabel) {
+  const deployRow = deployStatusRow();
+  if (!active && !waiting.length && !timerLabel && !deployRow) {
     el.hidden = true;
     el.innerHTML = '';
     return;
@@ -1275,6 +1338,7 @@ function renderQueueStatus() {
     rows.push(`<li class="qs-waiting"><span class="qs-dot"></span><span>${esc(timerLabel)} <span class="qs-step">— zo dadelijk</span></span></li>`);
   }
 
+  if (deployRow) rows.push(deployRow);
   el.innerHTML = `<ul class="qs-list">${rows.join('')}</ul>`;
   el.hidden = false;
 }

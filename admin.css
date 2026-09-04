@@ -390,6 +390,8 @@ button.conn-status.off { cursor: default; }
 .qs-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
 .qs-list li { display: flex; align-items: center; gap: 0.5rem; }
 .qs-waiting { color: rgba(255, 255, 255, 0.55); }
+.qs-done { color: #9fd0a1; }
+.qs-tick { color: #9fd0a1; font-weight: 700; flex-shrink: 0; width: 12px; }
 .qs-step { color: rgba(255, 255, 255, 0.55); }
 .qs-dot {
   width: 6px; height: 6px; border-radius: 50%;
