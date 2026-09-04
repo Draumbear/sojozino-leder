@@ -125,17 +125,27 @@ class GitHubAPI {
     }
     const repo = await res.json();
 
-    // Seeing the repository proves almost nothing: a token with no permissions
-    // at all still passes that call, and the first real failure would then land
-    // much later, mid-save, as GitHub's unhelpful wording. So check here that
-    // the token can actually read repository contents, and warn now if GitHub
-    // says this account has no write access.
-    const probe = await fetch(`${this.base}/contents/data/site.json?_=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
-    if (probe.status === 403 || probe.status === 404) {
-      throw new Error(`Dit token mag de inhoud van de repository niet lezen. ${TOKEN_HELP}`);
-    }
-    if (repo.permissions && repo.permissions.push === false) {
-      throw new Error(`Dit token mag lezen maar niet schrijven, dus opslaan zou later mislukken. ${TOKEN_HELP}`);
+    // Seeing the repository proves nothing about writing: that call passes with
+    // metadata access alone, and reading proves little more, since a public repo
+    // stays readable regardless of the Contents permission. So prove the one
+    // thing that matters by doing it -- create a blob.
+    //
+    // Creating a blob is the only write in the GitHub API with no visible
+    // effect: it needs Contents write, but until some commit references it the
+    // object is unreachable and gets collected. Nothing lands in the history,
+    // the branch does not move, and a token that cannot save gets caught here
+    // instead of halfway through uploading a product's photos.
+    const probe = await fetch(`${this.base}/git/blobs`, {
+      method: 'POST',
+      headers: { ...this.headers(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: 'sojozino-permissietest', encoding: 'utf-8' })
+    });
+    if (!probe.ok) {
+      if (probe.status === 403 || probe.status === 404) {
+        throw new Error(`Dit token mag deze repository niet aanpassen, dus opslaan zou later mislukken. ${TOKEN_HELP}`);
+      }
+      const err = await probe.json().catch(() => ({}));
+      throw accessError(probe.status, err.message, 'de toegang te controleren');
     }
     return repo;
   }
