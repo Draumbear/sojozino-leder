@@ -42,7 +42,7 @@ function isDeferredSave(message) {
 // failed and the setting that fixes it.
 // Plain text, no markup: these strings land in textContent (the connect panel
 // and the toasts), where tags would show up literally.
-const TOKEN_HELP = 'Ga naar github.com/settings/tokens, open dit token, en zet bij "Repository permissions" de rechten voor "Contents" op "Read and write". Controleer ook dat deze repository bij "Repository access" is aangevinkt.';
+const TOKEN_HELP = 'Ga naar github.com/settings/tokens, open dit token, en zet bij "Repository permissions" de rechten voor "Contents" op "Read and write" (op de overzichtspagina heet dat daarna "Read and Write access to code" — dat is hetzelfde). Controleer ook dat deze repository bij "Repository access" is aangevinkt.';
 
 function accessError(status, githubMessage, step) {
   if (status === 401) {
