@@ -73,24 +73,30 @@ function renderFooter(site) {
     </footer>`;
 }
 
-// Hero wording, so it can be changed from the dashboard rather than by
-// editing index.html. Each field is left alone when it's missing or empty,
-// so the markup's own text stays as the fallback. The title is the one place
-// a line break matters -- she controls where the line turns -- so newlines
-// become <br> after escaping, never before.
+// Fills an element from site.json, leaving the markup's own text in place when
+// the field is missing or empty. Newlines become <br> only where the author is
+// meant to control the line break, and always after escaping.
+function setEditableText(id, value, { allowBreaks = false } = {}) {
+  const el = document.getElementById(id);
+  if (!el || !value) return;
+  const safe = escapeHTML(value);
+  el.innerHTML = allowBreaks ? safe.replace(/\r?\n/g, '<br>') : safe;
+}
+
 function renderHero(site) {
-  const set = (id, value, { allowBreaks = false } = {}) => {
-    const el = document.getElementById(id);
-    if (!el || !value) return;
-    const safe = escapeHTML(value);
-    el.innerHTML = allowBreaks ? safe.replace(/\r?\n/g, '<br>') : safe;
-  };
-  set('heroEyebrow', site.heroEyebrow);
-  set('heroTitle', site.heroTitle, { allowBreaks: true });
-  set('heroTagline', site.heroTagline);
+  setEditableText('heroEyebrow', site.heroEyebrow);
+  setEditableText('heroTitle', site.heroTitle, { allowBreaks: true });
+  setEditableText('heroTagline', site.heroTagline);
   // Labels only -- where the two buttons go is structural, not wording.
-  set('heroPrimaryBtn', site.heroPrimaryLabel);
-  set('heroSecondaryBtn', site.heroSecondaryLabel);
+  setEditableText('heroPrimaryBtn', site.heroPrimaryLabel);
+  setEditableText('heroSecondaryBtn', site.heroSecondaryLabel);
+}
+
+// The contact page was written into the markup the same way the hero was, so
+// changing a word meant editing the file.
+function renderContact(site) {
+  setEditableText('contactHeading', site.contactHeading, { allowBreaks: true });
+  setEditableText('contactIntro', site.contactIntro);
 }
 
 // The Instagram call to action. Only ever lived in the footer and on the
@@ -176,6 +182,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyAccent(site);
   applyHeroLogo(site);
   renderHero(site);
+  renderContact(site);
   renderInstagramCta(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after

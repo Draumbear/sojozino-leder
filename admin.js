@@ -1290,6 +1290,7 @@ function snapshotSettings() {
     'Kleine regel boven de titel': s.heroEyebrow, 'Grote titel': s.heroTitle,
     'Zin onder de titel': s.heroTagline,
     'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
+    'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
     'Tagline': s.tagline, 'E-mail': s.email, 'Instagram': s.instagramUrl,
     'Locatie': s.location, 'Website-adres': s.siteUrl, 'Accentkleur': s.accentColor,
   };
@@ -1531,6 +1532,8 @@ function renderSettingsTab() {
   $('#s-heroTagline').value = s.heroTagline || '';
   $('#s-heroPrimaryLabel').value = s.heroPrimaryLabel || '';
   $('#s-heroSecondaryLabel').value = s.heroSecondaryLabel || '';
+  $('#s-contactHeading').value = s.contactHeading || '';
+  $('#s-contactIntro').value = s.contactIntro || '';
   $('#s-tagline').value = s.tagline || '';
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
@@ -1551,6 +1554,7 @@ async function saveSettings() {
     'Kleine regel boven de titel': $('#s-heroEyebrow').value.trim(), 'Grote titel': $('#s-heroTitle').value.trim(),
     'Zin onder de titel': $('#s-heroTagline').value.trim(),
     'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
+    'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
     'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
     'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
     'Website-adres': $('#s-siteUrl').value.trim(), 'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
@@ -1569,6 +1573,8 @@ async function saveSettings() {
       heroTagline: $('#s-heroTagline').value.trim(),
       heroPrimaryLabel: $('#s-heroPrimaryLabel').value.trim(),
       heroSecondaryLabel: $('#s-heroSecondaryLabel').value.trim(),
+      contactHeading: $('#s-contactHeading').value.trim(),
+      contactIntro: $('#s-contactIntro').value.trim(),
       tagline: $('#s-tagline').value.trim(),
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),

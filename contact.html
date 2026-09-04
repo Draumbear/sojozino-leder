@@ -6,8 +6,8 @@
 <title>Contact — Sojozino</title>
 <meta name="description" content="Neem contact op met Sojozino voor vragen, herstellingen of werk op maat.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=publish32">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish32">
+<link rel="stylesheet" href="styles.css?v=publish33">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish33">
 </head>
 <body>
 <div class="grain"></div>
@@ -15,14 +15,15 @@
 
 <div class="contact-page">
   <p class="eyebrow reveal">Contact</p>
-  <h1 class="reveal">Vraag, herstelling of<br>iets op maat?</h1>
-  <p class="reveal" style="max-width:44ch;margin:1rem auto 0;">Stuur gerust een bericht via mail of Instagram — ik antwoord zo snel mogelijk.</p>
+  <!-- Filled in from data/site.json; what is written here is the fallback. -->
+  <h1 class="reveal" id="contactHeading">Vraag, herstelling of<br>iets op maat?</h1>
+  <p class="reveal" style="max-width:44ch;margin:1rem auto 0;" id="contactIntro">Stuur gerust een bericht via mail of Instagram — ik antwoord zo snel mogelijk.</p>
   <div class="contact-links" id="contactLinks"></div>
 </div>
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=publish32"></script>
+<script src="site-data.js?v=publish33"></script>
 <script>
 document.addEventListener('site:loaded', (e) => {
   const site = e.detail;
