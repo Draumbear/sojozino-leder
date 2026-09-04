@@ -4,13 +4,7 @@
     "name": "Handtassen",
     "order": 1,
     "singular": "Handtas",
-    "subcategories": [
-      {
-        "slug": "test",
-        "name": "test",
-        "singular": null
-      }
-    ]
+    "subcategories": []
   },
   {
     "slug": "tassen",
