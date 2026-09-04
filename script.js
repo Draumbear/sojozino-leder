@@ -13,9 +13,13 @@ async function loadJSON(path) {
 function productCardHTML(p) {
   const esc = window.SojozinoSite.escapeHTML;
   const catLabel = p.subcategoryName ? `${p.categoryName} — ${p.subcategoryName}` : (p.categoryName || '');
+  // "fit" is set per photo by scripts/classify_covers.py: studio shots on a
+  // white backdrop are contained (whole product visible, letterboxing
+  // invisible against a white tile), busier photos fill the tile instead.
+  const fit = p.fit === 'contain' ? ' fit-contain' : ' fit-cover';
   return `
     <a class="product-card reveal" href="product.html?slug=${encodeURIComponent(p.slug)}">
-      <div class="thumb"><img src="${esc(p.cover?.src)}" alt="${esc(p.cover?.alt || p.name)}" loading="lazy"></div>
+      <div class="thumb${fit}"><img src="${esc(p.cover?.src)}" alt="${esc(p.cover?.alt || p.name)}" loading="lazy"></div>
       <div class="info">
         <div class="cat">${esc(catLabel)}</div>
         <h3>${esc(p.name)}</h3>
@@ -37,10 +41,38 @@ async function initHome() {
   const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c.name]));
   const enriched = (products || []).map(p => ({ ...p, categoryName: catByslug[p.category] || '' }));
 
+  // Four category tiles, each using the first product's cover as its image
+  // and linking into the filtered gallery.
+  const tilesEl = document.getElementById('categoryTiles');
+  if (tilesEl) {
+    const esc = window.SojozinoSite.escapeHTML;
+    tilesEl.innerHTML = (categories || []).map(c => {
+      const inCat = enriched.filter(p => p.category === c.slug);
+      if (!inCat.length) return '';
+      const img = (inCat.find(p => p.featured) || inCat[0]).cover;
+      return `
+        <a class="category-tile reveal" href="creaties.html?cat=${encodeURIComponent(c.slug)}">
+          <img src="${esc(img?.src)}" alt="" loading="lazy">
+          <span class="ct-label">
+            <strong>${esc(c.name)}</strong>
+            <small>${inCat.length} ${inCat.length === 1 ? 'stuk' : 'stuks'}</small>
+          </span>
+        </a>`;
+    }).join('');
+  }
+
   const featuredEl = document.getElementById('featuredGrid');
   if (featuredEl) {
+    // Whatever Johnny has starred in the dashboard. Falls back to a spread
+    // across categories (rather than the first six, which were all
+    // handbags) until anything is starred.
     let featured = enriched.filter(p => p.featured);
-    if (featured.length < 3) featured = enriched.slice(0, 6);
+    if (!featured.length) {
+      const byCat = new Map();
+      enriched.forEach(p => { if (!byCat.has(p.category)) byCat.set(p.category, p); });
+      featured = [...byCat.values()];
+      enriched.forEach(p => { if (featured.length < 6 && !featured.includes(p)) featured.push(p); });
+    }
     featuredEl.innerHTML = featured.slice(0, 6).map(productCardHTML).join('') ||
       '<p class="empty-note">Binnenkort te zien.</p>';
   }
@@ -87,14 +119,35 @@ async function initGallery() {
   const subFilterBar = document.getElementById('subFilterBar');
   if (!grid) return;
 
-  let activeCat = 'all';
+  // The homepage's category tiles link straight to a filtered view.
+  const wanted = new URLSearchParams(window.location.search).get('cat');
+  let activeCat = (wanted && catByslug[wanted]) ? wanted : 'all';
   let activeSub = 'all';
 
   function render() {
-    let list = activeCat === 'all' ? enriched : enriched.filter(p => p.category === activeCat);
-    if (activeCat !== 'all' && activeSub !== 'all') list = list.filter(p => p.subcategory === activeSub);
-    grid.innerHTML = list.map(productCardHTML).join('') ||
-      '<p class="empty-note">Geen creaties in deze categorie.</p>';
+    if (activeCat === 'all') {
+      // 47 items in one undifferentiated scroll is hard to navigate, so the
+      // unfiltered view is grouped under category headings instead.
+      const esc = window.SojozinoSite.escapeHTML;
+      grid.innerHTML = '';
+      grid.classList.add('grouped');
+      const html = (categories || []).map(c => {
+        const list = enriched.filter(p => p.category === c.slug);
+        if (!list.length) return '';
+        return `
+          <section class="product-group">
+            <h2 class="product-group-title reveal">${esc(c.name)} <span>${list.length}</span></h2>
+            <div class="product-grid">${list.map(productCardHTML).join('')}</div>
+          </section>`;
+      }).join('');
+      grid.innerHTML = html || '<p class="empty-note">Nog geen creaties.</p>';
+    } else {
+      grid.classList.remove('grouped');
+      let list = enriched.filter(p => p.category === activeCat);
+      if (activeSub !== 'all') list = list.filter(p => p.subcategory === activeSub);
+      grid.innerHTML = list.map(productCardHTML).join('') ||
+        '<p class="empty-note">Geen creaties in deze categorie.</p>';
+    }
     window.SojozinoSite.initReveal();
   }
 
@@ -118,7 +171,7 @@ async function initGallery() {
     const esc = window.SojozinoSite.escapeHTML;
     const pills = [{ slug: 'all', name: 'Alles' }, ...(categories || [])];
     filterBar.innerHTML = pills.map(c =>
-      `<button class="filter-pill${c.slug === 'all' ? ' active' : ''}" data-cat="${esc(c.slug)}">${esc(c.name)}</button>`
+      `<button class="filter-pill${c.slug === activeCat ? ' active' : ''}" data-cat="${esc(c.slug)}">${esc(c.name)}</button>`
     ).join('');
     filterBar.addEventListener('click', (e) => {
       const btn = e.target.closest('.filter-pill');

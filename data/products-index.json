@@ -9,7 +9,8 @@
       "alt": "Tties"
     },
     "order": 1,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "clutch",
@@ -21,7 +22,8 @@
       "alt": "Clutch"
     },
     "order": 2,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "den-grace",
@@ -33,7 +35,8 @@
       "alt": "Den Grace"
     },
     "order": 3,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "driehoek-handtasje",
@@ -45,7 +48,8 @@
       "alt": "Driehoek Handtasje"
     },
     "order": 4,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "geel-tasje-met-rode-accenten",
@@ -57,7 +61,8 @@
       "alt": "Geel Tasje Met Rode Accenten"
     },
     "order": 5,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "handtas-den-mimi",
@@ -69,7 +74,8 @@
       "alt": "Handtas Den Mimi"
     },
     "order": 6,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "lotustasje",
@@ -81,7 +87,8 @@
       "alt": "Lotustasje"
     },
     "order": 7,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "paarse-dokterstas-handtas",
@@ -93,7 +100,8 @@
       "alt": "Paarse Dokterstas Handtas"
     },
     "order": 8,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "plooitasje-lamsleder",
@@ -105,7 +113,8 @@
       "alt": "Plooitasje Lamsleder"
     },
     "order": 9,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "rugbyhandtas",
@@ -117,7 +126,8 @@
       "alt": "Rugbyhandtas"
     },
     "order": 10,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "schimmeltas",
@@ -129,7 +139,8 @@
       "alt": "Schimmeltas"
     },
     "order": 11,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "slingbags",
@@ -141,7 +152,8 @@
       "alt": "Slingbags"
     },
     "order": 12,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "stovebuze",
@@ -153,7 +165,8 @@
       "alt": "Stovebuze"
     },
     "order": 13,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "barrel-bag-lapjes",
@@ -165,7 +178,8 @@
       "alt": "Barrel Bag Lapjes"
     },
     "order": 1,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "lucs-boekentas",
@@ -177,7 +191,8 @@
       "alt": "Lucs Boekentas"
     },
     "order": 2,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "t-tas-fushia",
@@ -189,7 +204,8 @@
       "alt": "T Tas Fushia"
     },
     "order": 3,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "rugzak-messengerbag",
@@ -201,7 +217,8 @@
       "alt": "Rugzak Messengerbag"
     },
     "order": 4,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "tas-metje",
@@ -213,7 +230,8 @@
       "alt": "Tas Metje"
     },
     "order": 5,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "bordeauxrode-riem",
@@ -225,7 +243,8 @@
       "alt": "Bordeauxrode Riem"
     },
     "order": 1,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "dopp-kit",
@@ -237,7 +256,8 @@
       "alt": "Dopp Kit"
     },
     "order": 1,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "driehoek-geldbeugels",
@@ -249,7 +269,8 @@
       "alt": "Driehoek Geldbeugels"
     },
     "order": 2,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "henks-gsm-houder",
@@ -261,7 +282,8 @@
       "alt": "Henks Gsm Houder"
     },
     "order": 3,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "inges-longwallet",
@@ -273,7 +295,8 @@
       "alt": "Inges Longwallet"
     },
     "order": 4,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "noors-boekenbox",
@@ -285,7 +308,8 @@
       "alt": "Noors Boekenbox"
     },
     "order": 5,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "peaky-blinders-pet",
@@ -297,7 +321,8 @@
       "alt": "Peaky Blinders Pet"
     },
     "order": 6,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "bifold-de-nele-portefeuille",
@@ -309,7 +334,8 @@
       "alt": "Bifold De Nele Portefeuille"
     },
     "order": 7,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "boekenbox-handtas",
@@ -321,7 +347,8 @@
       "alt": "Boekenbox Handtas"
     },
     "order": 8,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "boekenbox-rood-print",
@@ -333,7 +360,8 @@
       "alt": "Boekenbox Rood Print"
     },
     "order": 9,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "deksel-koffiemaler-rok",
@@ -345,7 +373,8 @@
       "alt": "Deksel Koffiemaler Rok"
     },
     "order": 10,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "kaartenhouder-blauw",
@@ -357,7 +386,8 @@
       "alt": "Kaartenhouder Blauw"
     },
     "order": 11,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kaartenhouder-bruin-idem-grofleder",
@@ -369,7 +399,8 @@
       "alt": "Kaartenhouder Bruin Idem Grofleder"
     },
     "order": 12,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kaartenhouder-grof-leder",
@@ -381,7 +412,8 @@
       "alt": "Kaartenhouder Grof Leder"
     },
     "order": 13,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kaartenhouder-origami",
@@ -393,7 +425,8 @@
       "alt": "Kaartenhouder Origami"
     },
     "order": 14,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "kaartenhouder-schuifflap",
@@ -405,7 +438,8 @@
       "alt": "Kaartenhouder Schuifflap"
     },
     "order": 15,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kaartenhouders",
@@ -417,7 +451,8 @@
       "alt": "Kaartenhouders"
     },
     "order": 16,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kaartenhouders-duo-kleur",
@@ -429,7 +464,8 @@
       "alt": "Kaartenhouders Duo Kleur"
     },
     "order": 17,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "kleine-geldbeugel",
@@ -441,7 +477,8 @@
       "alt": "Kleine Geldbeugel"
     },
     "order": 18,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "mes-tasje",
@@ -453,7 +490,8 @@
       "alt": "Mes Tasje"
     },
     "order": 19,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "messenbeugel",
@@ -465,7 +503,8 @@
       "alt": "Messenbeugel"
     },
     "order": 20,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "poepzakjeshouder-handtasje",
@@ -477,7 +516,8 @@
       "alt": "Poepzakjeshouder Handtasje"
     },
     "order": 21,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "portefeuille-den-stijn",
@@ -489,7 +529,8 @@
       "alt": "Portefeuille Den Stijn"
     },
     "order": 22,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "portefeuille-rood-zwart",
@@ -501,7 +542,8 @@
       "alt": "Portefeuille Rood Zwart"
     },
     "order": 23,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "smartphonetasje",
@@ -513,7 +555,8 @@
       "alt": "Smartphonetasje"
     },
     "order": 24,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   },
   {
     "slug": "tablethoes",
@@ -525,7 +568,8 @@
       "alt": "Tablethoes"
     },
     "order": 25,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "telefoonhoesje-prosper",
@@ -537,7 +581,8 @@
       "alt": "Telefoonhoesje Prosper"
     },
     "order": 26,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "vide-poche",
@@ -549,7 +594,8 @@
       "alt": "Vide Poche"
     },
     "order": 27,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "zakmeshouder-met-sleutelhanger",
@@ -561,6 +607,7 @@
       "alt": "Zakmeshouder Met Sleutelhanger"
     },
     "order": 28,
-    "featured": false
+    "featured": false,
+    "fit": "contain"
   }
 ]

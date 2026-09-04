@@ -43,6 +43,7 @@ upcoming markets — without touching code.
 Open `admin.html` (bookmark it). From there:
 - **Producten** — add a new item, edit an existing one's name/category/subcategory/description,
   add or remove photos, reorder them, pick which photo is the cover shown on the overview page.
+  The ☆ next to each product puts it in the "Uitgelicht" row on the homepage (saves immediately).
 - **Categorieën** — add/rename the product categories, plus the onderverdelingen (subcategories)
   nested under Kleine Lederwaren.
 - **Over mij** — edit the About text and photo.
@@ -66,6 +67,12 @@ Then open `http://localhost:8123`. Two things only work once this is actually li
 not in local preview: the admin dashboard's Save buttons (they commit to the GitHub repo, so need
 a real connection) and the **Bestellen** form (Netlify Forms only exists on Netlify's own
 infrastructure — submitting it locally will show the error message, which is expected).
+
+## After editing CSS or JS
+
+Run `python scripts/bump_assets_version.py`. It rewrites the `?v=` token on every
+CSS/JS link (the token is a hash of those files) so browsers don't serve a cached copy of the
+old styles. Re-running it when nothing changed does nothing.
 
 ## Re-running the photo import
 

@@ -316,15 +316,21 @@ function renderProductsTab() {
       .filter(p => (cat === 'all' || p.category === cat) && (!q || p.name.toLowerCase().includes(q)))
       .sort((a, b) => a.name.localeCompare(b.name));
     const listEl = $('#productsList');
+    const featuredCount = state.productsIndex.filter(p => p.featured).length;
     listEl.innerHTML = list.length ? list.map(p => `
       <div class="row-card" data-slug="${esc(p.slug)}">
         <img src="${esc(p.cover?.src || '')}" alt="">
         <div class="rc-info"><strong>${esc(p.name)}</strong><span>${esc(catByslug[p.category] || '—')}</span></div>
         <div class="rc-actions">
+          <button class="btn-feature${p.featured ? ' on' : ''}" data-action="feature"
+                  title="${p.featured ? 'Van de homepage halen' : 'Op de homepage tonen'}">${p.featured ? '★' : '☆'}</button>
           <button class="btn-admin secondary small" data-action="edit">Bewerken</button>
           <button class="btn-admin danger small" data-action="delete">Verwijderen</button>
         </div>
       </div>`).join('') : '<div class="empty-state">Geen producten gevonden.</div>';
+    $('#featuredHint').textContent = featuredCount
+      ? `${featuredCount} product${featuredCount === 1 ? '' : 'en'} uitgelicht op de homepage.`
+      : 'Niets uitgelicht — de homepage toont voorlopig automatisch een selectie.';
   }
   render();
   $('#productSearch').oninput = render;
@@ -336,9 +342,29 @@ function renderProductsTab() {
     const slug = btn.closest('.row-card').dataset.slug;
     if (btn.dataset.action === 'edit') openProductEditor(slug);
     else if (btn.dataset.action === 'delete') deleteProduct(slug);
+    else if (btn.dataset.action === 'feature') toggleFeatured(slug, render);
   };
 
   $('#newProductBtn').onclick = () => openProductEditor(null);
+}
+
+// Starring is a one-field change to the index, so it commits on its own
+// rather than going through the full product editor.
+async function toggleFeatured(slug, rerender) {
+  const p = state.productsIndex.find(x => x.slug === slug);
+  if (!p) return;
+  p.featured = !p.featured;
+  rerender();
+  try {
+    await api.commitBatch(
+      [{ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) }],
+      `${p.featured ? 'Uitgelicht' : 'Niet meer uitgelicht'}: ${p.name}`);
+    toast(p.featured ? `"${p.name}" staat nu op de homepage.` : `"${p.name}" is van de homepage gehaald.`, 'ok');
+  } catch (e) {
+    p.featured = !p.featured; // put it back, the save didn't land
+    rerender();
+    toast(e.message, 'err');
+  }
 }
 
 async function deleteProduct(slug) {

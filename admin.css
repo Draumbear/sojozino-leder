@@ -158,7 +158,21 @@
 .row-card .rc-info { flex: 1; min-width: 0; }
 .row-card .rc-info strong { display: block; font-size: 0.92rem; }
 .row-card .rc-info span { font-size: 0.78rem; color: var(--a-ink-faint); }
-.row-card .rc-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+.row-card .rc-actions { display: flex; gap: 0.4rem; flex-shrink: 0; align-items: center; }
+
+/* Star toggle: puts a product on the homepage. Saves on click. */
+.btn-feature {
+  border: 1.5px solid var(--a-line);
+  background: #fff;
+  border-radius: var(--a-radius-sm);
+  width: 32px; height: 32px;
+  font-size: 1rem; line-height: 1;
+  color: var(--a-ink-faint);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.btn-feature:hover { border-color: var(--a-rust); color: var(--a-rust); }
+.btn-feature.on { color: var(--a-rust); border-color: var(--a-rust); }
 
 .sub-category-block { margin: -0.2rem 0 1rem 1.6rem; padding-left: 0.8rem; border-left: 2px solid var(--a-line); }
 .sub-category-block .sub-row-card { background: var(--a-parchment); }
