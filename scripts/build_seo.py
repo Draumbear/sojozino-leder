@@ -46,6 +46,15 @@ PRIVATE_PAGES = ["admin.html", "404.html", "bestellen-bedankt.html"]
 
 CANONICAL_RE = re.compile(r'\n?[ \t]*<link rel="canonical"[^>]*>')
 ROBOTS_META_RE = re.compile(r'\n?[ \t]*<meta name="robots"[^>]*>')
+SOCIAL_RE = re.compile(r'\n?[ \t]*<!-- social:start -->.*?<!-- social:end -->', re.S)
+JSONLD_RE = re.compile(r'\n?[ \t]*<script type="application/ld\+json">.*?</script>', re.S)
+TITLE_RE = re.compile(r'<title>(.*?)</title>', re.S)
+DESC_RE = re.compile(r'<meta name="description" content="(.*?)">', re.S)
+
+# One landscape crop of Johnny at the bench, built by scripts/build_thumbs.py.
+# Every photo on the site is portrait, and a portrait image in a share card gets
+# letterboxed or cropped by whoever is rendering it, badly.
+OG_IMAGE = "assets/og-default.jpg"
 
 
 def url_for(page):
@@ -55,6 +64,85 @@ def url_for(page):
 def lastmod(*paths):
     newest = max((os.path.getmtime(p) for p in paths if os.path.exists(p)), default=time.time())
     return time.strftime("%Y-%m-%d", time.gmtime(newest))
+
+
+def social_block(html, page):
+    """The tags WhatsApp, Facebook, Instagram and Messenger read to build a
+    preview card. Title and description are taken from what the page already
+    says, so there is only ever one copy to keep true.
+
+    product.html is the awkward one: the 47 creations share a file, and the apps
+    that read these tags do not run scripts, so a shared link always shows the
+    site's own card rather than that creation's photo. product-render.js updates
+    them anyway, which is enough for Google, and giving each creation its own
+    card would mean giving each its own file.
+    """
+    title = TITLE_RE.search(html)
+    desc = DESC_RE.search(html)
+    title = title.group(1).strip() if title else "Sojozino"
+    desc = desc.group(1).strip() if desc else ""
+    tags = [
+        ("og:type", "website" if page == "index.html" else "article"),
+        ("og:site_name", "Sojozino"),
+        ("og:locale", "nl_BE"),
+        ("og:title", title),
+        ("og:description", desc),
+        ("og:url", url_for(page)),
+        ("og:image", SITE_ORIGIN + "/" + OG_IMAGE),
+        ("og:image:width", "1200"),
+        ("og:image:height", "630"),
+        ("twitter:card", "summary_large_image"),
+        ("twitter:title", title),
+        ("twitter:description", desc),
+        ("twitter:image", SITE_ORIGIN + "/" + OG_IMAGE),
+    ]
+    lines = ["<!-- social:start -->",
+             "<!-- Preview card for links shared in WhatsApp, Facebook, Instagram.",
+             "     Written by scripts/build_seo.py from this page's own title and",
+             "     description -- edit those, then re-run it. -->"]
+    for key, value in tags:
+        attr = "name" if key.startswith("twitter:") else "property"
+        lines.append('<meta %s="%s" content="%s">' % (attr, key, escape_attr(value)))
+    lines.append("<!-- social:end -->")
+    return "\n".join(lines)
+
+
+def escape_attr(text):
+    return text.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
+
+
+def local_business(site):
+    """Tells Google this is a real business in Oostende rather than a page that
+    happens to mention it -- which is what a knowledge panel is built from."""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": site.get("businessName") or "Sojozino",
+        "description": site.get("tagline") or "",
+        "url": SITE_ORIGIN + "/",
+        "image": SITE_ORIGIN + "/" + OG_IMAGE,
+        "logo": SITE_ORIGIN + "/assets/logo-full.png",
+        "founder": {"@type": "Person", "name": site.get("ownerName") or ""},
+        "makesOffer": {"@type": "Offer", "itemOffered": {
+            "@type": "Product", "category": "Handgemaakte lederwaren"}},
+    }
+    if site.get("email"):
+        data["email"] = site["email"]
+    if site.get("vatNumber"):
+        data["vatID"] = site["vatNumber"]
+    if site.get("instagramUrl"):
+        data["sameAs"] = [site["instagramUrl"]]
+
+    # An address only where he has actually given one: a half-filled
+    # PostalAddress is worse than none, since Google reads it as fact.
+    address = {"@type": "PostalAddress", "addressCountry": "BE"}
+    if site.get("address"):
+        address["streetAddress"] = site["address"]
+    if site.get("location"):
+        address["addressLocality"] = site["location"].split(",")[0].strip()
+    if len(address) > 1:
+        data["address"] = address
+    return data
 
 
 def set_head_tag(html, pattern, tag):
@@ -71,12 +159,24 @@ def main():
     # product.html is skipped on purpose: one static canonical there would tell
     # Google that all 47 creations are the same page. product-render.js sets it
     # per slug once it knows which one it is showing.
+    site = json.load(open(os.path.join(BASE, "data", "site.json"), encoding="utf-8"))
+
     touched = []
-    for page in ["index.html"] + PUBLIC_PAGES:
+    for page in ["index.html"] + PUBLIC_PAGES + ["product.html"]:
         path = os.path.join(BASE, page)
         html = open(path, encoding="utf-8").read()
-        updated = set_head_tag(html, CANONICAL_RE,
-                               '<link rel="canonical" href="%s">' % url_for(page))
+        updated = html
+        # product.html is the one page without a canonical here: a single one
+        # would tell Google all 47 creations are the same page, so
+        # product-render.js writes it per slug instead.
+        if page != "product.html":
+            updated = set_head_tag(updated, CANONICAL_RE,
+                                   '<link rel="canonical" href="%s">' % url_for(page))
+        updated = set_head_tag(updated, SOCIAL_RE, social_block(updated, page))
+        if page == "index.html":
+            updated = set_head_tag(updated, JSONLD_RE,
+                                   '<script type="application/ld+json">\n%s\n</script>'
+                                   % json.dumps(local_business(site), ensure_ascii=False, indent=2))
         if updated != html:
             open(path, "w", encoding="utf-8", newline="").write(updated)
             touched.append(page)

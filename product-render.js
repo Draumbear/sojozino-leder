@@ -40,7 +40,8 @@ function renderGallery() {
   if (multi) {
     thumbsEl.hidden = false;
     thumbsEl.innerHTML = images.map((im, i) =>
-      `<img src="${escapeHTML(im.src)}" alt="${escapeHTML(im.alt || '')}" class="${i === 0 ? 'active' : ''}" data-idx="${i}"
+      `<img src="${escapeHTML(thumbUrl(im.src))}" data-full="${escapeHTML(im.src)}"
+            alt="${escapeHTML(im.alt || '')}" class="${i === 0 ? 'active' : ''}" data-idx="${i}"
             loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async">`).join('');
   } else {
     thumbsEl.hidden = true;
@@ -49,6 +50,25 @@ function renderGallery() {
 
   updateLightboxChrome();
 }
+
+// Thumbnails live in a thumbs/ folder beside the original, written by
+// scripts/build_thumbs.py. The path is derived rather than stored, so nothing
+// has to be kept in sync -- and a photo Johnny uploaded since that script last
+// ran simply has no thumb, which the error handler below turns back into the
+// original instead of a broken image.
+function thumbUrl(src) {
+  const cut = src.lastIndexOf('/');
+  return cut < 0 ? src : `${src.slice(0, cut)}/thumbs/${src.slice(cut + 1)}`;
+}
+
+// Capturing, on the document: <img onerror> would be an inline handler, which
+// the site's Content-Security-Policy forbids, and error events do not bubble.
+document.addEventListener('error', (e) => {
+  const img = e.target;
+  if (img.tagName === 'IMG' && img.dataset.full && !img.src.endsWith(img.dataset.full)) {
+    img.src = img.dataset.full;
+  }
+}, true);
 
 function setPhoto(i) {
   const images = currentImages();
@@ -209,7 +229,27 @@ async function renderProduct() {
     document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
   canonical.href = `${location.origin}${location.pathname}?slug=${encodeURIComponent(slug)}`;
   const desc = document.querySelector('meta[name="description"]');
-  if (desc && data.description) desc.content = data.description.slice(0, 300);
+  const text = (data.description || `${data.name} — handgemaakt in leder door Sojozino.`).slice(0, 300);
+  if (desc) desc.content = text;
+
+  // product is normalised into variants above; the flat images array only
+  // exists on the raw file.
+  const cover = product.variants[0]?.images?.[0]?.src || data.cover?.src;
+  const meta = {
+    'og:title': `${data.name} — Sojozino`,
+    'og:description': text,
+    'og:url': canonical.href,
+    'twitter:title': `${data.name} — Sojozino`,
+    'twitter:description': text,
+  };
+  if (cover) {
+    meta['og:image'] = new URL(cover, location.href).href;
+    meta['twitter:image'] = meta['og:image'];
+  }
+  for (const [key, value] of Object.entries(meta)) {
+    const el = document.querySelector(`meta[property="${key}"], meta[name="${key}"]`);
+    if (el) el.content = value;
+  }
 
   // Variant names live in a hover/focus tooltip rather than under each
   // swatch: printed labels wrap to two or three lines at different lengths,
@@ -224,7 +264,7 @@ async function renderProduct() {
           return `
           <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
                   title="${escapeHTML(label)}" aria-label="${escapeHTML(label)}">
-            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="" loading="lazy" decoding="async">
+            <img src="${escapeHTML(thumbUrl(v.images[0]?.src || ''))}" data-full="${escapeHTML(v.images[0]?.src || '')}" alt="" loading="lazy" decoding="async">
             <span>${escapeHTML(label)}</span>
           </button>`;
         }).join('')}
