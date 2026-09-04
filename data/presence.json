@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "2026-09-25-test",
+    "title": "Test",
+    "location": "Oostende",
+    "address": "Christianalaan 5",
+    "website": "loicgoethals.com",
+    "date": "2026-09-25",
+    "description": "test"
+  }
+]
