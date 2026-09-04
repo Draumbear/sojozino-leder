@@ -1530,6 +1530,8 @@ function snapshotSettings() {
     'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
     'Kleine regel bestelpagina': s.orderEyebrow, 'Titel bestelpagina': s.orderHeading,
     'Uitleg bestelpagina': s.orderIntro,
+    'Titel tekstvak bestelpagina': s.orderMessageLabel,
+    'Voorbeeldtekst tekstvak bestelpagina': s.orderMessagePlaceholder,
     'Kleine regel marktpagina': s.marketsEyebrow, 'Titel marktpagina': s.marketsHeading,
     'Uitleg marktpagina': s.marketsIntro,
     ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
@@ -1806,6 +1808,8 @@ function renderSettingsTab() {
   $('#s-orderEyebrow').value = s.orderEyebrow || '';
   $('#s-orderHeading').value = s.orderHeading || '';
   $('#s-orderIntro').value = s.orderIntro || '';
+  $('#s-orderMessageLabel').value = s.orderMessageLabel || '';
+  $('#s-orderMessagePlaceholder').value = s.orderMessagePlaceholder || '';
   $('#s-marketsEyebrow').value = s.marketsEyebrow || '';
   $('#s-marketsHeading').value = s.marketsHeading || '';
   $('#s-marketsIntro').value = s.marketsIntro || '';
@@ -1830,6 +1834,8 @@ async function saveSettings() {
     'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
     'Kleine regel bestelpagina': $('#s-orderEyebrow').value.trim(), 'Titel bestelpagina': $('#s-orderHeading').value.trim(),
     'Uitleg bestelpagina': $('#s-orderIntro').value.trim(),
+    'Titel tekstvak bestelpagina': $('#s-orderMessageLabel').value.trim(),
+    'Voorbeeldtekst tekstvak bestelpagina': $('#s-orderMessagePlaceholder').value.trim(),
     'Kleine regel marktpagina': $('#s-marketsEyebrow').value.trim(), 'Titel marktpagina': $('#s-marketsHeading').value.trim(),
     'Uitleg marktpagina': $('#s-marketsIntro').value.trim(),
     ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
@@ -1856,6 +1862,8 @@ async function saveSettings() {
       orderEyebrow: $('#s-orderEyebrow').value.trim(),
       orderHeading: $('#s-orderHeading').value.trim(),
       orderIntro: $('#s-orderIntro').value.trim(),
+      orderMessageLabel: $('#s-orderMessageLabel').value.trim(),
+      orderMessagePlaceholder: $('#s-orderMessagePlaceholder').value.trim(),
       marketsEyebrow: $('#s-marketsEyebrow').value.trim(),
       marketsHeading: $('#s-marketsHeading').value.trim(),
       marketsIntro: $('#s-marketsIntro').value.trim(),

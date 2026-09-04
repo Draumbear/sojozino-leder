@@ -113,6 +113,13 @@ function renderOrderPage(site) {
   setEditableText('orderEyebrow', site.orderEyebrow);
   setEditableText('orderHeading', site.orderHeading, { allowBreaks: true });
   setEditableText('orderIntro', site.orderIntro);
+  // The grey prompt inside the message box is what actually shapes what people
+  // write, so it belongs in the dashboard with the rest of the page's wording
+  // rather than in the markup. It is an attribute, not text, so it needs its
+  // own line rather than setEditableText.
+  setEditableText('orderMessageLabel', site.orderMessageLabel);
+  const box = document.getElementById('of-message');
+  if (box && site.orderMessagePlaceholder) box.placeholder = site.orderMessagePlaceholder;
 }
 
 function renderMarketsPage(site) {
