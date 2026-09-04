@@ -81,21 +81,62 @@ function watchWrites(gh) {
   return gh;
 }
 
-// Shows the publish bar only when something is waiting to go live. The count
-// comes from the branch history rather than this browser, so it stays right
-// even if the last edits were made on another device.
+// Shows the publish bar only when something is waiting to go live, and lists
+// what that something is. Read from the branch history rather than from this
+// browser, so it stays right even if the last edits were made on another device.
+const PENDING_LIST_LIMIT = 6;
+
 async function refreshPublishBar() {
   const bar = $('#publishBar');
   if (!api || !bar) return;
-  const pending = await api.countUnpublished().catch(() => null);
-  if (!pending) {
+  const pending = await api.pendingChanges().catch(() => null);
+  if (!pending || !pending.length) {
     bar.classList.add('hidden');
     return;
   }
-  $('#publishCount').textContent = pending === 1
+  $('#publishCount').textContent = pending.length === 1
     ? '1 wijziging staat nog niet online'
-    : `${pending} wijzigingen staan nog niet online`;
+    : `${pending.length} wijzigingen staan nog niet online`;
+
+  const shown = pending.slice(0, PENDING_LIST_LIMIT);
+  const rest = pending.length - shown.length;
+  $('#publishList').innerHTML = shown.map(c => `
+    <li>
+      <span>
+        <span class="pc-what">${esc(c.summary)}</span>${c.date ? `<span class="pc-when">${esc(relativeTime(c.date))}</span>` : ''}
+      </span>
+      ${canGoTo(c.target) ? `<button class="pc-goto" type="button" data-target="${esc(c.target)}">Ga erheen</button>` : ''}
+    </li>`).join('')
+    + (rest > 0 ? `<li class="pc-more">en nog ${rest} ${rest === 1 ? 'wijziging' : 'wijzigingen'}</li>` : '');
+
   bar.classList.remove('hidden');
+}
+
+function relativeTime(iso) {
+  const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (minutes < 1) return 'zonet';
+  if (minutes < 60) return `${minutes} min geleden`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} uur geleden`;
+  const days = Math.round(hours / 24);
+  return `${days} ${days === 1 ? 'dag' : 'dagen'} geleden`;
+}
+
+// A target only earns a button if it still leads somewhere: a product deleted
+// after the change was made has no editor left to open.
+function canGoTo(target) {
+  if (!target) return false;
+  const [tab, id] = target.split('/');
+  if (!$(`.admin-tabs button[data-tab="${tab}"]`)) return false;
+  if (tab === 'products' && id) return state.productsIndex.some(p => p.slug === id);
+  return true;
+}
+
+function goToChange(target) {
+  const [tab, id] = target.split('/');
+  $(`.admin-tabs button[data-tab="${tab}"]`).click();
+  if (tab === 'products' && id) openProductEditor(id);
+  else window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function publishChanges() {
@@ -359,7 +400,7 @@ function uniqueSubcategorySlug(cat, base) {
 
 async function saveCategories(message) {
   try {
-    await api.commitBatch([{ path: 'data/categories.json', content: JSON.stringify(state.categories, null, 2) }], message);
+    await api.commitBatch([{ path: 'data/categories.json', content: JSON.stringify(state.categories, null, 2) }], message, 'categories');
     toast('Categorieën opgeslagen.', 'ok');
     renderCategoriesTab();
     renderProductsTab();
@@ -446,7 +487,8 @@ async function toggleFeatured(slug, rerender) {
   try {
     await api.commitBatch(
       [{ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) }],
-      `${p.featured ? 'Uitgelicht' : 'Niet meer uitgelicht'}: ${p.name}`);
+      `${p.featured ? 'Uitgelicht' : 'Niet meer uitgelicht'}: ${p.name}`,
+      `products/${slug}`);
     toast(p.featured ? `"${p.name}" staat nu op de homepage.` : `"${p.name}" is van de homepage gehaald.`, 'ok');
   } catch (e) {
     p.featured = !p.featured; // put it back, the save didn't land
@@ -470,7 +512,7 @@ async function deleteProduct(slug) {
     ];
     state.productsIndex = state.productsIndex.filter(x => x.slug !== slug);
     files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
-    await api.commitBatch(files, `Product verwijderd: ${p.name}`);
+    await api.commitBatch(files, `Product verwijderd: ${p.name}`, 'products');
     toast('Product verwijderd.', 'ok');
     renderProductsTab();
     renderOverview();
@@ -857,7 +899,7 @@ async function saveProduct() {
     else state.productsIndex.push(indexEntry);
     files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
 
-    await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`);
+    await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`, `products/${slug}`);
     productCache[slug] = productData;
     toast('Product opgeslagen.', 'ok');
     closeProductEditor();
@@ -895,7 +937,7 @@ async function saveAbout() {
     }
 
     files.push({ path: 'data/site.json', content: JSON.stringify(state.site, null, 2) });
-    await api.commitBatch(files, 'Over-mij bijgewerkt');
+    await api.commitBatch(files, 'Over-mij bijgewerkt', 'about');
     toast('Opgeslagen.', 'ok');
     renderAboutTab();
   } catch (e) {
@@ -966,7 +1008,7 @@ async function savePresence(message) {
   const btn = $('#savePresenceBtn');
   setBusy(btn, true, 'Opslaan…');
   try {
-    await api.commitBatch([{ path: 'data/presence.json', content: JSON.stringify(state.presence, null, 2) }], message);
+    await api.commitBatch([{ path: 'data/presence.json', content: JSON.stringify(state.presence, null, 2) }], message, 'presence');
     toast('Opgeslagen.', 'ok');
     renderPresenceTab();
     renderOverview();
@@ -1024,7 +1066,7 @@ async function saveSettings() {
     }
 
     files.push({ path: 'data/site.json', content: JSON.stringify(state.site, null, 2) });
-    await api.commitBatch(files, 'Instellingen bijgewerkt');
+    await api.commitBatch(files, 'Instellingen bijgewerkt', 'settings');
     toast('Opgeslagen.', 'ok');
     renderSettingsTab();
   } catch (e) {
@@ -1052,6 +1094,10 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
   $('#publishBtn').addEventListener('click', publishChanges);
+  $('#publishList').addEventListener('click', (e) => {
+    const btn = e.target.closest('.pc-goto');
+    if (btn) goToChange(btn.dataset.target);
+  });
 
   $('#s-accent').addEventListener('input', (e) => { $('#s-accentHex').value = e.target.value; });
   $('#s-accentHex').addEventListener('input', (e) => { if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) $('#s-accent').value = e.target.value; });

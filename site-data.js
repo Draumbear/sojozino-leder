@@ -114,4 +114,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   initReveal();
 });
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal };
+// A category label attached to one item reads in the singular -- a card for
+// one bag says "Handtas", not "Handtassen". Dutch plurals are too irregular to
+// strip, so it's a field set in the dashboard; collective names like "Kleine
+// lederwaren" have no singular and simply fall back. Category tiles, which
+// stand for the whole group, keep the plural name.
+function categoryLabel(cat) {
+  return (cat && (cat.singular || cat.name)) || '';
+}
+
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel };

@@ -198,12 +198,7 @@ async function renderProduct() {
 
   const cat = categories.find(c => c.slug === data.category) || {};
   const sub = (cat.subcategories || []).find(s => s.slug === data.subcategory);
-  // The tag labels this one item, so it reads in the singular -- 'Handtas',
-  // not 'Handtassen'. Dutch plurals are too irregular to strip reliably
-  // (Handtassen -> Handtas, Riemen -> Riem, and 'Kleine lederwaren' has no
-  // sensible singular at all), so it's a field on the category, set in the
-  // dashboard, falling back to the plural name when it's left empty.
-  const catLabel = (c) => (c && (c.singular || c.name)) || '';
+  const catLabel = window.SojozinoSite.categoryLabel;
   const catName = sub ? `${catLabel(cat)} — ${catLabel(sub)}` : catLabel(cat);
 
   document.title = `${data.name} — Sojozino`;
@@ -235,7 +230,7 @@ async function renderProduct() {
       <div class="spotlight">
         <div class="spotlight-main" id="spotlightMain">
           <img id="spotlightImg" src="" alt="">
-          <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button">&#128269;</button>
+          <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.8-4.8"></path></svg></button>
           <div class="spotlight-nav prev" id="spotlightPrev" aria-label="Vorige foto">&#8249;</div>
           <div class="spotlight-nav next" id="spotlightNext" aria-label="Volgende foto">&#8250;</div>
         </div>

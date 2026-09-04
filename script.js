@@ -38,8 +38,8 @@ async function initHome() {
     loadJSON('data/categories.json'),
     loadJSON('data/presence.json'),
   ]);
-  const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c.name]));
-  const enriched = (products || []).map(p => ({ ...p, categoryName: catByslug[p.category] || '' }));
+  const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c]));
+  const enriched = (products || []).map(p => ({ ...p, categoryName: window.SojozinoSite.categoryLabel(catByslug[p.category]) }));
 
   // Four category tiles, each using the first product's cover as its image
   // and linking into the filtered gallery.
@@ -110,7 +110,8 @@ async function initGallery() {
     .map(p => {
       const cat = catByslug[p.category];
       const sub = (cat?.subcategories || []).find(s => s.slug === p.subcategory);
-      return { ...p, categoryName: cat?.name || '', subcategoryName: sub?.name || '' };
+      const label = window.SojozinoSite.categoryLabel;
+      return { ...p, categoryName: label(cat), subcategoryName: label(sub) };
     })
     .sort((a, b) => (a.category || '').localeCompare(b.category || '') || (a.order || 0) - (b.order || 0));
 

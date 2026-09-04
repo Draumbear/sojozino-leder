@@ -142,6 +142,33 @@
   border-radius: var(--a-radius); box-shadow: var(--a-shadow);
   padding: 1rem 1.2rem; margin-bottom: 1.2rem;
 }
+.publish-bar-head {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+/* What is actually waiting. Without this the bar states a number and leaves her
+   to remember which three things she changed. */
+.publish-list {
+  list-style: none; margin: 0.9rem 0 0; padding: 0.9rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.publish-list li {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.45rem 0;
+  font-size: 0.85rem;
+}
+.publish-list li + li { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.publish-list .pc-what { color: rgba(255, 255, 255, 0.9); }
+.publish-list .pc-when { color: rgba(255, 255, 255, 0.45); font-size: 0.75rem; margin-left: 0.5rem; }
+.publish-list .pc-goto {
+  background: none; border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff; border-radius: var(--a-radius-sm);
+  padding: 0.25rem 0.7rem; font-size: 0.75rem; font-weight: 700;
+  cursor: pointer; flex-shrink: 0;
+}
+.publish-list .pc-goto:hover { background: var(--a-rust); border-color: var(--a-rust); }
+.publish-list .pc-more { color: rgba(255, 255, 255, 0.5); font-size: 0.78rem; }
+
 .publish-bar-text { display: flex; flex-direction: column; gap: 0.25rem; }
 .publish-bar-text strong { font-size: 1rem; }
 .publish-bar-text span { font-size: 0.82rem; color: rgba(255, 255, 255, 0.72); max-width: 52ch; }

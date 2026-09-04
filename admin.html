@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish3">
+<link rel="stylesheet" href="admin.css?v=publish6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
@@ -65,11 +65,14 @@
   <!-- Dashboard -->
   <div id="dashboard" class="hidden">
     <div id="publishBar" class="publish-bar hidden">
-      <div class="publish-bar-text">
-        <strong id="publishCount"></strong>
-        <span>Je bewerkingen zijn bewaard, maar staan nog niet op de website. Klik op publiceren wanneer je klaar bent.</span>
+      <div class="publish-bar-head">
+        <div class="publish-bar-text">
+          <strong id="publishCount"></strong>
+          <span>Je bewerkingen zijn bewaard, maar staan nog niet op de website. Klik op publiceren wanneer je klaar bent.</span>
+        </div>
+        <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
       </div>
-      <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
+      <ul class="publish-list" id="publishList"></ul>
     </div>
     <div class="dashboard-toolbar">
       <div class="admin-tabs">
@@ -257,7 +260,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish3"></script>
-<script src="admin.js?v=publish3"></script>
+<script src="admin-github.js?v=publish6"></script>
+<script src="admin.js?v=publish6"></script>
 </body>
 </html>
