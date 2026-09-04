@@ -66,6 +66,52 @@ function setBusy(btn, busy, busyLabel = 'Bezig…') {
   }
 }
 
+// Every write leaves an unpublished commit behind, so the publish counter has
+// to refresh after each one. Wrapping the write methods once, here, beats
+// remembering to call refreshPublishBar() in a dozen save handlers.
+function watchWrites(gh) {
+  for (const name of ['commitBatch', 'putFile', 'deleteFile']) {
+    const original = gh[name].bind(gh);
+    gh[name] = async (...args) => {
+      const result = await original(...args);
+      refreshPublishBar();
+      return result;
+    };
+  }
+  return gh;
+}
+
+// Shows the publish bar only when something is waiting to go live. The count
+// comes from the branch history rather than this browser, so it stays right
+// even if the last edits were made on another device.
+async function refreshPublishBar() {
+  const bar = $('#publishBar');
+  if (!api || !bar) return;
+  const pending = await api.countUnpublished().catch(() => null);
+  if (!pending) {
+    bar.classList.add('hidden');
+    return;
+  }
+  $('#publishCount').textContent = pending === 1
+    ? '1 wijziging staat nog niet online'
+    : `${pending} wijzigingen staan nog niet online`;
+  bar.classList.remove('hidden');
+}
+
+async function publishChanges() {
+  const btn = $('#publishBtn');
+  setBusy(btn, true, 'Publiceren…');
+  try {
+    await api.publish();
+    toast('Je website wordt nu bijgewerkt — meestal binnen een minuut zichtbaar.', 'ok');
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(btn, false);
+    await refreshPublishBar();
+  }
+}
+
 // ---------- Connect flow ----------
 function initConnect() {
   const saved = GitHubStore.load();
@@ -124,12 +170,13 @@ async function connect(cfg, { silent }) {
   try {
     const candidate = new GitHubAPI(cfg);
     await candidate.verify();
-    api = candidate;
+    api = watchWrites(candidate);
     GitHubStore.save(cfg);
     setConnStatus(true);
     $('#connectPanel').classList.add('hidden');
     $('#dashboard').classList.remove('hidden');
     await loadAll();
+    await refreshPublishBar();
   } catch (e) {
     setConnStatus(false);
     if (!silent) $('#connectError').textContent = e.message;
@@ -179,6 +226,20 @@ function renderOverview() {
   $('#statNextMarket').textContent = next ? new Date(next.date + 'T00:00:00').toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' }) : '—';
 }
 
+// The product page labels a single item with its category, so it needs the
+// singular ('Handtas', not 'Handtassen'). Dutch plurals are too irregular to
+// derive, so it's asked for once here; leaving it blank falls back to the
+// plural name, which is right for collective names like 'Kleine lederwaren'.
+function askSingular(pluralName, current) {
+  const answer = prompt(
+    `Enkelvoud van "${pluralName}" — zo staat het op de productpagina.
+Laat leeg om "${pluralName}" te blijven gebruiken.`,
+    current || ''
+  );
+  if (answer === null) return undefined; // cancelled: leave whatever was there
+  return answer.trim() || null;
+}
+
 // ---------- Categories ----------
 function renderCategoriesTab() {
   const list = $('#categoriesList');
@@ -192,7 +253,7 @@ function renderCategoriesTab() {
         const subCount = state.productsIndex.filter(p => p.category === c.slug && p.subcategory === s.slug).length;
         return `
         <div class="row-card sub-row-card" data-cat="${esc(c.slug)}" data-sub="${esc(s.slug)}">
-          <div class="rc-info"><strong>${esc(s.name)}</strong><span>${subCount} product${subCount === 1 ? '' : 'en'}</span></div>
+          <div class="rc-info"><strong>${esc(s.name)}</strong><span>${subCount} product${subCount === 1 ? '' : 'en'} — enkelvoud: ${esc(s.singular || s.name)}</span></div>
           <div class="rc-actions">
             <button class="btn-admin secondary small" data-action="rename-sub">Naam wijzigen</button>
             <button class="btn-admin danger small" data-action="delete-sub">Verwijderen</button>
@@ -201,7 +262,7 @@ function renderCategoriesTab() {
       }).join('');
       return `
       <div class="row-card" data-slug="${esc(c.slug)}">
-        <div class="rc-info"><strong>${esc(c.name)}</strong><span>${count} product${count === 1 ? '' : 'en'} — ${esc(c.slug)}</span></div>
+        <div class="rc-info"><strong>${esc(c.name)}</strong><span>${count} product${count === 1 ? '' : 'en'} — enkelvoud: ${esc(c.singular || c.name)}</span></div>
         <div class="rc-actions">
           <button class="btn-admin secondary small" data-action="rename-cat">Naam wijzigen</button>
           <button class="btn-admin danger small" data-action="delete-cat">Verwijderen</button>
@@ -225,7 +286,8 @@ function renderCategoriesTab() {
       if (!name || !name.trim()) return;
       cat.subcategories = cat.subcategories || [];
       const slug = uniqueSubcategorySlug(cat, slugify(name));
-      cat.subcategories.push({ slug, name: name.trim() });
+      const singular = askSingular(name.trim(), null);
+      cat.subcategories.push({ slug, name: name.trim(), singular: singular || null });
       await saveCategories(`Onderverdeling toegevoegd: ${name.trim()}`);
       return;
     }
@@ -238,6 +300,8 @@ function renderCategoriesTab() {
         const name = prompt('Nieuwe naam voor deze onderverdeling:', sub.name);
         if (!name || !name.trim()) return;
         sub.name = name.trim();
+        const singular = askSingular(sub.name, sub.singular);
+        if (singular !== undefined) sub.singular = singular;
         await saveCategories(`Onderverdeling hernoemd: ${sub.name}`);
       } else if (btn.dataset.action === 'delete-sub') {
         const count = state.productsIndex.filter(p => p.category === cat.slug && p.subcategory === sub.slug).length;
@@ -257,6 +321,8 @@ function renderCategoriesTab() {
       const name = prompt('Nieuwe naam voor deze categorie:', cat.name);
       if (!name || !name.trim()) return;
       cat.name = name.trim();
+      const singular = askSingular(cat.name, cat.singular);
+      if (singular !== undefined) cat.singular = singular;
       await saveCategories(`Categorie hernoemd: ${cat.name}`);
     } else if (btn.dataset.action === 'delete-cat') {
       const count = state.productsIndex.filter(p => p.category === slug).length;
@@ -271,7 +337,8 @@ function renderCategoriesTab() {
     const name = prompt('Naam van de nieuwe categorie:');
     if (!name || !name.trim()) return;
     const slug = uniqueCategorySlug(slugify(name));
-    state.categories.push({ slug, name: name.trim(), order: state.categories.length + 1, subcategories: [] });
+    const singular = askSingular(name.trim(), null);
+    state.categories.push({ slug, name: name.trim(), singular: singular || null, order: state.categories.length + 1, subcategories: [] });
     await saveCategories(`Categorie toegevoegd: ${name.trim()}`);
   };
 }
@@ -303,6 +370,25 @@ async function saveCategories(message) {
 }
 
 // ---------- Products list ----------
+// There is one shared editor panel, parked at the bottom of the tab in the
+// markup. Opening it there means a long scroll away from the product that was
+// clicked, so instead it gets moved in directly under that product's row. It
+// has to be lifted back out before any list re-render, since rendering
+// replaces the list's innerHTML and would otherwise destroy the panel.
+function detachProductEditor() {
+  $('#tab-products').appendChild($('#productEditor'));
+}
+
+function placeProductEditor() {
+  const panel = $('#productEditor');
+  if (panel.classList.contains('hidden')) return;
+  const listEl = $('#productsList');
+  if (!editingSlug) { listEl.prepend(panel); return; } // new product: top of the list
+  const row = listEl.querySelector(`.row-card[data-slug="${CSS.escape(editingSlug)}"]`);
+  if (row) row.after(panel);
+  else detachProductEditor(); // filtered out of the current view
+}
+
 function renderProductsTab() {
   const catByslug = Object.fromEntries(state.categories.map(c => [c.slug, c.name]));
   const filterSel = $('#productCatFilter');
@@ -316,6 +402,7 @@ function renderProductsTab() {
       .filter(p => (cat === 'all' || p.category === cat) && (!q || p.name.toLowerCase().includes(q)))
       .sort((a, b) => a.name.localeCompare(b.name));
     const listEl = $('#productsList');
+    detachProductEditor();
     const featuredCount = state.productsIndex.filter(p => p.featured).length;
     listEl.innerHTML = list.length ? list.map(p => `
       <div class="row-card" data-slug="${esc(p.slug)}">
@@ -331,6 +418,7 @@ function renderProductsTab() {
     $('#featuredHint').textContent = featuredCount
       ? `${featuredCount} product${featuredCount === 1 ? '' : 'en'} uitgelicht op de homepage.`
       : 'Niets uitgelicht — de homepage toont voorlopig automatisch een selectie.';
+    placeProductEditor();
   }
   render();
   $('#productSearch').oninput = render;
@@ -397,7 +485,10 @@ async function openProductEditor(slug) {
   editorPendingUploads = [];
   const panel = $('#productEditor');
   panel.classList.remove('hidden');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  placeProductEditor();
+  // 'nearest' rather than 'start': the panel now sits right under the product
+  // that was clicked, and scrolling it to the top would push that row off screen.
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   const catOptions = state.categories.map(c => `<option value="${esc(c.slug)}">${esc(c.name)}</option>`).join('');
   $('#pe-category').innerHTML = catOptions || '<option value="">Voeg eerst een categorie toe</option>';
@@ -453,6 +544,7 @@ function renderSubcategorySelect(selected) {
 
 function closeProductEditor() {
   $('#productEditor').classList.add('hidden');
+  detachProductEditor();
   editingSlug = null;
   editorPendingUploads = [];
   editorVariants = [];
@@ -479,9 +571,9 @@ function renderVariantsManager() {
     const existingTiles = v.images.map((img, ii) => {
       const isCover = editorCoverKey.variantIdx === vi && editorCoverKey.imageIdx === ii;
       return `
-      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing">
+      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing" draggable="true" title="Sleep om te herschikken">
         ${isCover ? '<span class="cover-badge">Cover</span>' : ''}
-        <img src="${esc(img.src)}" alt="">
+        <img src="${esc(img.src)}" alt="" draggable="false">
         <div class="tile-actions">
           <button data-action="cover" title="Als cover instellen">★</button>
           <button data-action="left" title="Naar links">←</button>
@@ -515,6 +607,69 @@ function renderVariantsManager() {
   }).join('');
 
   bindVariantsManagerEvents(wrap);
+  bindImageDragging(wrap);
+}
+
+// Moving a photo has to carry the cover marker with it: the cover is stored as
+// an index into the variant, so any reshuffle changes what that index points at.
+function moveImage(vi, from, to) {
+  const images = editorVariants[vi].images;
+  const [moved] = images.splice(from, 1);
+  images.splice(to, 0, moved);
+  if (editorCoverKey.variantIdx !== vi) return;
+  const cover = editorCoverKey.imageIdx;
+  if (cover === from) editorCoverKey.imageIdx = to;
+  else if (from < cover && cover <= to) editorCoverKey.imageIdx = cover - 1;
+  else if (to <= cover && cover < from) editorCoverKey.imageIdx = cover + 1;
+}
+
+// Drag-and-drop reordering within one variant. The arrow buttons stay: this
+// covers neither touch nor keyboard, and dragging is easy to mis-aim.
+function bindImageDragging(wrap) {
+  let dragging = null;
+
+  const clearMarkers = () => wrap.querySelectorAll('.image-tile.drag-over')
+    .forEach(t => t.classList.remove('drag-over'));
+
+  wrap.querySelectorAll('.image-tile[data-kind="existing"]').forEach(tile => {
+    tile.addEventListener('dragstart', (e) => {
+      dragging = { vi: Number(tile.dataset.vidx), ii: Number(tile.dataset.idx) };
+      tile.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      // Firefox won't start a drag unless the transfer carries something.
+      e.dataTransfer.setData('text/plain', String(dragging.ii));
+    });
+
+    tile.addEventListener('dragend', () => {
+      tile.classList.remove('dragging');
+      dragging = null;
+      clearMarkers();
+    });
+
+    tile.addEventListener('dragover', (e) => {
+      // Photos belong to a specific variant, so a drag never crosses into another.
+      if (!dragging || Number(tile.dataset.vidx) !== dragging.vi) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (Number(tile.dataset.idx) === dragging.ii) return;
+      clearMarkers();
+      tile.classList.add('drag-over');
+    });
+
+    tile.addEventListener('dragleave', () => tile.classList.remove('drag-over'));
+
+    tile.addEventListener('drop', (e) => {
+      if (!dragging) return;
+      e.preventDefault();
+      const vi = Number(tile.dataset.vidx);
+      const to = Number(tile.dataset.idx);
+      const from = dragging.ii;
+      dragging = null;
+      if (vi !== Number(tile.dataset.vidx) || to === from) { clearMarkers(); return; }
+      moveImage(vi, from, to);
+      renderVariantsManager();
+    });
+  });
 }
 
 function bindVariantsManagerEvents(wrap) {
@@ -842,6 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#cancelPresenceBtn').addEventListener('click', () => $('#presenceForm').classList.add('hidden'));
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
+  $('#publishBtn').addEventListener('click', publishChanges);
 
   $('#s-accent').addEventListener('input', (e) => { $('#s-accentHex').value = e.target.value; });
   $('#s-accentHex').addEventListener('input', (e) => { if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) $('#s-accent').value = e.target.value; });

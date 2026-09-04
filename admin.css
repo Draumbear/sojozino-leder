@@ -132,6 +132,22 @@
 .admin-tabs button.active { background: var(--a-espresso); color: #fff; }
 
 .admin-tab[hidden] { display: none; }
+/* Saves are deliberately not published straight away (they'd each cost a
+   Netlify build), so this bar is the standing reminder that work is waiting
+   and the one place to actually put it live. */
+.publish-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  background: var(--a-espresso); color: #fff;
+  border-radius: var(--a-radius); box-shadow: var(--a-shadow);
+  padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+}
+.publish-bar-text { display: flex; flex-direction: column; gap: 0.25rem; }
+.publish-bar-text strong { font-size: 1rem; }
+.publish-bar-text span { font-size: 0.82rem; color: rgba(255, 255, 255, 0.72); max-width: 52ch; }
+.publish-bar .btn-admin { background: var(--a-rust); border-color: #fff; flex-shrink: 0; }
+.publish-bar .btn-admin:hover:not(:disabled) { background: var(--a-rust-hover); }
+
 .dashboard-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
 .tab-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.6rem; }
 
@@ -191,6 +207,10 @@
 .image-tile .tile-actions { display: flex; justify-content: space-between; margin-top: 0.35rem; gap: 0.2rem; }
 .image-tile button { flex: 1; font-size: 0.68rem; padding: 0.3rem 0.2rem; border-radius: 4px; border: 1px solid var(--a-line); background: #fff; cursor: pointer; }
 .image-tile button:hover { border-color: var(--a-rust); color: var(--a-rust); }
+.image-tile[draggable="true"] { cursor: grab; }
+.image-tile.dragging { opacity: 0.4; cursor: grabbing; }
+/* Marks where the dragged photo will land. */
+.image-tile.drag-over img { border: 2px dashed var(--a-rust); }
 .image-tile .cover-badge { position: absolute; top: 4px; left: 4px; background: var(--a-rust); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 3px; }
 .upload-drop {
   border: 2px solid var(--a-espresso); border-radius: var(--a-radius-sm);

@@ -2,17 +2,20 @@
   {
     "slug": "handtassen",
     "name": "Handtassen",
-    "order": 1
+    "order": 1,
+    "singular": "Handtas"
   },
   {
     "slug": "tassen",
     "name": "Tassen",
-    "order": 2
+    "order": 2,
+    "singular": "Tas"
   },
   {
     "slug": "riemen",
     "name": "Riemen",
-    "order": 3
+    "order": 3,
+    "singular": "Riem"
   },
   {
     "slug": "kleine-lederwaren",
@@ -21,15 +24,18 @@
     "subcategories": [
       {
         "slug": "portefeuilles",
-        "name": "Portefeuilles"
+        "name": "Portefeuilles",
+        "singular": "Portefeuille"
       },
       {
         "slug": "kaartenhouders",
-        "name": "Kaartenhouders"
+        "name": "Kaartenhouders",
+        "singular": "Kaartenhouder"
       },
       {
         "slug": "toilettassen",
-        "name": "Toilettassen"
+        "name": "Toilettassen",
+        "singular": "Toilettas"
       },
       {
         "slug": "poepzakjeshouder",
@@ -37,31 +43,38 @@
       },
       {
         "slug": "sleutelhangers",
-        "name": "Sleutelhangers"
+        "name": "Sleutelhangers",
+        "singular": "Sleutelhanger"
       },
       {
         "slug": "place-mats",
-        "name": "Place-mats"
+        "name": "Place-mats",
+        "singular": "Place-mat"
       },
       {
         "slug": "onderleggers",
-        "name": "Onderleggers"
+        "name": "Onderleggers",
+        "singular": "Onderlegger"
       },
       {
         "slug": "hoesjes",
-        "name": "Hoesjes"
+        "name": "Hoesjes",
+        "singular": "Hoesje"
       },
       {
         "slug": "brillendozen",
-        "name": "Brillendozen"
+        "name": "Brillendozen",
+        "singular": "Brillendoos"
       },
       {
         "slug": "etuis",
-        "name": "Etuis"
+        "name": "Etuis",
+        "singular": "Etui"
       },
       {
         "slug": "boekenleggers",
-        "name": "Boekenleggers"
+        "name": "Boekenleggers",
+        "singular": "Boekenlegger"
       },
       {
         "slug": "allerlei",

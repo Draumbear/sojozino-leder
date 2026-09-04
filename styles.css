@@ -135,16 +135,23 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   justify-content: space-between;
   gap: 1.5rem;
 }
+/* Everything in the header scales with the viewport from here down. Each clamp
+   bottoms out at the size it used to be fixed at, so the mobile drawer and its
+   hard-coded 64px offset below are untouched -- only wide screens grow. */
 .brand {
   display: flex;
   align-items: center;
   gap: 0.65rem;
 }
-.brand img { width: 34px; height: 34px; object-fit: contain; }
+.brand img {
+  width: clamp(34px, 1.9vw, 42px);
+  height: clamp(34px, 1.9vw, 42px);
+  object-fit: contain;
+}
 .brand-text {
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.1rem + 0.32vw, 1.5rem);
   letter-spacing: 0.02em;
   color: var(--espresso);
 }
@@ -152,7 +159,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   display: block;
   font-family: var(--sans);
   font-weight: 400;
-  font-size: 0.62rem;
+  font-size: clamp(0.62rem, 0.56rem + 0.13vw, 0.72rem);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: var(--cognac-dark);
@@ -160,12 +167,12 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(1.5rem, 1.15rem + 0.75vw, 2.4rem);
   list-style: none;
   margin: 0; padding: 0;
 }
 .nav-links a {
-  font-size: 0.82rem;
+  font-size: clamp(0.82rem, 0.72rem + 0.28vw, 1rem);
   font-weight: 600;
   color: var(--espresso-soft);
   position: relative;
@@ -476,12 +483,23 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   padding: 7.5rem 2rem 5rem;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 3.2rem;
+  /* Split, because the two axes now mean different things: the columns still
+     need their wide gutter, but the only row boundary on desktop is the one
+     under the back link, which wants far less air. */
+  column-gap: 3.2rem;
+  row-gap: 1.4rem;
   align-items: start;
+}
+/* Sits above the photo rather than beside it, spanning the whole grid. */
+.product-detail > .back-link {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
 }
 .product-detail > * { min-width: 0; }
 @media (max-width: 900px) {
-  .product-detail { grid-template-columns: 1fr; padding-top: 6.5rem; }
+  /* Stacked, row-gap also separates the photo from the text, so it needs
+     more than the desktop back-link spacing. */
+  .product-detail { grid-template-columns: 1fr; row-gap: 2.6rem; padding-top: 6.5rem; }
 }
 .spotlight-main {
   position: relative;
@@ -528,6 +546,26 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .spotlight-nav:hover { background: var(--rust); border-color: var(--rust); }
 .spotlight-nav.prev { left: 12px; }
 .spotlight-nav.next { right: 12px; }
+/* Matches .lightbox-nav[hidden] below: .spotlight-nav's display:flex is an
+   author rule, so it beats the browser's own [hidden] rule and left the arrows
+   showing on single-photo products. */
+.spotlight-nav[hidden] { display: none; }
+/* The arrows sit on top of the product, which is the thing you came to look at,
+   so they stay invisible until the cursor is over the photo. Gated on (hover:
+   hover): a touch screen has no hover state to reveal them with, and there they
+   navigate by swipe anyway -- see the touchstart handler in product-render.js. */
+@media (hover: hover) {
+  .spotlight-nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .spotlight-main:hover .spotlight-nav,
+  .spotlight-main:focus-within .spotlight-nav {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
 .spotlight-thumbs {
   display: flex;
   gap: 0.6rem;
@@ -540,8 +578,11 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
    swaps the whole spotlight gallery to that variant's photos, the way a
    colour swatch does on a product page, instead of mixing every variant's
    photos into one long scroll. */
-.variant-picker { margin-top: 1.8rem; }
-.variant-picker .eyebrow { margin-bottom: 0.6rem; }
+.variant-picker {
+  margin-top: 1.8rem;
+  --swatch-size: clamp(64px, 5.5vw, 92px);
+}
+.variant-picker .eyebrow { margin-bottom: 0.7rem; font-size: clamp(0.72rem, 0.62rem + 0.2vw, 0.82rem); }
 .variant-swatches {
   display: flex;
   flex-wrap: wrap;
@@ -550,7 +591,9 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 }
 .variant-swatch {
   position: relative;
-  width: 64px;
+  /* Scales with the viewport: at 64px flat these read as afterthoughts on a
+     wide screen, where the picker is the main thing to interact with. */
+  width: var(--swatch-size);
   background: none;
   border: none;
   padding: 0;
@@ -559,7 +602,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   line-height: 0; /* no text box under the image to offset the squares */
 }
 .variant-swatch img {
-  width: 64px; height: 64px;
+  width: var(--swatch-size); height: var(--swatch-size);
   object-fit: cover;
   border-radius: var(--radius);
   border: 2px solid var(--espresso);
@@ -602,9 +645,12 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .variant-swatch.active img { border-color: var(--rust); box-shadow: 0 0 0 2px var(--rust); }
 
 /* Name of the variant currently being shown, so it's readable without hovering. */
+/* Scoped to .product-info so it beats that block's own paragraph sizing --
+   this is a label for the swatches, not body copy, and shouldn't grow with it. */
+.product-info .variant-current,
 .variant-current {
-  margin: 0.7rem 0 0;
-  font-size: 0.85rem;
+  margin: 0.8rem 0 0;
+  font-size: clamp(0.88rem, 0.78rem + 0.25vw, 1.05rem);
   font-weight: 700;
   color: var(--rust);
 }
@@ -622,7 +668,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 
 .product-info .cat-tag {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: clamp(0.7rem, 0.62rem + 0.18vw, 0.82rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -633,7 +679,13 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   margin-bottom: 1rem;
 }
 .product-info h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 1.1rem; }
-.product-info p { white-space: pre-line; }
+/* The description sits in a narrow-ish column beside a very large photo, so
+   it needs to grow with the viewport or it reads as fine print next to it. */
+.product-info p {
+  white-space: pre-line;
+  font-size: clamp(1rem, 0.86rem + 0.42vw, 1.24rem);
+  line-height: 1.72;
+}
 .back-link {
   display: inline-flex;
   align-items: center;

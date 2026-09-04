@@ -68,7 +68,7 @@ function renderFooter(site) {
         <a href="${escapeHTML(site.instagramUrl || '#')}" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:${escapeHTML(site.email || '')}">${escapeHTML(site.email || '')}</a>
       </div>
-      <div class="footer-meta">${escapeHTML(site.location || '')} — © ${new Date().getFullYear()} ${escapeHTML(site.businessName)}</div>
+      <div class="footer-meta">${escapeHTML(site.location || '')} — © ${new Date().getFullYear()} Tanguy Swerts</div>
     </footer>`;
 }
 

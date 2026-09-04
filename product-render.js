@@ -198,7 +198,13 @@ async function renderProduct() {
 
   const cat = categories.find(c => c.slug === data.category) || {};
   const sub = (cat.subcategories || []).find(s => s.slug === data.subcategory);
-  const catName = sub ? `${cat.name} — ${sub.name}` : (cat.name || '');
+  // The tag labels this one item, so it reads in the singular -- 'Handtas',
+  // not 'Handtassen'. Dutch plurals are too irregular to strip reliably
+  // (Handtassen -> Handtas, Riemen -> Riem, and 'Kleine lederwaren' has no
+  // sensible singular at all), so it's a field on the category, set in the
+  // dashboard, falling back to the plural name when it's left empty.
+  const catLabel = (c) => (c && (c.singular || c.name)) || '';
+  const catName = sub ? `${catLabel(cat)} — ${catLabel(sub)}` : catLabel(cat);
 
   document.title = `${data.name} — Sojozino`;
 
@@ -225,6 +231,7 @@ async function renderProduct() {
 
   document.getElementById('productRoot').innerHTML = `
     <div class="product-detail">
+      <a class="back-link" href="creaties.html">&larr; Terug naar creaties</a>
       <div class="spotlight">
         <div class="spotlight-main" id="spotlightMain">
           <img id="spotlightImg" src="" alt="">
@@ -235,7 +242,6 @@ async function renderProduct() {
         <div class="spotlight-thumbs" id="spotlightThumbs"></div>
       </div>
       <div class="product-info">
-        <a class="back-link" href="creaties.html">&larr; Terug naar creaties</a>
         ${catName ? `<span class="cat-tag">${escapeHTML(catName)}</span>` : ''}
         <h1>${escapeHTML(data.name)}</h1>
         <p>${escapeHTML(data.description || '')}</p>
