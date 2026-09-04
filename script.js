@@ -46,8 +46,9 @@ async function initHome(site) {
   const featuredEl = document.getElementById('featuredGrid');
   if (featuredEl) {
     // Whatever Johnny has starred in the dashboard. Falls back to a spread
-    // across categories (rather than the first six, which were all
-    // handbags) until anything is starred.
+    // across categories (rather than the first eight, which were all
+    // handbags) until anything is starred, then tops up to a full two rows --
+    // stopping at six left a half-empty second row.
     // Eight is the cap the dashboard enforces too, so the page can never show
     // more than he was allowed to pick.
     const MAX_FEATURED = 8;
@@ -56,7 +57,7 @@ async function initHome(site) {
       const byCat = new Map();
       enriched.forEach(p => { if (!byCat.has(p.category)) byCat.set(p.category, p); });
       featured = [...byCat.values()];
-      enriched.forEach(p => { if (featured.length < 6 && !featured.includes(p)) featured.push(p); });
+      enriched.forEach(p => { if (featured.length < MAX_FEATURED && !featured.includes(p)) featured.push(p); });
     }
     featuredEl.innerHTML = featured.slice(0, MAX_FEATURED).map(productCardHTML).join('') ||
       '<p class="empty-note">Binnenkort te zien.</p>';
