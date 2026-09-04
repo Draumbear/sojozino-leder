@@ -3,7 +3,14 @@
     "slug": "handtassen",
     "name": "Handtassen",
     "order": 1,
-    "singular": "Handtas"
+    "singular": "Handtas",
+    "subcategories": [
+      {
+        "slug": "test",
+        "name": "test",
+        "singular": null
+      }
+    ]
   },
   {
     "slug": "tassen",
