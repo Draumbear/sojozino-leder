@@ -49,6 +49,9 @@ function renderGallery() {
   }
 
   updateLightboxChrome();
+  // Deferred: the photo actually on screen should not queue behind its
+  // neighbours for bandwidth.
+  if (multi) setTimeout(preloadNeighbours, 400);
 }
 
 // Thumbnails live in a thumbs/ folder beside the original, written by
@@ -70,6 +73,22 @@ document.addEventListener('error', (e) => {
   }
 }, true);
 
+// Clicking through used to feel instant for the wrong reason: the thumbnail
+// strip had already downloaded every full-size photo, so the next one was
+// always in the cache. Now that the strip costs 5 KB a photo instead of 700,
+// that accident is gone and the next click waits on a fresh download. Fetching
+// the two neighbours in the background puts the responsiveness back without
+// putting the eight megabytes back -- browsing a gallery means going forward or
+// back, never jumping to photo seventeen.
+function preloadNeighbours() {
+  const images = currentImages();
+  if (images.length < 2) return;
+  for (const step of [1, -1]) {
+    const im = images[((photoIndex + step) % images.length + images.length) % images.length];
+    if (im && im.src) new Image().src = im.src;
+  }
+}
+
 function setPhoto(i) {
   const images = currentImages();
   photoIndex = ((i % images.length) + images.length) % images.length;
@@ -82,6 +101,7 @@ function setPhoto(i) {
     t.classList.toggle('active', i2 === photoIndex);
   });
   updateLightboxChrome();
+  preloadNeighbours();
 }
 
 // The lightbox's arrows and counter only make sense with more than one photo
