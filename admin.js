@@ -1027,6 +1027,8 @@ function renderSettingsTab() {
   $('#s-heroEyebrow').value = s.heroEyebrow || '';
   $('#s-heroTitle').value = s.heroTitle || '';
   $('#s-heroTagline').value = s.heroTagline || '';
+  $('#s-heroPrimaryLabel').value = s.heroPrimaryLabel || '';
+  $('#s-heroSecondaryLabel').value = s.heroSecondaryLabel || '';
   $('#s-tagline').value = s.tagline || '';
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
@@ -1049,6 +1051,8 @@ async function saveSettings() {
       heroEyebrow: $('#s-heroEyebrow').value.trim(),
       heroTitle: $('#s-heroTitle').value.trim(),
       heroTagline: $('#s-heroTagline').value.trim(),
+      heroPrimaryLabel: $('#s-heroPrimaryLabel').value.trim(),
+      heroSecondaryLabel: $('#s-heroSecondaryLabel').value.trim(),
       tagline: $('#s-tagline').value.trim(),
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),

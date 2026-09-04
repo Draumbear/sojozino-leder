@@ -87,6 +87,9 @@ function renderHero(site) {
   set('heroEyebrow', site.heroEyebrow);
   set('heroTitle', site.heroTitle, { allowBreaks: true });
   set('heroTagline', site.heroTagline);
+  // Labels only -- where the two buttons go is structural, not wording.
+  set('heroPrimaryBtn', site.heroPrimaryLabel);
+  set('heroSecondaryBtn', site.heroSecondaryLabel);
 }
 
 function applyAccent(site) {
