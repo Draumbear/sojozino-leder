@@ -32,7 +32,7 @@ function upcomingSorted(presence) {
   return [...(presence || [])].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
 }
 
-async function initHome() {
+async function initHome(site) {
   const [products, categories, presence] = await Promise.all([
     loadJSON('data/products-index.json'),
     loadJSON('data/categories.json'),
@@ -77,7 +77,9 @@ async function initHome() {
           </div>
         </div>`;
     } else {
-      marketEl.innerHTML = '<p class="empty-note">Binnenkort meer nieuws over waar je Sojozino kan vinden.</p>';
+      // No date on the calendar yet, so point at the place he actually
+      // announces them -- an empty panel is a dead end otherwise.
+      marketEl.innerHTML = `<p class="empty-note">Binnenkort meer nieuws over waar je Sojozino kan vinden.${window.SojozinoSite.instagramNote(site)}</p>`;
     }
   }
 
@@ -183,7 +185,7 @@ async function initGallery() {
   render();
 }
 
-async function initPresence() {
+async function initPresence(site) {
   const presence = await loadJSON('data/presence.json');
   const upcomingEl = document.getElementById('upcomingGrid');
   const pastEl = document.getElementById('pastGrid');
@@ -213,7 +215,7 @@ async function initPresence() {
 
   upcomingEl.innerHTML = upcoming.length
     ? upcoming.map(m => cardHTML(m, false)).join('')
-    : '<p class="presence-empty">Binnenkort meer nieuws over waar je Sojozino kan vinden — hou Instagram in de gaten.</p>';
+    : `<p class="presence-empty">Binnenkort meer nieuws over waar je Sojozino kan vinden.${window.SojozinoSite.instagramNote(site)}</p>`;
 
   if (pastEl) {
     pastEl.innerHTML = past.map(m => cardHTML(m, true)).join('');
@@ -224,8 +226,9 @@ async function initPresence() {
   window.SojozinoSite.initReveal();
 }
 
-document.addEventListener('site:loaded', () => {
-  if (document.getElementById('featuredGrid') || document.getElementById('nextMarketTeaser')) initHome();
+document.addEventListener('site:loaded', (e) => {
+  const site = e.detail;
+  if (document.getElementById('featuredGrid') || document.getElementById('nextMarketTeaser')) initHome(site);
   if (document.getElementById('productGrid')) initGallery();
-  if (document.getElementById('upcomingGrid')) initPresence();
+  if (document.getElementById('upcomingGrid')) initPresence(site);
 });

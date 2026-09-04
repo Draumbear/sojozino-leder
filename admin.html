@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish34">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish34">
+<link rel="stylesheet" href="admin.css?v=publish36">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish36">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -15,7 +15,15 @@
   <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
   <div class="admin-header-right">
     <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
-    <span class="conn-status off" id="connStatus">Niet verbonden</span>
+    <!-- Ontkoppelen used to sit beside the tabs, one stray click from logging
+         her out mid-edit. It lives behind the status chip now: still there,
+         no longer in the way. -->
+    <div class="conn-menu">
+      <button class="conn-status off" id="connStatus" type="button" aria-haspopup="true" aria-expanded="false">Niet verbonden</button>
+      <div class="conn-menu-items" id="connMenu" hidden>
+        <button class="btn-admin secondary small" id="disconnectBtn" type="button">Ontkoppelen</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -23,40 +31,49 @@
 
   <!-- Connect panel -->
   <div id="connectPanel" class="admin-card">
-    <h2>Verbind met GitHub</h2>
-    <p class="hint" style="margin-bottom:0.4rem;" id="connectIntro"></p>
-    <p class="hint" style="margin-bottom:1.2rem;">
-      Je hebt een <strong>fine-grained personal access token</strong> nodig, beperkt tot deze ene repository.
-    </p>
-    <ol class="setup-steps">
-      <li>Ga naar <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
-      <li>Kies bij "Repository access" &rarr; <strong>Only select repositories</strong> en selecteer je Sojozino-repository</li>
-      <li>Zet bij "Permissions" &rarr; "Repository permissions" &rarr; <strong>Contents</strong> op <strong>Read and write</strong><br><span class="hint">Op de overzichtspagina van het token staat dit daarna als "Read and Write access to code" — dat is dezelfde instelling.</span></li>
-      <li>Genereer het token en plak het hieronder (het wordt enkel in deze browser bewaard, nergens anders naartoe gestuurd dan github.com)</li>
-    </ol>
+    <h2>Aanmelden</h2>
+    <p class="hint" style="margin-bottom:1.2rem;" id="connectIntro"></p>
 
-    <div class="admin-row">
-      <div class="admin-field">
-        <label for="ghOwner">GitHub gebruikersnaam</label>
-        <input type="text" id="ghOwner" placeholder="bv. Draumbear">
-      </div>
-      <div class="admin-field">
-        <label for="ghRepo">Repository naam</label>
-        <input type="text" id="ghRepo" placeholder="bv. sojozino-leder">
-      </div>
+    <!-- One field, because the other three never change. They live under
+         "Geavanceerd" rather than being deleted, so a move to another
+         repository does not need a code change. -->
+    <div class="admin-field">
+      <label for="ghToken">Toegangscode</label>
+      <input type="password" id="ghToken" placeholder="github_pat_..." autocomplete="current-password">
+      <span class="hint">Wordt enkel in deze browser bewaard. Je hoeft dit maar één keer per toestel te doen.</span>
     </div>
-    <div class="admin-row">
-      <div class="admin-field">
-        <label for="ghBranch">Branch</label>
-        <input type="text" id="ghBranch" value="main">
-      </div>
-      <div class="admin-field">
-        <label for="ghToken">Personal access token</label>
-        <input type="password" id="ghToken" placeholder="github_pat_...">
-      </div>
-    </div>
-    <button class="btn-admin" id="connectBtn">Verbinden</button>
+    <button class="btn-admin" id="connectBtn">Aanmelden</button>
     <span id="connectError" class="hint" style="color:var(--a-danger); display:block; margin-top:0.6rem;"></span>
+
+    <details class="connect-help">
+      <summary>Ik heb nog geen toegangscode</summary>
+      <p class="hint">Een toegangscode is een <strong>fine-grained personal access token</strong> van GitHub, beperkt tot deze ene repository.</p>
+      <ol class="setup-steps">
+        <li>Ga naar <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+        <li>Kies bij "Repository access" &rarr; <strong>Only select repositories</strong> en selecteer de Sojozino-repository</li>
+        <li>Zet bij "Permissions" &rarr; "Repository permissions" &rarr; <strong>Contents</strong> op <strong>Read and write</strong><br><span class="hint">Op de overzichtspagina van het token staat dit daarna als "Read and Write access to code" — dat is dezelfde instelling.</span></li>
+        <li>Genereer het token en plak het hierboven</li>
+      </ol>
+    </details>
+
+    <details class="connect-help">
+      <summary>Geavanceerd</summary>
+      <p class="hint">Deze staan al goed ingevuld — enkel aanpassen als de website naar een andere repository verhuist.</p>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label for="ghOwner">GitHub gebruikersnaam</label>
+          <input type="text" id="ghOwner">
+        </div>
+        <div class="admin-field">
+          <label for="ghRepo">Repository naam</label>
+          <input type="text" id="ghRepo">
+        </div>
+      </div>
+      <div class="admin-field" style="max-width:16rem;">
+        <label for="ghBranch">Branch</label>
+        <input type="text" id="ghBranch">
+      </div>
+    </details>
   </div>
 
   <!-- Dashboard -->
@@ -84,7 +101,6 @@
         <button data-tab="presence">Aanwezigheid</button>
         <button data-tab="settings">Instellingen</button>
       </div>
-      <button class="btn-admin secondary small" id="disconnectBtn">Ontkoppelen</button>
     </div>
 
     <!-- Overview -->
@@ -308,7 +324,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish34"></script>
-<script src="admin.js?v=publish34"></script>
+<script src="admin-github.js?v=publish36"></script>
+<script src="admin.js?v=publish36"></script>
 </body>
 </html>

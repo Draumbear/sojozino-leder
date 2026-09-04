@@ -59,8 +59,8 @@ function applyPublishWording() {
   const intro = $('#connectIntro');
   if (intro) {
     intro.textContent = DEFER_PUBLISH
-      ? 'Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository, die je daarna zelf online zet met de knop "Publiceer wijzigingen" — meestal binnen een minuut zichtbaar.'
-      : 'Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository. Wat je opslaat staat meestal binnen een minuut op de website.';
+      ? 'Plak je toegangscode om je website te bewerken. Wat je opslaat zet je daarna zelf online met de knop "Publiceer wijzigingen".'
+      : 'Plak je toegangscode om je website te bewerken. Wat je opslaat staat meestal binnen een minuut op de website.';
   }
   const hint = $('#overviewPublishHint');
   if (hint) {
@@ -245,33 +245,69 @@ async function publishChanges() {
 }
 
 // ---------- Connect flow ----------
+// Where the site lives. Asking for these every time was three fields of
+// ceremony for answers that are the same on every device and will not change
+// unless the site moves -- so they are filled in, and only reachable under
+// "Geavanceerd". The token is the one thing he actually has to provide.
+const SITE_REPO = { owner: 'Draumbear', repo: 'sojozino-leder', branch: 'main' };
+
 function initConnect() {
-  const saved = GitHubStore.load();
-  if (saved) {
-    $('#ghOwner').value = saved.owner || '';
-    $('#ghRepo').value = saved.repo || '';
-    $('#ghBranch').value = saved.branch || 'main';
-    $('#ghToken').value = saved.token || '';
-    connect(saved, { silent: true });
-  }
+  const saved = GitHubStore.load() || {};
+  $('#ghOwner').value = saved.owner || SITE_REPO.owner;
+  $('#ghRepo').value = saved.repo || SITE_REPO.repo;
+  $('#ghBranch').value = saved.branch || SITE_REPO.branch;
+  $('#ghToken').value = saved.token || '';
+  if (saved.token) connect(saved, { silent: true });
 
   $('#connectBtn').addEventListener('click', () => {
     const cfg = {
-      owner: $('#ghOwner').value.trim(),
-      repo: $('#ghRepo').value.trim(),
-      branch: $('#ghBranch').value.trim() || 'main',
+      owner: $('#ghOwner').value.trim() || SITE_REPO.owner,
+      repo: $('#ghRepo').value.trim() || SITE_REPO.repo,
+      branch: $('#ghBranch').value.trim() || SITE_REPO.branch,
       token: $('#ghToken').value.trim(),
     };
-    if (!cfg.owner || !cfg.repo || !cfg.token) {
-      $('#connectError').textContent = 'Vul gebruikersnaam, repository en token in.';
+    if (!cfg.token) {
+      $('#connectError').textContent = 'Plak je toegangscode hierboven om aan te melden.';
+      $('#ghToken').focus();
       return;
     }
     connect(cfg, { silent: false });
   });
 
-  $('#disconnectBtn').addEventListener('click', () => {
+  // Enter in the token field is the obvious way to submit a one-field form.
+  $('#ghToken').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') $('#connectBtn').click();
+  });
+
+  // The status chip doubles as the menu that holds Ontkoppelen.
+  const menu = $('#connMenu');
+  const chip = $('#connStatus');
+  const closeMenu = () => { menu.hidden = true; chip.setAttribute('aria-expanded', 'false'); };
+  chip.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Nothing to offer until she is actually connected.
+    if (chip.classList.contains('off')) return;
+    menu.hidden = !menu.hidden;
+    chip.setAttribute('aria-expanded', String(!menu.hidden));
+  });
+  document.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+  $('#disconnectBtn').addEventListener('click', async () => {
+    closeMenu();
+    const go = await askConfirm({
+      title: 'Ontkoppelen?',
+      lines: [
+        'Je toegangscode wordt uit deze browser gewist en je moet ze opnieuw plakken om verder te werken.',
+        'De website zelf verandert hier niet door.',
+      ],
+      confirmLabel: 'Ja, ontkoppel',
+      danger: true,
+    });
+    if (!go) return;
     GitHubStore.clear();
     api = null;
+    $('#ghToken').value = '';
     $('#dashboard').classList.add('hidden');
     $('#connectPanel').classList.remove('hidden');
     setConnStatus(false);

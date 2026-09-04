@@ -55,6 +55,36 @@
 .admin-header .conn-status.ok::before { background: var(--a-success); box-shadow: 0 0 0 3px rgba(63,125,65,0.16); }
 .admin-header .conn-status.off::before { background: #a89a86; }
 
+/* The status chip is also the menu that holds Ontkoppelen. */
+.conn-menu { position: relative; }
+button.conn-status { cursor: pointer; font: inherit; font-size: 0.78rem; font-weight: 700; }
+button.conn-status.off { cursor: default; }
+.conn-menu-items {
+  position: absolute;
+  top: calc(100% + 0.4rem); right: 0;
+  z-index: 200;
+  background: var(--a-cream);
+  border: 2px solid var(--a-espresso);
+  border-radius: var(--a-radius);
+  box-shadow: var(--a-shadow-sm);
+  padding: 0.5rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  min-width: 10rem;
+}
+.conn-menu-items[hidden] { display: none; }
+
+/* The token instructions and the repository fields, folded away: needed once
+   on a new device, noise on every visit after that. */
+.connect-help { margin-top: 1.4rem; border-top: 1px solid var(--a-line); padding-top: 0.9rem; }
+.connect-help summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--a-ink-soft);
+}
+.connect-help summary:hover { color: var(--a-rust); }
+.connect-help > *:not(summary) { margin-top: 0.9rem; }
+
 .admin-main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
 
 .admin-card {

@@ -110,6 +110,16 @@ function instagramHandle(url) {
   return url.replace(/\/+$/, '').split('/').pop();
 }
 
+// Where he announces markets, so it belongs in the sentence that admits there
+// is nothing on the calendar yet. Returns '' when no URL is set, which keeps it
+// out of the string entirely rather than leaving a dangling half-sentence.
+function instagramNote(site) {
+  const url = (site && site.instagramUrl || '').trim();
+  if (!url) return '';
+  const handle = instagramHandle(url);
+  return ` Hij kondigt ze het eerst aan op <a href="${escapeHTML(url)}" target="_blank" rel="noopener">${escapeHTML(handle ? '@' + handle : 'Instagram')}</a>.`;
+}
+
 function renderInstagramButton(site) {
   const el = document.getElementById('instagramButton');
   if (!el) return;
@@ -200,4 +210,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote };
