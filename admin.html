@@ -15,6 +15,7 @@
   <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
   <div class="admin-header-right">
     <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
+    <button class="header-chip" id="helpChip" data-tab="help" type="button">? Uitleg</button>
     <!-- A history with an undo against each line, so it belongs in the chrome
          rather than floating over the work. Collapsed to a quiet count until
          she asks for it. -->
@@ -100,7 +101,6 @@
         <button data-tab="about">Over mij</button>
         <button data-tab="presence">Aanwezigheid</button>
         <button data-tab="settings">Instellingen</button>
-        <button data-tab="help">Uitleg</button>
       </div>
     </div>
 
@@ -269,8 +269,8 @@
       </div>
 
       <div class="settings-panel" data-sub="teksten" hidden>
-      <div class="admin-card">
-        <h2>Tekst op de homepagina</h2>
+      <details class="text-card">
+        <summary>Tekst op de homepagina</summary>
         <p class="hint" style="margin-bottom:1.2rem;">De grote titel bovenaan de homepagina, met de kleine rode regel erboven en de zin eronder.</p>
         <div class="admin-field"><label for="s-heroEyebrow">Kleine regel boven de titel</label><input type="text" id="s-heroEyebrow"></div>
         <div class="admin-field">
@@ -282,27 +282,29 @@
           <div class="admin-field"><label for="s-heroPrimaryLabel">Tekst op de eerste knop <span class="hint">(gaat naar Creaties)</span></label><input type="text" id="s-heroPrimaryLabel"></div>
           <div class="admin-field"><label for="s-heroSecondaryLabel">Tekst op de tweede knop <span class="hint">(gaat naar Over mij)</span></label><input type="text" id="s-heroSecondaryLabel"></div>
         </div>
-      </div>
+      </details>
 
-      <div class="admin-card">
-        <h2>Tekst op de contactpagina</h2>
+      <details class="text-card">
+        <summary>Tekst op de contactpagina</summary>
         <div class="admin-field">
           <label for="s-contactHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
           <textarea id="s-contactHeading" rows="2"></textarea>
         </div>
-        <div class="admin-field"><label for="s-contactIntro">Zin onder de titel</label><textarea id="s-contactIntro" rows="2"></textarea></div>      </div>
+        <div class="admin-field"><label for="s-contactIntro">Zin onder de titel</label><textarea id="s-contactIntro" rows="2"></textarea></div>
+      </details>
 
-      <div class="admin-card">
-        <h2>Tekst op de bestelpagina</h2>
+      <details class="text-card">
+        <summary>Tekst op de bestelpagina</summary>
         <div class="admin-field"><label for="s-orderEyebrow">Kleine regel boven de titel</label><input type="text" id="s-orderEyebrow"></div>
         <div class="admin-field">
           <label for="s-orderHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
           <textarea id="s-orderHeading" rows="2"></textarea>
         </div>
-        <div class="admin-field"><label for="s-orderIntro">Uitleg onder de titel</label><textarea id="s-orderIntro" rows="3"></textarea></div>      </div>
+        <div class="admin-field"><label for="s-orderIntro">Uitleg onder de titel</label><textarea id="s-orderIntro" rows="3"></textarea></div>
+      </details>
 
-      <div class="admin-card">
-        <h2>Tekst op "waar vind je mij"</h2>
+      <details class="text-card">
+        <summary>Tekst op "waar vind je mij"</summary>
         <div class="admin-field"><label for="s-marketsEyebrow">Kleine regel boven de titel</label><input type="text" id="s-marketsEyebrow"></div>
         <div class="admin-field">
           <label for="s-marketsHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
@@ -321,7 +323,7 @@
             <input type="text" id="s-accentHex" style="max-width:120px;font-family:monospace;">
           </div>
         </div>
-      </div>
+      </details>
       </div>
 
       <div class="settings-panel" data-sub="menu" hidden>

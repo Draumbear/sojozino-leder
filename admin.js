@@ -198,6 +198,9 @@ function watchWrites(gh) {
 // what that something is. Read from the branch history rather than from this
 // browser, so it stays right even if the last edits were made on another device.
 const PENDING_LIST_LIMIT = 6;
+// Sticky once she asks for the full list: collapsing it again on the next
+// refresh would undo the click she just made.
+let showAllChanges = false;
 
 // How many recent changes to offer an undo for when nothing is being held
 // back. Enough to cover a session's mistakes, short enough to stay scannable.
@@ -218,7 +221,7 @@ async function refreshPublishBar() {
     ? (pending.length === 1 ? '1 wijziging staat nog niet online' : `${pending.length} wijzigingen staan nog niet online`)
     : 'Recente wijzigingen';
 
-  const shown = pending.slice(0, PENDING_LIST_LIMIT);
+  const shown = showAllChanges ? pending : pending.slice(0, PENDING_LIST_LIMIT);
   const rest = pending.length - shown.length;
   $('#publishList').innerHTML = shown.map(c => `
     <li>
@@ -230,7 +233,9 @@ async function refreshPublishBar() {
         <button class="pc-undo" type="button" data-sha="${esc(c.sha)}" data-what="${esc(c.summary)}">Ongedaan maken</button>
       </span>
     </li>`).join('')
-    + (rest > 0 ? `<li class="pc-more">en nog ${rest} ${rest === 1 ? 'wijziging' : 'wijzigingen'}</li>` : '');
+    + (rest > 0
+      ? `<li><button class="pc-more" id="showAllChanges" type="button">en nog ${rest} ${rest === 1 ? 'wijziging' : 'wijzigingen'} tonen</button></li>`
+      : '');
 
   bar.classList.remove('hidden');
 }
@@ -453,9 +458,11 @@ function initSettingsSubTabs() {
 }
 
 function initTabs() {
-  $all('.admin-tabs button').forEach(btn => {
+  // Selected by the attribute rather than by living in the tab row, so the
+  // Uitleg chip in the header opens its tab the same way the row does.
+  $all('[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => {
-      $all('.admin-tabs button').forEach(b => b.classList.toggle('active', b === btn));
+      $all('[data-tab]').forEach(b => b.classList.toggle('active', b === btn));
       $all('.admin-tab').forEach(t => t.hidden = t.id !== `tab-${btn.dataset.tab}`);
     });
   });
@@ -1860,6 +1867,12 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#publishList').addEventListener('click', async (e) => {
     const goto = e.target.closest('.pc-goto');
     if (goto) { goToChange(goto.dataset.target); return; }
+
+    if (e.target.closest('#showAllChanges')) {
+      showAllChanges = true;
+      await refreshPublishBar();
+      return;
+    }
 
     const undo = e.target.closest('.pc-undo');
     if (!undo) return;

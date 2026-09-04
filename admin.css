@@ -169,6 +169,37 @@ button.conn-status.off { cursor: default; }
 /* Sub-tabs inside Instellingen. Deliberately lighter than the main row -- a
    second set of equally loud tabs would read as a competing navigation rather
    than a subdivision of the one above it. */
+/* Collapsed by default, so the four page names read as a list rather than a
+   column of forms to scroll past. */
+.text-card {
+  background: var(--a-cream);
+  border: 1.5px solid var(--a-espresso);
+  border-radius: var(--a-radius);
+  padding: 0 1.8rem;
+  margin-bottom: 0.8rem;
+}
+.text-card summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1rem 0;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.text-card summary::-webkit-details-marker { display: none; }
+.text-card summary::before { content: '+'; display: inline-block; width: 1.3rem; color: var(--a-rust); }
+.text-card[open] summary::before { content: '–'; }
+.text-card summary:hover { color: var(--a-rust); }
+.text-card[open] { padding-bottom: 1.2rem; }
+
+/* Reveals the changes the count was only mentioning. */
+.pc-more {
+  background: none; border: none; padding: 0.3rem 0;
+  font: inherit; font-size: 0.78rem; font-weight: 700;
+  color: var(--a-ink-faint); cursor: pointer; text-decoration: underline;
+}
+.pc-more:hover { color: var(--a-rust); }
+
 .sub-tabs {
   display: flex; flex-wrap: wrap; gap: 0.3rem;
   margin-bottom: 1.2rem;
@@ -237,7 +268,6 @@ button.conn-status.off { cursor: default; }
 }
 .publish-list .pc-goto:hover,
 .publish-list .pc-undo:hover { background: var(--a-rust); border-color: var(--a-rust); color: #fff; }
-.publish-list .pc-more { color: var(--a-ink-faint); font-size: 0.78rem; }
 
 .publish-bar-text { display: flex; flex-direction: column; gap: 0.25rem; }
 .publish-bar-text strong { font-size: 1rem; }
