@@ -609,17 +609,5 @@
     "order": 28,
     "featured": false,
     "fit": "contain"
-  },
-  {
-    "slug": "kereru",
-    "name": "Kereru",
-    "category": "kleine-lederwaren",
-    "subcategory": "allerlei",
-    "cover": {
-      "src": "assets/products/kereru/1788520633493-1-profile_1782178215812.webp",
-      "alt": "Kereru"
-    },
-    "order": 48,
-    "featured": false
   }
 ]
