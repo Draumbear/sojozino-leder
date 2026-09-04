@@ -1455,7 +1455,7 @@ function snapshotSettings() {
     ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
       [`Menu: ${fallback}`, (s.navLabels || {})[href] || ''])),
     'Tagline': s.tagline, 'E-mail': s.email, 'Instagram': s.instagramUrl,
-    'Locatie': s.location, 'Accentkleur': s.accentColor,
+    'Locatie': s.location,
   };
 }
 
@@ -1734,8 +1734,6 @@ function renderSettingsTab() {
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
   $('#s-location').value = s.location || '';
-  $('#s-accent').value = s.accentColor || '#c31f1f';
-  $('#s-accentHex').value = s.accentColor || '#c31f1f';
   $('#s-logo-preview').src = s.logo?.mark || 'assets/logo-mark.png';
   $('#s-logofull-preview').src = s.logo?.full || 'assets/logo-full.png';
   settingsSnapshot = snapshotSettings();
@@ -1758,7 +1756,6 @@ async function saveSettings() {
       [`Menu: ${fallback}`, ($(navFieldId(href)).value || '').trim()])),
     'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
     'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
-    'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
   };
   if (!await confirmSave('Deze instellingen opslaan?', describeSettingsChanges(proposed))) return;
 
@@ -1786,7 +1783,6 @@ async function saveSettings() {
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
       location: $('#s-location').value.trim(),
-      accentColor: $('#s-accentHex').value.trim() || '#c31f1f',
     });
 
     state.site.navLabels = readNavLabels();
@@ -1896,8 +1892,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (go) await undoChange(undo.dataset.sha, undo.dataset.what);
   });
 
-  $('#s-accent').addEventListener('input', (e) => { $('#s-accentHex').value = e.target.value; });
-  $('#s-accentHex').addEventListener('input', (e) => { if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) $('#s-accent').value = e.target.value; });
 
   $('#a-photo-input').addEventListener('change', () => {
     const f = $('#a-photo-input').files[0];

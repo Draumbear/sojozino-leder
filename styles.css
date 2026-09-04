@@ -685,8 +685,8 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: #fff;
-  /* --rust, not a literal red: it follows the accent colour set in the
-     dashboard, the way the rest of the site's highlights do. */
+  /* --rust rather than a literal red, so it stays in step with every other
+     highlight on the site if that token is ever changed. */
   background: var(--rust);
   padding: 0.35rem 0.8rem;
   border-radius: var(--radius);

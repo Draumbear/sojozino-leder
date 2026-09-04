@@ -1,5 +1,5 @@
 // Shared across every public page: loads data/site.json, injects the header
-// (logo + nav) and footer, applies the accent color, and wires up the
+// (logo + nav) and footer, and wires up the
 // mobile nav toggle + scroll-reveal animation. Each page's own <div id="siteHeader">
 // / <div id="siteFooter"> placeholders get filled in here so nav/footer stay
 // identical everywhere without copy-pasting markup into every .html file.
@@ -177,12 +177,6 @@ function externalLink(value) {
   return `https://${v}`;
 }
 
-function applyAccent(site) {
-  if (site.accentColor) {
-    document.documentElement.style.setProperty('--rust', site.accentColor);
-  }
-}
-
 function initReveal() {
   const items = document.querySelectorAll('.reveal');
   if (!items.length) return;
@@ -210,7 +204,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const site = await getSite();
   renderHeader(site);
   renderFooter(site);
-  applyAccent(site);
   applyHeroLogo(site);
   renderHero(site);
   renderContact(site);
