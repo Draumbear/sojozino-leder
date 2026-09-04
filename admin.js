@@ -305,6 +305,7 @@ function initConnect() {
   $('#ghRepo').value = saved.repo || SITE_REPO.repo;
   $('#ghBranch').value = saved.branch || SITE_REPO.branch;
   $('#ghToken').value = saved.token || '';
+  $('#ghAuthor').value = saved.authorName || '';
   if (saved.token) connect(saved, { silent: true });
 
   $('#connectBtn').addEventListener('click', () => {
@@ -313,7 +314,13 @@ function initConnect() {
       repo: $('#ghRepo').value.trim() || SITE_REPO.repo,
       branch: $('#ghBranch').value.trim() || SITE_REPO.branch,
       token: $('#ghToken').value.trim(),
+      authorName: $('#ghAuthor').value.trim(),
     };
+    if (!cfg.authorName) {
+      $('#connectError').textContent = 'Vul je naam in, zodat je wijzigingen op jouw naam komen te staan.';
+      $('#ghAuthor').focus();
+      return;
+    }
     if (!cfg.token) {
       $('#connectError').textContent = 'Plak je toegangscode hierboven om aan te melden.';
       $('#ghToken').focus();
@@ -322,15 +329,18 @@ function initConnect() {
     connect(cfg, { silent: false });
   });
 
-  // Enter in the token field is the obvious way to submit a one-field form.
-  $('#ghToken').addEventListener('keydown', (e) => {
+  // Enter in either field is the obvious way to submit a short form.
+  ['#ghAuthor', '#ghToken'].forEach(sel => $(sel).addEventListener('keydown', (e) => {
     if (e.key === 'Enter') $('#connectBtn').click();
-  });
+  }));
 
   // The status chip doubles as the menu that holds Ontkoppelen.
   const menu = $('#connMenu');
   const chip = $('#connStatus');
   const closeMenu = () => { menu.hidden = true; chip.setAttribute('aria-expanded', 'false'); };
+  // The menu now holds a field, and the document-level handler below closes
+  // on any click -- including one aimed at that field.
+  menu.addEventListener('click', (e) => e.stopPropagation());
   chip.addEventListener('click', (e) => {
     e.stopPropagation();
     // Nothing to offer until she is actually connected.
@@ -344,6 +354,17 @@ function initConnect() {
     if (body && !body.hidden) { body.hidden = true; $('#publishToggle').setAttribute('aria-expanded', 'false'); }
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+  $('#saveAuthorBtn').addEventListener('click', () => {
+    const name = $('#connAuthor').value.trim();
+    if (!name) { $('#connAuthor').focus(); return; }
+    const cfg = { ...(GitHubStore.load() || {}), authorName: name };
+    GitHubStore.save(cfg);
+    if (api) api.authorName = name;
+    $('#ghAuthor').value = name;
+    closeMenu();
+    toast(`Wijzigingen komen nu op naam van ${name}.`, 'ok');
+  });
 
   $('#disconnectBtn').addEventListener('click', async () => {
     closeMenu();
@@ -409,6 +430,7 @@ async function connect(cfg, { silent }) {
 
     api = watchWrites(candidate);
     GitHubStore.save(cfg);
+    $('#connAuthor').value = cfg.authorName || '';
     setConnStatus(true);
     $('#connectPanel').classList.add('hidden');
     $('#dashboard').classList.remove('hidden');

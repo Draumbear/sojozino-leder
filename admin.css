@@ -588,3 +588,29 @@ button.conn-status.off { cursor: default; }
   overflow-wrap: anywhere;
 }
 .file-picker.has-file .file-name { color: var(--a-espresso); font-weight: 600; }
+
+/* The status menu holds the "who am I" field as well as Ontkoppelen. */
+.conn-who {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--a-ink-soft);
+}
+.conn-author {
+  width: 100%;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.55rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--a-line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--a-espresso);
+}
+.conn-sep {
+  border: 0;
+  border-top: 1px solid var(--a-line);
+  margin: 0.7rem 0;
+}

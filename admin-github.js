@@ -105,17 +105,46 @@ async function toWebP(file, { maxDimension = 1800, quality = 0.82 } = {}) {
   }
 }
 
+// GitHub credits a commit to whoever owns the token, so two people sharing one
+// token are indistinguishable in the history -- and a second token from the
+// same account does not help, since the token's name appears nowhere in commit
+// metadata. Sending an explicit author does: the commit is authored by whoever
+// is at the keyboard and committed by the account that owns the token, which is
+// exactly the truth. It shows up in git log, in blame, in GitHub's commit list
+// and in the deploy log.
+//
+// The address never routes anywhere -- .invalid is reserved for exactly this
+// (RFC 2606) -- but git tooling keys on the email, so it is derived from the
+// name rather than shared, keeping two people apart in blame.
+const AUTHOR_DOMAIN = 'sojozino.invalid';
+
+function authorEmail(name) {
+  const slug = (name || '').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `${slug || 'dashboard'}@${AUTHOR_DOMAIN}`;
+}
+
 class GitHubAPI {
-  constructor({ token, owner, repo, branch }) {
+  constructor({ token, owner, repo, branch, authorName }) {
     this.token = token;
     this.owner = owner;
     this.repo = repo;
     this.branch = branch || 'main';
+    this.authorName = (authorName || '').trim();
     this._writes = Promise.resolve(); // tail of the write queue
     this._queue = [];                 // what is in it, for the dashboard
   }
 
   get base() { return `https://api.github.com/repos/${this.owner}/${this.repo}`; }
+
+  // Undefined rather than a placeholder when no name is set: GitHub then falls
+  // back to the token owner, which is the old behaviour and still correct.
+  author() {
+    if (!this.authorName) return undefined;
+    return { name: this.authorName, email: authorEmail(this.authorName) };
+  }
 
   headers() {
     return {
@@ -262,6 +291,8 @@ class GitHubAPI {
       content: typeof content === 'string' ? utf8ToBase64(content) : content.base64,
       branch: this.branch
     };
+    const author = this.author();
+    if (author) body.author = author;
     if (existing) body.sha = existing.sha;
 
     const res = await fetch(`${this.base}/contents/${encodeURI(path)}`, {
@@ -290,7 +321,7 @@ class GitHubAPI {
     const res = await fetch(`${this.base}/contents/${encodeURI(path)}`, {
       method: 'DELETE',
       headers: { ...this.headers(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: this._saveMessage(message), sha: existing.sha, branch: this.branch })
+      body: JSON.stringify({ message: this._saveMessage(message), sha: existing.sha, branch: this.branch, ...(this.author() ? { author: this.author() } : {}) })
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -479,7 +510,7 @@ class GitHubAPI {
 
     const commitRes = await fetch(`${this.base}/git/commits`, {
       method: 'POST', headers: { ...this.headers(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, tree: newTreeSha, parents: [parentSha] })
+      body: JSON.stringify({ message, tree: newTreeSha, parents: [parentSha], ...(this.author() ? { author: this.author() } : {}) })
     });
     if (!commitRes.ok) { const err = await commitRes.json().catch(() => ({})); throw accessError(commitRes.status, err.message, 'de wijziging vast te leggen'); }
     const newCommitSha = (await commitRes.json()).sha;
