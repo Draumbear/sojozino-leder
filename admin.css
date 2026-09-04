@@ -135,7 +135,12 @@
 /* Saves are deliberately not published straight away (they'd each cost a
    Netlify build), so this bar is the standing reminder that work is waiting
    and the one place to actually put it live. */
+/* Sticky: she saves from inside the editor, often well down the page, and a
+   reminder she has scrolled past is a reminder she never sees. */
 .publish-bar {
+  position: sticky;
+  top: 0.6rem;
+  z-index: 300;
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 1rem;
   background: var(--a-espresso); color: #fff;
@@ -186,6 +191,16 @@
 
 .dashboard-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
 .tab-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.6rem; }
+
+/* Reordering the product list. The handle is the visible affordance; the whole
+   row is the drag target, since a 12px grip is a poor thing to aim at. */
+.row-card[draggable="true"] { cursor: grab; }
+.row-card.dragging { opacity: 0.4; cursor: grabbing; }
+.row-card.drag-over { box-shadow: inset 0 3px 0 var(--a-rust); }
+.drag-handle {
+  color: var(--a-ink-faint); font-size: 1.1rem; line-height: 1;
+  cursor: grab; user-select: none; flex-shrink: 0;
+}
 
 .empty-state { text-align: center; padding: 2.4rem 1rem; color: var(--a-ink-faint); }
 

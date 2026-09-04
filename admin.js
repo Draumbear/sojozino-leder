@@ -67,9 +67,10 @@ function toast(message, type = 'info', action) {
 // destructive step has to state what it destroys. Resolves true only on the
 // confirm button: Escape, the backdrop and Annuleren all mean no, and Annuleren
 // takes focus so an absent-minded enter cancels rather than deletes.
-function askConfirm({ title, lines = [], confirmLabel = 'Ja, doorgaan', danger = false }) {
+function askConfirm({ title, lines = [], confirmLabel = 'Ja, doorgaan', cancelLabel = 'Annuleren', danger = false }) {
   const overlay = $('#confirmModal');
   $('#cmTitle').textContent = title;
+  $('#cmCancel').textContent = cancelLabel;
   $('#cmBody').innerHTML = lines.length
     ? `<ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul>`
     : '';
@@ -279,6 +280,7 @@ async function connect(cfg, { silent }) {
     $('#dashboard').classList.remove('hidden');
     await loadAll();
     await refreshPublishBar();
+    await offerDraftRecovery();
   } catch (e) {
     setConnStatus(false);
     if (!silent) $('#connectError').textContent = e.message;
@@ -517,17 +519,27 @@ function renderProductsTab() {
   filterSel.innerHTML = '<option value="all">Alle categorieën</option>' +
     state.categories.map(c => `<option value="${esc(c.slug)}">${esc(c.name)}</option>`).join('');
 
+  // Alphabetical here would have been a different order from the one the site
+  // shows, which makes dragging meaningless: the list has to be the thing being
+  // reordered. Category first, then `order`, exactly as the gallery groups them.
+  function inSiteOrder(list) {
+    return [...list].sort((a, b) =>
+      (catByslug[a.category] || '').localeCompare(catByslug[b.category] || '')
+      || (a.order || 0) - (b.order || 0));
+  }
+
   function render() {
     const q = $('#productSearch').value.trim().toLowerCase();
     const cat = filterSel.value;
-    const list = state.productsIndex
-      .filter(p => (cat === 'all' || p.category === cat) && (!q || p.name.toLowerCase().includes(q)))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const filtering = !!q || cat !== 'all';
+    const list = inSiteOrder(state.productsIndex
+      .filter(p => (cat === 'all' || p.category === cat) && (!q || p.name.toLowerCase().includes(q))));
     const listEl = $('#productsList');
     detachProductEditor();
     const featuredCount = state.productsIndex.filter(p => p.featured).length;
     listEl.innerHTML = list.length ? list.map(p => `
-      <div class="row-card" data-slug="${esc(p.slug)}">
+      <div class="row-card" data-slug="${esc(p.slug)}" ${filtering ? '' : 'draggable="true"'}>
+        ${filtering ? '' : '<span class="drag-handle" title="Sleep om de volgorde te wijzigen">⠿</span>'}
         <img src="${esc(p.cover?.src || '')}" alt="">
         <div class="rc-info"><strong>${esc(p.name)}</strong><span>${esc(catByslug[p.category] || '—')}</span></div>
         <div class="rc-actions">
@@ -537,10 +549,16 @@ function renderProductsTab() {
           <button class="btn-admin danger small" data-action="delete">Verwijderen</button>
         </div>
       </div>`).join('') : '<div class="empty-state">Geen producten gevonden.</div>';
-    $('#featuredHint').textContent = featuredCount
+    $('#featuredHint').innerHTML = (featuredCount
       ? `${featuredCount} product${featuredCount === 1 ? '' : 'en'} uitgelicht op de homepage.`
-      : 'Niets uitgelicht — de homepage toont voorlopig automatisch een selectie.';
+      : 'Niets uitgelicht — de homepage toont voorlopig automatisch een selectie.')
+      + (list.length
+        ? (filtering
+          ? ' <em>Wis het zoekvak en het categoriefilter om de volgorde te kunnen slepen.</em>'
+          : ' Sleep een product om de volgorde op de website te wijzigen.')
+        : '');
     placeProductEditor();
+    if (!filtering) bindProductDragging(listEl, render);
   }
   render();
   $('#productSearch').oninput = render;
@@ -556,6 +574,73 @@ function renderProductsTab() {
   };
 
   $('#newProductBtn').onclick = () => openProductEditor(null);
+}
+
+// Dragging a product row changes the order the gallery shows it in. Only
+// offered on the unfiltered list: dropping between two rows means nothing when
+// the rows in between are hidden by a search.
+function bindProductDragging(listEl, rerender) {
+  let dragging = null;
+
+  const clearMarkers = () => listEl.querySelectorAll('.row-card.drag-over')
+    .forEach(r => r.classList.remove('drag-over'));
+
+  listEl.querySelectorAll('.row-card[draggable="true"]').forEach(row => {
+    row.addEventListener('dragstart', (e) => {
+      dragging = row.dataset.slug;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', dragging);
+    });
+    row.addEventListener('dragend', () => { row.classList.remove('dragging'); dragging = null; clearMarkers(); });
+    row.addEventListener('dragover', (e) => {
+      if (!dragging || row.dataset.slug === dragging) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      clearMarkers();
+      row.classList.add('drag-over');
+    });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', async (e) => {
+      if (!dragging) return;
+      e.preventDefault();
+      const from = dragging, to = row.dataset.slug;
+      dragging = null;
+      clearMarkers();
+      if (from === to) return;
+      await moveProductBefore(from, to, rerender);
+    });
+  });
+}
+
+// Rewrites `order` across the whole index rather than nudging two numbers:
+// products imported before ordering existed can share a value, and renumbering
+// the lot from the visible sequence is the only way to be sure the site ends up
+// showing exactly what she just arranged.
+async function moveProductBefore(fromSlug, toSlug, rerender) {
+  const rows = [...$('#productsList').querySelectorAll('.row-card')].map(r => r.dataset.slug);
+  const from = rows.indexOf(fromSlug), to = rows.indexOf(toSlug);
+  if (from < 0 || to < 0) return;
+  rows.splice(to, 0, rows.splice(from, 1)[0]);
+
+  const before = state.productsIndex.map(p => `${p.slug}:${p.order}`).join();
+  rows.forEach((slug, i) => {
+    const p = state.productsIndex.find(x => x.slug === slug);
+    if (p) p.order = i + 1;
+  });
+  if (state.productsIndex.map(p => `${p.slug}:${p.order}`).join() === before) return;
+
+  rerender();
+  try {
+    const moved = state.productsIndex.find(p => p.slug === fromSlug);
+    const sha = await api.commitBatch(
+      [{ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) }],
+      `Volgorde gewijzigd: ${moved ? moved.name : fromSlug}`, 'products');
+    toast('Volgorde opgeslagen.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, 'Volgorde gewijzigd') });
+  } catch (e) {
+    toast(e.message, 'err');
+    await loadAll();
+  }
 }
 
 // Starring is a one-field change to the index, so it commits on its own
@@ -686,6 +771,7 @@ function renderSubcategorySelect(selected) {
 
 function closeProductEditor() {
   $('#productEditor').classList.add('hidden');
+  clearDraft();
   detachProductEditor();
   editingSlug = null;
   editorPendingUploads = [];
@@ -961,6 +1047,91 @@ function bindVariantsManagerEvents(wrap) {
   });
 }
 
+// ---------- Unsaved work ----------
+// The product editor is where half an hour can disappear to one closed tab, so
+// what is typed there is mirrored into localStorage as it is typed. Queued
+// photos cannot come along: they are File handles from a picker the browser
+// will not hand back on the next page load. So the draft says so plainly rather
+// than restoring a product that quietly lost its pictures.
+const DRAFT_KEY = 'sojozino-admin-draft';
+
+function readDraft() {
+  try { return JSON.parse(localStorage.getItem(DRAFT_KEY)) || null; }
+  catch { return null; }
+}
+
+function writeDraft() {
+  // Nothing open, or nothing typed yet: no draft worth keeping.
+  if ($('#productEditor').classList.contains('hidden')) return;
+  const current = snapshotProductEditor();
+  if (!current.name && !current.description) return;
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      slug: editingSlug,
+      savedAt: Date.now(),
+      queuedPhotos: editorPendingUploads.length,
+      form: current,
+    }));
+  } catch { /* private mode, or full: losing the draft is not worth an error */ }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch {}
+}
+
+// True while the open editor differs from what was loaded -- the test the
+// beforeunload guard and the draft prompt both hang off.
+function editorHasUnsavedWork() {
+  if ($('#productEditor').classList.contains('hidden')) return false;
+  return describeProductChanges().length > 0;
+}
+
+// Offered on load when a draft outlived its session. Restoring only refills the
+// text: the photos have to be picked again, which the prompt says up front so
+// she is not hunting for them afterwards.
+async function offerDraftRecovery() {
+  const draft = readDraft();
+  if (!draft) return;
+
+  const product = draft.slug ? state.productsIndex.find(p => p.slug === draft.slug) : null;
+  if (draft.slug && !product) { clearDraft(); return; } // deleted since
+
+  const what = draft.slug ? `"${product.name}"` : `een nieuw product ("${draft.form.name || 'zonder naam'}")`;
+  const lines = [
+    `Je was ${esc(what)} aan het bewerken (${esc(relativeTime(draft.savedAt))}), maar hebt het niet opgeslagen.`,
+  ];
+  if (draft.queuedPhotos) {
+    lines.push(`<span class="warn">De ${draft.queuedPhotos} foto's die klaarstonden zijn niet bewaard</span> — die moet je opnieuw kiezen.`);
+  }
+  lines.push('Kies "Weggooien" om deze tekst definitief te wissen en met een schone lei te beginnen.');
+
+  const restore = await askConfirm({
+    title: 'Niet-opgeslagen wijzigingen gevonden',
+    lines,
+    confirmLabel: 'Verder werken',
+    cancelLabel: 'Weggooien',
+  });
+
+  if (restore) {
+    await openProductEditor(draft.slug);
+    $('#pe-name').value = draft.form.name || '';
+    if (draft.form.category) $('#pe-category').value = draft.form.category;
+    renderSubcategorySelect(draft.form.subcategory || '');
+    $('#pe-description').value = draft.form.description || '';
+    toast('Je tekst is teruggezet. Voeg de foto\u2019s opnieuw toe als je die had klaarstaan.', 'ok');
+    return;
+  }
+
+  // Discarding is itself destructive, so it gets its own confirmation.
+  const sure = await askConfirm({
+    title: 'Deze niet-opgeslagen wijzigingen weggooien?',
+    lines: ['De tekst die je had ingevuld is daarna definitief weg.', 'Wat al op de website staat verandert hier niet door.'],
+    confirmLabel: 'Ja, gooi weg',
+    danger: true,
+  });
+  if (sure) { clearDraft(); toast('Weggegooid.', 'info'); }
+}
+
 // ---------- Review before saving ----------
 // Saving commits straight to the live site, so the last step is a plain-language
 // list of what is about to change. Built by comparing against a snapshot taken
@@ -1090,8 +1261,13 @@ async function saveProduct() {
     // only matters for the folder an upload lands in and the swatch label.
     if (multi) editorVariants.forEach((v, i) => { if (!v.name) v.name = `Variant ${i + 1}`; });
 
-    // Upload any newly-added photos into their variant's own folder.
-    for (const pending of editorPendingUploads) {
+    // Upload any newly-added photos into their variant's own folder. Each one
+    // is decoded, resized and re-encoded to WebP before it goes anywhere, so a
+    // dozen photos is easily half a minute -- long enough that a motionless
+    // spinner reads as a hung page and invites a second click or a closed tab.
+    const totalUploads = editorPendingUploads.length;
+    for (const [i, pending] of editorPendingUploads.entries()) {
+      setBusy(btn, true, `Foto ${i + 1} van ${totalUploads}…`);
       const v = editorVariants[pending.variantIdx];
       const folder = multi ? `assets/products/${slug}/${slugify(v.name)}` : `assets/products/${slug}`;
       const prepared = await api.prepareUpload(pending.file, folder);
@@ -1099,6 +1275,7 @@ async function saveProduct() {
       v.images.push({ src: prepared.path, alt: multi ? `${name} — ${v.name}` : name });
     }
     editorPendingUploads = [];
+    if (totalUploads) setBusy(btn, true, 'Opslaan…');
 
     const coverVariant = editorVariants[editorCoverKey.variantIdx] || editorVariants[0];
     const coverImage = coverVariant.images[editorCoverKey.imageIdx]
@@ -1123,6 +1300,7 @@ async function saveProduct() {
 
     await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`, `products/${slug}`);
     productCache[slug] = productData;
+    clearDraft();
     toast('Product opgeslagen. Klik bovenaan op "Publiceer wijzigingen" om het online te zetten.', 'ok');
     closeProductEditor();
     renderProductsTab();
@@ -1345,9 +1523,20 @@ async function saveSettings() {
 document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
+  // The draft keeps the text, but the queued photos die with the page, so
+  // it is still worth asking before the page goes.
+  window.addEventListener('beforeunload', (e) => {
+    if (!editorHasUnsavedWork()) return;
+    e.preventDefault();
+    e.returnValue = '';
+  });
   initPhotoLightbox();
 
   $('#saveProductBtn').addEventListener('click', saveProduct);
+  // Mirrors the form on every keystroke; localStorage writes are cheap and
+  // a debounce here would only widen the window this exists to close.
+  ['#pe-name', '#pe-category', '#pe-subcategory', '#pe-description']
+    .forEach(sel => { const el = $(sel); if (el) { el.addEventListener('input', writeDraft); el.addEventListener('change', writeDraft); } });
   $('#cancelProductBtn').addEventListener('click', closeProductEditor);
   $('#pe-category').addEventListener('change', () => renderSubcategorySelect(''));
   $('#addVariantBtn').addEventListener('click', () => {
