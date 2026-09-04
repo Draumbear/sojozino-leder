@@ -1480,6 +1480,7 @@ function openPresenceForm(entry) {
   $('#pr-title').value = entry?.title || '';
   $('#pr-location').value = entry?.location || '';
   $('#pr-address').value = entry?.address || '';
+  $('#pr-website').value = entry?.website || '';
   $('#pr-date').value = entry?.date || '';
   $('#pr-description').value = entry?.description || '';
   form.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1489,6 +1490,7 @@ async function savePresenceEntry() {
   const title = $('#pr-title').value.trim();
   const location = $('#pr-location').value.trim();
   const address = $('#pr-address').value.trim();
+  const website = $('#pr-website').value.trim();
   const date = $('#pr-date').value;
   const description = $('#pr-description').value.trim();
   if (!title || !date) { toast('Vul minstens titel en datum in.', 'err'); return; }
@@ -1496,9 +1498,9 @@ async function savePresenceEntry() {
   const editId = $('#presenceForm').dataset.editId;
   if (editId) {
     const entry = state.presence.find(p => p.id === editId);
-    Object.assign(entry, { title, location, address, date, description });
+    Object.assign(entry, { title, location, address, website, date, description });
   } else {
-    state.presence.push({ id: `${date}-${slugify(title)}`, title, location, address, date, description });
+    state.presence.push({ id: `${date}-${slugify(title)}`, title, location, address, website, date, description });
   }
   await savePresence(`Aanwezigheid: ${title}`);
   $('#presenceForm').classList.add('hidden');

@@ -71,7 +71,10 @@ async function initHome() {
           <h3>${esc(next.title)}</h3>
           <div class="presence-loc">${esc(next.location)}</div>
           ${next.description ? `<p>${esc(next.description)}</p>` : ''}
-          ${window.SojozinoSite.mapsLink(next.address) ? `<a class="presence-map" href="${esc(window.SojozinoSite.mapsLink(next.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
+          <div class="presence-links">
+            ${window.SojozinoSite.mapsLink(next.address) ? `<a href="${esc(window.SojozinoSite.mapsLink(next.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
+            ${window.SojozinoSite.externalLink(next.website) ? `<a href="${esc(window.SojozinoSite.externalLink(next.website))}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
+          </div>
         </div>`;
     } else {
       marketEl.innerHTML = '<p class="empty-note">Binnenkort meer nieuws over waar je Sojozino kan vinden.</p>';
@@ -201,7 +204,10 @@ async function initPresence() {
         <h3>${esc(m.title)}</h3>
         <div class="presence-loc">${esc(m.location)}</div>
         ${m.description ? `<p>${esc(m.description)}</p>` : ''}
-        ${window.SojozinoSite.mapsLink(m.address) ? `<a class="presence-map" href="${esc(window.SojozinoSite.mapsLink(m.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
+        <div class="presence-links">
+          ${window.SojozinoSite.mapsLink(m.address) ? `<a href="${esc(window.SojozinoSite.mapsLink(m.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
+          ${window.SojozinoSite.externalLink(m.website) ? `<a href="${esc(window.SojozinoSite.externalLink(m.website))}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
+        </div>
       </div>`;
   }
 

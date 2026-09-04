@@ -803,16 +803,22 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 }
 .presence-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
 .presence-loc { font-size: 0.85rem; color: var(--espresso-soft); font-weight: 600; margin-bottom: 0.6rem; }
-/* Link, not an embedded map: an iframe would pull Google into every page load
-   and undo the point of self-hosting the fonts. */
-.presence-map {
-  display: inline-block;
+/* Links, not an embedded map: an iframe would pull Google into every page load
+   and undo the point of self-hosting the fonts. Wraps, because a market with
+   both an address and a website has two of these and the cards are narrow. */
+.presence-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
   margin-top: 0.7rem;
+}
+.presence-links:empty { display: none; }
+.presence-links a {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--rust);
 }
-.presence-map:hover { text-decoration: underline; }
+.presence-links a:hover { text-decoration: underline; }
 
 .presence-card.past { opacity: 0.55; }
 /* Spans the whole grid: as a plain grid item this sat in the first column,

@@ -128,6 +128,18 @@ function mapsLink(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
 }
 
+// A market's own website. Typed by hand, so "wapenplein.be" has to work as
+// well as the full URL -- nobody types https:// on a phone. Anything carrying
+// some other scheme is refused rather than guessed at: a link this site prints
+// should only ever be an ordinary web address.
+function externalLink(value) {
+  const v = (value || '').trim();
+  if (!v) return null;
+  if (/^https?:\/\//i.test(v)) return v;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(v)) return null;
+  return `https://${v}`;
+}
+
 function applyAccent(site) {
   if (site.accentColor) {
     document.documentElement.style.setProperty('--rust', site.accentColor);
@@ -181,4 +193,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink };
