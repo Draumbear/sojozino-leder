@@ -88,5 +88,12 @@
         "name": "Allerlei"
       }
     ]
+  },
+  {
+    "slug": "test",
+    "name": "Test",
+    "singular": "Tester",
+    "order": 5,
+    "subcategories": []
   }
 ]
