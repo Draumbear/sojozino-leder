@@ -177,6 +177,19 @@ function externalLink(value) {
   return `https://${v}`;
 }
 
+// The address itself is more use than the words "Website van de markt": it
+// tells her which market before she clicks, and people recognise a domain.
+// Long ones would push the card's layout around, so those fall back -- first
+// to the domain alone, then to the generic label.
+const LINK_LABEL_MAX = 34;
+
+function linkLabel(url) {
+  const tidy = url.replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/+$/, '');
+  if (tidy.length <= LINK_LABEL_MAX) return tidy;
+  const host = tidy.split('/')[0];
+  return host.length <= LINK_LABEL_MAX ? host : 'Website van de markt';
+}
+
 // A market's address, and the links that go with it. The address is worth
 // printing rather than hiding behind a link: someone standing in the street
 // wants to read it, and someone planning a trip wants to tap it. Skipped when
@@ -191,7 +204,7 @@ function addressBlock(entry) {
     ${raw && !isUrl ? `<p class="presence-address">${escapeHTML(raw)}</p>` : ''}
     <div class="presence-links">
       ${map ? `<a href="${escapeHTML(map)}" target="_blank" rel="noopener">Openen in Maps &#8599;</a>` : ''}
-      ${site ? `<a href="${escapeHTML(site)}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
+      ${site ? `<a href="${escapeHTML(site)}" target="_blank" rel="noopener">${escapeHTML(linkLabel(site))} &#8599;</a>` : ''}
     </div>`;
 }
 
