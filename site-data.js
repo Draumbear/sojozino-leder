@@ -138,7 +138,7 @@ function instagramNote(site) {
   const url = (site && site.instagramUrl || '').trim();
   if (!url) return '';
   const handle = instagramHandle(url);
-  return ` Hij kondigt ze het eerst aan op <a href="${escapeHTML(url)}" target="_blank" rel="noopener">${escapeHTML(handle ? '@' + handle : 'Instagram')}</a>.`;
+  return ` Hij kondigt ze het eerst aan op <a class="inline-link" href="${escapeHTML(url)}" target="_blank" rel="noopener">${escapeHTML(handle ? '@' + handle : 'Instagram')}</a>.`;
 }
 
 function renderInstagramButton(site) {

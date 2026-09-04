@@ -46,6 +46,18 @@ section[id] { scroll-margin-top: 6rem; }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
+/* Links sitting inside a sentence. The rule above deliberately strips link
+   styling site-wide, because most links here are buttons, cards or nav items
+   that carry their own affordance -- but one in running text then looks
+   exactly like the words around it. */
+.inline-link {
+  color: var(--rust);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.inline-link:hover { text-decoration-thickness: 2px; }
 
 /* Three weights rather than one: 600 for the big display headings, 500 for
    section headings, 400 for the small ones sitting on cards. All one weight
