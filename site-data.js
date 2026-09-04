@@ -79,7 +79,8 @@ function renderFooter(site) {
         <a href="mailto:${escapeHTML(site.email || '')}">${escapeHTML(site.email || '')}</a>
         <a href="privacy.html">Privacy</a>
       </div>
-      <div class="footer-meta">${escapeHTML(site.location || '')} — © ${new Date().getFullYear()} Tanguy Swerts</div>
+      <div class="footer-meta">${[site.address || site.location, site.vatNumber && 'BTW ' + site.vatNumber]
+        .filter(Boolean).map(escapeHTML).concat(`© ${new Date().getFullYear()} Tanguy Swerts`).join(' — ')}</div>
     </footer>`;
 }
 

@@ -6,8 +6,8 @@
 <title>Privacybeleid — Sojozino</title>
 <meta name="description" content="Welke gegevens Sojozino bijhoudt, waarvoor, en hoe lang.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=05d1fbb0">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=05d1fbb0">
+<link rel="stylesheet" href="styles.css?v=0238278d">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=0238278d">
 </head>
 <body>
 <div class="grain"></div>
@@ -55,7 +55,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=05d1fbb0"></script>
+<script src="site-data.js?v=0238278d"></script>
 <script>
 // Name, place and mail address come from the dashboard rather than being typed
 // in here, so this page cannot quietly drift out of date with the rest of the site.
@@ -63,8 +63,12 @@ document.addEventListener('site:loaded', (e) => {
   const site = e.detail;
   const esc = window.SojozinoSite.escapeHTML;
   const who = [site.businessName, site.ownerName].filter(Boolean).map(esc).join(' — ');
+  // The address, where he has filled one in, is the more precise answer to
+  // "who is responsible for my data" than the town on its own.
+  const where = site.address || site.location;
   document.getElementById('privacyController').innerHTML =
-    `${who || 'Sojozino'}${site.location ? ', ' + esc(site.location) : ''}.`;
+    `${who || 'Sojozino'}${where ? ', ' + esc(where) : ''}.` +
+    (site.vatNumber ? ` BTW ${esc(site.vatNumber)}.` : '');
   document.getElementById('privacyContact').innerHTML = site.email
     ? `Vragen over je gegevens? Mail naar <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>.`
     : 'Vragen over je gegevens? Neem contact op via de contactpagina.';
