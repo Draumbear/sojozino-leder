@@ -543,3 +543,48 @@ button.conn-status.off { cursor: default; }
   border-radius: 50%; animation: spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* The browser writes its own "Choose file / No file chosen" into a file input
+   and no API can change that wording -- on an English-language browser the
+   Dutch dashboard suddenly speaks English. The input is therefore hidden
+   (still focusable, still in the tab order) and a <label for> stands in for
+   its button, with the filename printed alongside. */
+.file-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.file-picker input[type="file"] {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.file-btn {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--a-line);
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--a-espresso);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.file-btn:hover { border-color: var(--a-espresso); }
+.file-picker input[type="file"]:focus-visible + .file-btn {
+  outline: 2px solid var(--a-espresso);
+  outline-offset: 2px;
+}
+.file-name {
+  font-size: 0.8rem;
+  color: var(--a-ink-soft);
+  overflow-wrap: anywhere;
+}
+.file-picker.has-file .file-name { color: var(--a-espresso); font-weight: 600; }

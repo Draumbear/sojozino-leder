@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=3af9848b">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=3af9848b">
+<link rel="stylesheet" href="admin.css?v=353ab33c">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=353ab33c">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -182,7 +182,11 @@
         <div class="admin-field">
           <label>Foto</label>
           <img id="a-photo-preview" src="assets/logo-mark.png" alt="" style="width:140px;height:140px;object-fit:cover;border-radius:6px;border:1px solid var(--a-line);margin-bottom:0.6rem;display:block;">
-          <input type="file" id="a-photo-input" accept="image/*">
+          <div class="file-picker">
+            <input type="file" id="a-photo-input" accept="image/*">
+            <label class="file-btn" for="a-photo-input">Foto kiezen</label>
+            <span class="file-name">Geen bestand gekozen</span>
+          </div>
         </div>
         <button class="btn-admin" id="saveAboutBtn">Opslaan</button>
       </div>
@@ -258,12 +262,20 @@
           <div class="admin-field">
             <label>Logo-teken <span class="hint">(alleen de draak — staat in de menubalk en als tabblad-icoon)</span></label>
             <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
-            <input type="file" id="s-logo-input" accept="image/*">
+            <div class="file-picker">
+              <input type="file" id="s-logo-input" accept="image/*">
+              <label class="file-btn" for="s-logo-input">Afbeelding kiezen</label>
+              <span class="file-name">Geen bestand gekozen</span>
+            </div>
           </div>
           <div class="admin-field">
             <label>Volledig logo <span class="hint">(met tekst errond — staat groot bovenaan de homepage)</span></label>
             <img id="s-logofull-preview" src="assets/logo-full.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
-            <input type="file" id="s-logofull-input" accept="image/*">
+            <div class="file-picker">
+              <input type="file" id="s-logofull-input" accept="image/*">
+              <label class="file-btn" for="s-logofull-input">Afbeelding kiezen</label>
+              <span class="file-name">Geen bestand gekozen</span>
+            </div>
           </div>
         </div>
       </div>
@@ -472,7 +484,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=3af9848b"></script>
-<script src="admin.js?v=3af9848b"></script>
+<script src="admin-github.js?v=353ab33c"></script>
+<script src="admin.js?v=353ab33c"></script>
 </body>
 </html>

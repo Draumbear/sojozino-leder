@@ -843,6 +843,15 @@ async function flushProductIndex() {
 // The homepage has room for eight. Refusing the ninth here, with the reason,
 // beats silently dropping it at render time -- he would star something, see no
 // change on the site, and have nothing to go on.
+// The filename beside a .file-picker, since the native one is hidden.
+function showChosenFile(input) {
+  const wrap = input.closest('.file-picker');
+  if (!wrap) return;
+  const f = input.files[0];
+  wrap.classList.toggle('has-file', !!f);
+  wrap.querySelector('.file-name').textContent = f ? f.name : 'Geen bestand gekozen';
+}
+
 const MAX_FEATURED = 8;
 
 function toggleFeatured(slug, rerender) {
@@ -1964,16 +1973,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  $('#a-photo-input').addEventListener('change', () => {
-    const f = $('#a-photo-input').files[0];
-    if (f) $('#a-photo-preview').src = URL.createObjectURL(f);
-  });
-  $('#s-logofull-input').addEventListener('change', () => {
-    const f = $('#s-logofull-input').files[0];
-    if (f) $('#s-logofull-preview').src = URL.createObjectURL(f);
-  });
-  $('#s-logo-input').addEventListener('change', () => {
-    const f = $('#s-logo-input').files[0];
-    if (f) $('#s-logo-preview').src = URL.createObjectURL(f);
+  // Each picker shows its own preview, and prints the chosen filename in the
+  // label that stands in for the browser's untranslatable one.
+  [['a-photo-input', 'a-photo-preview'],
+   ['s-logofull-input', 's-logofull-preview'],
+   ['s-logo-input', 's-logo-preview']].forEach(([inputId, previewId]) => {
+    const input = $(`#${inputId}`);
+    input.addEventListener('change', () => {
+      const f = input.files[0];
+      if (f) $(`#${previewId}`).src = URL.createObjectURL(f);
+      showChosenFile(input);
+    });
   });
 });
