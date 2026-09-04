@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish21">
+<link rel="stylesheet" href="admin.css?v=publish25">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
@@ -26,9 +26,8 @@
   <!-- Connect panel -->
   <div id="connectPanel" class="admin-card">
     <h2>Verbind met GitHub</h2>
+    <p class="hint" style="margin-bottom:0.4rem;" id="connectIntro"></p>
     <p class="hint" style="margin-bottom:1.2rem;">
-      Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository,
-      die je daarna zelf online zet met de knop "Publiceer wijzigingen" — meestal binnen een minuut zichtbaar.
       Je hebt een <strong>fine-grained personal access token</strong> nodig, beperkt tot deze ene repository.
     </p>
     <ol class="setup-steps">
@@ -99,7 +98,7 @@
           <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
           <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
         </div>
-        <p class="hint" style="margin-top:1.4rem;">Wijzigingen worden bewaard zodra je op opslaan klikt, maar gaan pas live wanneer je bovenaan op <strong>Publiceer wijzigingen</strong> klikt. Zo kun je rustig meerdere dingen aanpassen en ze in één keer online zetten.</p>
+        <p class="hint" style="margin-top:1.4rem;" id="overviewPublishHint"></p>
       </div>
     </section>
 
@@ -292,7 +291,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish21"></script>
-<script src="admin.js?v=publish21"></script>
+<script src="admin-github.js?v=publish25"></script>
+<script src="admin.js?v=publish25"></script>
 </body>
 </html>

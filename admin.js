@@ -44,6 +44,32 @@ function uniqueSlug(base, excludeSlug) {
   return slug;
 }
 
+// Whether a save is live straight away depends on DEFER_PUBLISH, and telling
+// her the wrong one of those is how a dashboard stops being believed. So the
+// wording is derived from the flag rather than written out twice and forgotten.
+function savedToast(what) {
+  toast(DEFER_PUBLISH
+    ? `${what} Klik rechtsonder op "Publiceer wijzigingen" om het online te zetten.`
+    : `${what} Binnen een minuut staat het op de website.`, 'ok');
+}
+
+// Same for the standing explanations in the markup, which cannot ask the flag
+// themselves.
+function applyPublishWording() {
+  const intro = $('#connectIntro');
+  if (intro) {
+    intro.textContent = DEFER_PUBLISH
+      ? 'Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository, die je daarna zelf online zet met de knop "Publiceer wijzigingen" — meestal binnen een minuut zichtbaar.'
+      : 'Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository. Wat je opslaat staat meestal binnen een minuut op de website.';
+  }
+  const hint = $('#overviewPublishHint');
+  if (hint) {
+    hint.textContent = DEFER_PUBLISH
+      ? 'Wijzigingen worden bewaard zodra je op opslaan klikt, maar gaan pas live wanneer je rechtsonder op "Publiceer wijzigingen" klikt. Zo kun je rustig meerdere dingen aanpassen en ze in één keer online zetten.'
+      : 'Alles wat je opslaat gaat meteen naar de website — meestal binnen een minuut zichtbaar. Vergist? Elke wijziging kun je terugzetten met "Ongedaan maken".';
+  }
+}
+
 // ---------- Toasts ----------
 function toast(message, type = 'info', action) {
   const container = $('#toastContainer');
@@ -501,7 +527,7 @@ function uniqueSubcategorySlug(cat, base) {
 async function saveCategories(message) {
   try {
     await api.commitBatch([{ path: 'data/categories.json', content: JSON.stringify(state.categories, null, 2) }], message, 'categories');
-    toast('Categorieën opgeslagen. Klik bovenaan op "Publiceer wijzigingen" om ze online te zetten.', 'ok');
+    savedToast('Categorieën opgeslagen.');
     renderCategoriesTab();
     renderProductsTab();
     renderOverview();
@@ -1324,7 +1350,7 @@ async function saveProduct() {
     await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`, `products/${slug}`);
     productCache[slug] = productData;
     clearDraft();
-    toast('Product opgeslagen. Klik bovenaan op "Publiceer wijzigingen" om het online te zetten.', 'ok');
+    savedToast('Product opgeslagen.');
     closeProductEditor();
     renderProductsTab();
     renderOverview();
@@ -1544,6 +1570,7 @@ async function saveSettings() {
 
 // ---------- Init ----------
 document.addEventListener('DOMContentLoaded', () => {
+  applyPublishWording();
   initConnect();
   initTabs();
   // The draft keeps the text, but the queued photos die with the page, so
@@ -1571,6 +1598,20 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
   $('#publishBtn').addEventListener('click', publishChanges);
+  // The dock and the toasts both live in the bottom-right corner, and the dock
+  // changes height as it is expanded, collapsed, filled or hidden. Measuring it
+  // is the only way the toasts can reliably clear it; a fixed offset would be
+  // wrong in three of those four states.
+  const dock = $('#publishBar');
+  const trackDockHeight = () => {
+    const visible = !dock.classList.contains('hidden');
+    const height = visible ? dock.offsetHeight + 12 : 0;
+    document.documentElement.style.setProperty('--dock-height', `${height}px`);
+  };
+  new ResizeObserver(trackDockHeight).observe(dock);
+  new MutationObserver(trackDockHeight).observe(dock, { attributes: true, attributeFilter: ['class'] });
+  trackDockHeight();
+
   $('#publishToggle').addEventListener('click', () => {
     const dock = $('#publishBar');
     const open = dock.classList.toggle('open');

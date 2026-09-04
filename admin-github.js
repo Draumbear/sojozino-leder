@@ -12,8 +12,13 @@ const SKIP_DEPLOY_MARKER = '[skip netlify]';
 // Trailer naming the dashboard screen a save came from, e.g. 'products/tties'.
 const TARGET_PREFIX = '[target: ';
 
-// Sojozino's site is hosted on Netlify, so deferred publishing is on.
-const DEFER_PUBLISH = true;
+// This site is on GitHub Pages, which rebuilds on every push and ignores the
+// marker below -- so a save is live within the minute whatever the dashboard
+// says. Holding saves back here would only mean telling her that live changes
+// are not live, and Pages deploys cost nothing anyway. Flip this to true the
+// day it moves to Netlify: the publish dock, the pending list and the undo
+// buttons all wake up unchanged.
+const DEFER_PUBLISH = false;
 
 const GH_STORAGE_KEY = 'sojozino-admin-github';
 

@@ -262,7 +262,15 @@
 }
 .toast-action:hover { background: rgba(255, 255, 255, 0.18); }
 
-.toast-container { position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 400; display: flex; flex-direction: column; gap: 0.6rem; }
+/* Toasts share the bottom-right corner with the publish dock, so they sit on
+   top of whatever height the dock currently is -- see the observer in admin.js
+   that keeps --dock-height honest through collapsing, expanding and hiding. */
+.toast-container {
+  position: fixed;
+  bottom: calc(1.4rem + var(--dock-height, 0px));
+  right: 1.4rem; z-index: 400;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
 .toast {
   background: var(--a-espresso); color: #fff; padding: 0.8rem 1.1rem;
   border-radius: var(--a-radius-sm); font-size: 0.85rem; box-shadow: var(--a-shadow);
