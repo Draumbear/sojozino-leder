@@ -177,7 +177,7 @@
       "src": "assets/products/barrel-bag-lapjes/cover.jpg",
       "alt": "Barrel Bag Lapjes"
     },
-    "order": 1,
+    "order": 43,
     "featured": false,
     "fit": "cover"
   },
@@ -190,7 +190,7 @@
       "src": "assets/products/lucs-boekentas/cover.jpg",
       "alt": "Lucs Boekentas"
     },
-    "order": 2,
+    "order": 44,
     "featured": false,
     "fit": "cover"
   },
@@ -203,7 +203,7 @@
       "src": "assets/products/t-tas-fushia/cover.jpg",
       "alt": "T Tas Fushia"
     },
-    "order": 3,
+    "order": 45,
     "featured": false,
     "fit": "cover"
   },
@@ -216,7 +216,7 @@
       "src": "assets/products/rugzak-messengerbag/cover.jpg",
       "alt": "Rugzak Messengerbag"
     },
-    "order": 4,
+    "order": 46,
     "featured": false,
     "fit": "cover"
   },
@@ -229,7 +229,7 @@
       "src": "assets/products/tas-metje/cover.jpg",
       "alt": "Tas Metje"
     },
-    "order": 5,
+    "order": 47,
     "featured": false,
     "fit": "cover"
   },
@@ -242,7 +242,7 @@
       "src": "assets/products/bordeauxrode-riem/cover.jpg",
       "alt": "Bordeauxrode Riem"
     },
-    "order": 1,
+    "order": 42,
     "featured": false,
     "fit": "cover"
   },
@@ -255,7 +255,7 @@
       "src": "assets/products/dopp-kit/cover.jpg",
       "alt": "Dopp Kit"
     },
-    "order": 1,
+    "order": 14,
     "featured": false,
     "fit": "cover"
   },
@@ -268,7 +268,7 @@
       "src": "assets/products/driehoek-geldbeugels/cover.jpg",
       "alt": "Driehoek Geldbeugels"
     },
-    "order": 2,
+    "order": 15,
     "featured": false,
     "fit": "cover"
   },
@@ -281,7 +281,7 @@
       "src": "assets/products/henks-gsm-houder/cover.jpg",
       "alt": "Henks Gsm Houder"
     },
-    "order": 3,
+    "order": 16,
     "featured": false,
     "fit": "contain"
   },
@@ -294,7 +294,7 @@
       "src": "assets/products/inges-longwallet/cover.jpg",
       "alt": "Inges Longwallet"
     },
-    "order": 4,
+    "order": 18,
     "featured": false,
     "fit": "contain"
   },
@@ -307,7 +307,7 @@
       "src": "assets/products/noors-boekenbox/cover.jpg",
       "alt": "Noors Boekenbox"
     },
-    "order": 5,
+    "order": 17,
     "featured": false,
     "fit": "contain"
   },
@@ -320,7 +320,7 @@
       "src": "assets/products/peaky-blinders-pet/cover.jpg",
       "alt": "Peaky Blinders Pet"
     },
-    "order": 6,
+    "order": 19,
     "featured": false,
     "fit": "contain"
   },
@@ -333,7 +333,7 @@
       "src": "assets/products/bifold-de-nele-portefeuille/cover.jpg",
       "alt": "Bifold De Nele Portefeuille"
     },
-    "order": 7,
+    "order": 20,
     "featured": false,
     "fit": "cover"
   },
@@ -346,7 +346,7 @@
       "src": "assets/products/boekenbox-handtas/cover.jpg",
       "alt": "Boekenbox Handtas"
     },
-    "order": 8,
+    "order": 21,
     "featured": false,
     "fit": "contain"
   },
@@ -359,7 +359,7 @@
       "src": "assets/products/boekenbox-rood-print/cover.jpg",
       "alt": "Boekenbox Rood Print"
     },
-    "order": 9,
+    "order": 22,
     "featured": false,
     "fit": "contain"
   },
@@ -372,7 +372,7 @@
       "src": "assets/products/deksel-koffiemaler-rok/cover.jpg",
       "alt": "Deksel Koffiemaler Rok"
     },
-    "order": 10,
+    "order": 23,
     "featured": false,
     "fit": "cover"
   },
@@ -385,7 +385,7 @@
       "src": "assets/products/kaartenhouder-blauw/cover.jpg",
       "alt": "Kaartenhouder Blauw"
     },
-    "order": 11,
+    "order": 24,
     "featured": false,
     "fit": "contain"
   },
@@ -398,7 +398,7 @@
       "src": "assets/products/kaartenhouder-bruin-idem-grofleder/cover.jpg",
       "alt": "Kaartenhouder Bruin Idem Grofleder"
     },
-    "order": 12,
+    "order": 25,
     "featured": false,
     "fit": "contain"
   },
@@ -411,7 +411,7 @@
       "src": "assets/products/kaartenhouder-grof-leder/cover.jpg",
       "alt": "Kaartenhouder Grof Leder"
     },
-    "order": 13,
+    "order": 26,
     "featured": false,
     "fit": "contain"
   },
@@ -424,7 +424,7 @@
       "src": "assets/products/kaartenhouder-origami/cover.jpg",
       "alt": "Kaartenhouder Origami"
     },
-    "order": 14,
+    "order": 27,
     "featured": false,
     "fit": "cover"
   },
@@ -437,7 +437,7 @@
       "src": "assets/products/kaartenhouder-schuifflap/cover.jpg",
       "alt": "Kaartenhouder Schuifflap"
     },
-    "order": 15,
+    "order": 28,
     "featured": false,
     "fit": "contain"
   },
@@ -450,7 +450,7 @@
       "src": "assets/products/kaartenhouders/cover.jpg",
       "alt": "Kaartenhouders"
     },
-    "order": 16,
+    "order": 29,
     "featured": false,
     "fit": "contain"
   },
@@ -463,7 +463,7 @@
       "src": "assets/products/kaartenhouders-duo-kleur/cover.jpg",
       "alt": "Kaartenhouders Duo Kleur"
     },
-    "order": 17,
+    "order": 30,
     "featured": false,
     "fit": "contain"
   },
@@ -476,7 +476,7 @@
       "src": "assets/products/kleine-geldbeugel/cover.jpg",
       "alt": "Kleine Geldbeugel"
     },
-    "order": 18,
+    "order": 31,
     "featured": false,
     "fit": "contain"
   },
@@ -489,7 +489,7 @@
       "src": "assets/products/mes-tasje/cover.jpg",
       "alt": "Mes Tasje"
     },
-    "order": 19,
+    "order": 32,
     "featured": false,
     "fit": "cover"
   },
@@ -502,7 +502,7 @@
       "src": "assets/products/messenbeugel/cover.jpg",
       "alt": "Messenbeugel"
     },
-    "order": 20,
+    "order": 33,
     "featured": false,
     "fit": "cover"
   },
@@ -515,7 +515,7 @@
       "src": "assets/products/poepzakjeshouder-handtasje/cover.jpg",
       "alt": "Poepzakjeshouder Handtasje"
     },
-    "order": 21,
+    "order": 34,
     "featured": false,
     "fit": "cover"
   },
@@ -528,7 +528,7 @@
       "src": "assets/products/portefeuille-den-stijn/cover.jpg",
       "alt": "Portefeuille Den Stijn"
     },
-    "order": 22,
+    "order": 35,
     "featured": false,
     "fit": "cover"
   },
@@ -541,7 +541,7 @@
       "src": "assets/products/portefeuille-rood-zwart/cover.jpg",
       "alt": "Portefeuille Rood Zwart"
     },
-    "order": 23,
+    "order": 36,
     "featured": false,
     "fit": "contain"
   },
@@ -554,7 +554,7 @@
       "src": "assets/products/smartphonetasje/cover.jpg",
       "alt": "Smartphonetasje"
     },
-    "order": 24,
+    "order": 37,
     "featured": false,
     "fit": "contain"
   },
@@ -567,7 +567,7 @@
       "src": "assets/products/tablethoes/cover.jpg",
       "alt": "Tablethoes"
     },
-    "order": 25,
+    "order": 38,
     "featured": false,
     "fit": "cover"
   },
@@ -580,7 +580,7 @@
       "src": "assets/products/telefoonhoesje-prosper/cover.jpg",
       "alt": "Telefoonhoesje Prosper"
     },
-    "order": 26,
+    "order": 39,
     "featured": false,
     "fit": "cover"
   },
@@ -593,7 +593,7 @@
       "src": "assets/products/vide-poche/cover.jpg",
       "alt": "Vide Poche"
     },
-    "order": 27,
+    "order": 40,
     "featured": false,
     "fit": "cover"
   },
@@ -606,7 +606,7 @@
       "src": "assets/products/zakmeshouder-met-sleutelhanger/cover.jpg",
       "alt": "Zakmeshouder Met Sleutelhanger"
     },
-    "order": 28,
+    "order": 41,
     "featured": false,
     "fit": "contain"
   }
