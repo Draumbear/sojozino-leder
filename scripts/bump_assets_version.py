@@ -14,7 +14,8 @@ import re
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = ["styles.css", "admin.css", "site-data.js", "script.js",
-          "product-render.js", "bestellen.js", "admin.js", "admin-github.js"]
+          "product-render.js", "bestellen.js", "admin.js", "admin-github.js",
+          "assets/fonts/fonts.css"]
 
 
 def version():
@@ -28,7 +29,8 @@ def version():
 
 def main():
     v = version()
-    pattern = re.compile(r'((?:href|src)="(?:[\w-]+)\.(?:css|js))(?:\?v=[^"]*)?"')
+    # Paths as well as bare filenames, so assets/fonts/fonts.css is covered too.
+    pattern = re.compile(r'((?:href|src)="(?:[\w./-]+)\.(?:css|js))(?:\?v=[^"]*)?"')
     changed = []
     for f in glob.glob(os.path.join(BASE, "*.html")):
         s = open(f, encoding="utf-8").read()
