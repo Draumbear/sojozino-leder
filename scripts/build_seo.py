@@ -126,8 +126,11 @@ def local_business(site):
         "makesOffer": {"@type": "Offer", "itemOffered": {
             "@type": "Product", "category": "Handgemaakte lederwaren"}},
     }
-    if site.get("email"):
-        data["email"] = site["email"]
+    # Deliberately no email: this block is the one place on the site where the
+    # address would sit in plain HTML, which is precisely what harvesters read.
+    # Google is given the contact page instead.
+    data["contactPoint"] = {"@type": "ContactPoint", "contactType": "customer service",
+                            "url": SITE_ORIGIN + "/contact.html"}
     if site.get("vatNumber"):
         data["vatID"] = site["vatNumber"]
     if site.get("instagramUrl"):

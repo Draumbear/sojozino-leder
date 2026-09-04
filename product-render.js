@@ -251,6 +251,27 @@ async function renderProduct() {
     if (el) el.content = value;
   }
 
+  // What puts a creation's photo in Google's image results rather than leaving
+  // it as an anonymous file. No price and no availability: nothing here is sold
+  // from the site, and inventing either would be a claim Google holds him to.
+  const photos = product.variants.flatMap(v => v.images || [])
+    .map(im => new URL(im.src, location.href).href).slice(0, 8);
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: data.name,
+    description: text,
+    url: canonical.href,
+    brand: { '@type': 'Brand', name: 'Sojozino' },
+    material: 'Leder',
+  };
+  if (photos.length) ld.image = photos;
+  if (catName) ld.category = catName;
+  const holder = document.getElementById('productSchema') ||
+    document.head.appendChild(Object.assign(document.createElement('script'),
+      { type: 'application/ld+json', id: 'productSchema' }));
+  holder.textContent = JSON.stringify(ld, null, 2);
+
   // Variant names live in a hover/focus tooltip rather than under each
   // swatch: printed labels wrap to two or three lines at different lengths,
   // which pushed the squares to uneven heights.

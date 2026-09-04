@@ -183,6 +183,13 @@ async function initOrderForm() {
     check();
   });
 
+  const site = await loadJSON('data/site.json');
+  const mail = document.getElementById('orderErrorMail');
+  if (mail && site && site.email) {
+    mail.href = `mailto:${site.email}`;
+    mail.textContent = site.email;
+  }
+
   const form = document.getElementById('orderForm');
   const submitBtn = document.getElementById('orderSubmitBtn');
   const errorEl = document.getElementById('orderError');

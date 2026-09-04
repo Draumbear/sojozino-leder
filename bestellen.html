@@ -6,8 +6,8 @@
 <title>Bestellen — Sojozino</title>
 <meta name="description" content="Bestel een creatie van Sojozino of vraag iets op maat: kies een stuk, beschrijf je vraag en laat je gegevens na.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=9cbf2df7">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=9cbf2df7">
+<link rel="stylesheet" href="styles.css?v=8430059f">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=8430059f">
 <link rel="canonical" href="https://draumbear.github.io/sojozino-leder/bestellen.html">
 <!-- social:start -->
 <!-- Preview card for links shared in WhatsApp, Facebook, Instagram.
@@ -117,7 +117,10 @@
     </div>
     <p class="req-legend"><span class="req" aria-hidden="true">*</span> Verplicht in te vullen.</p>
     <button type="submit" class="btn" id="orderSubmitBtn">Vraag versturen</button>
-    <p class="order-error hidden" id="orderError">Er ging iets mis bij het versturen. Probeer het opnieuw, of mail rechtstreeks naar <a href="mailto:sojozino@gmail.com">sojozino@gmail.com</a>.</p>
+    <!-- The address is filled in from site.json by bestellen.js: typed here it
+         would drift the day Johnny changes it, and it would be the one copy on
+         the site sitting in plain HTML for address harvesters to read. -->
+    <p class="order-error hidden" id="orderError">Er ging iets mis bij het versturen. Probeer het opnieuw, of mail rechtstreeks naar <a id="orderErrorMail" href="#">Johnny</a>.</p>
   </form>
 
   <div class="card order-success hidden" id="orderSuccess">
@@ -128,7 +131,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=9cbf2df7"></script>
-<script src="bestellen.js?v=9cbf2df7"></script>
+<script src="site-data.js?v=8430059f"></script>
+<script src="bestellen.js?v=8430059f"></script>
 </body>
 </html>
