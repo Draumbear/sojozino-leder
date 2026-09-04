@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish41">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish41">
+<link rel="stylesheet" href="admin.css?v=publish42">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish42">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -100,6 +100,7 @@
         <button data-tab="about">Over mij</button>
         <button data-tab="presence">Aanwezigheid</button>
         <button data-tab="settings">Instellingen</button>
+        <button data-tab="help">Uitleg</button>
       </div>
     </div>
 
@@ -350,6 +351,98 @@
            whichever group she is looking at. -->
       <button class="btn-admin" id="saveSettingsBtn">Opslaan</button>
     </section>
+
+    <!-- Uitleg -->
+    <section id="tab-help" class="admin-tab" hidden>
+      <div class="admin-card help-card">
+        <div class="help-head">
+          <div>
+            <h2>Hoe werkt dit dashboard?</h2>
+            <p class="hint">Klik een vraag open voor het antwoord. Alles wat je hier doet gaat naar je eigen website — er is geen aparte "test"-versie.</p>
+          </div>
+          <button class="btn-admin secondary small" id="printHelpBtn" type="button">Print deze uitleg</button>
+        </div>
+
+        <details class="help-item" open>
+          <summary>Een nieuw product toevoegen</summary>
+          <ol>
+            <li>Ga naar <strong>Producten</strong> en klik op <strong>+ Nieuw product</strong>.</li>
+            <li>Geef het een naam en kies een categorie.</li>
+            <li>Sleep je foto's in het grijze vak, of klik erop om ze te kiezen. Je mag er meerdere tegelijk nemen.</li>
+            <li>Klik op <strong>Opslaan</strong>. Bij veel foto's duurt dat even — de knop telt mee hoeveel er al geüpload zijn.</li>
+          </ol>
+          <p class="hint">Je foto's worden automatisch verkleind en lichter gemaakt voor de website. Je hoeft er zelf niets mee te doen; een foto rechtstreeks van je gsm is prima.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>Wat zijn varianten?</summary>
+          <p>Een variant is hetzelfde product in een andere uitvoering — bijvoorbeeld dezelfde handtas in zwart en in cognac.</p>
+          <p>Elke variant heeft zijn eigen foto's. Op de website krijgt de bezoeker dan kleine vierkantjes te zien om tussen die uitvoeringen te wisselen.</p>
+          <p class="hint">Maak je maar één uitvoering? Laat dan gewoon de ene variant staan en geef ze geen naam. De bezoeker ziet dan geen keuzevierkantjes.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>Foto's schikken, vergroten en de cover kiezen</summary>
+          <ul>
+            <li><strong>Volgorde:</strong> sleep een foto naar links of rechts. De pijltjes <strong>&larr;</strong> en <strong>&rarr;</strong> doen hetzelfde en werken ook op een tablet.</li>
+            <li><strong>Groter bekijken:</strong> klik op de foto zelf.</li>
+            <li><strong>Cover:</strong> klik op <strong>&#9733;</strong> onder een foto. Dat is de foto die in het overzicht van de website getoond wordt.</li>
+            <li><strong>Weghalen:</strong> klik op <strong>&#10005;</strong>. Dat gebeurt pas echt wanneer je het product opslaat.</li>
+          </ul>
+        </details>
+
+        <details class="help-item">
+          <summary>Wat doet de ster in de productlijst?</summary>
+          <p>Daarmee kies je welke creaties op de <strong>homepagina</strong> komen te staan, onder "Uitgelicht". Er passen er maximaal acht.</p>
+          <p>Klik de ster nog eens aan om een product er weer af te halen. Zolang je zelf niets kiest, toont de homepagina automatisch een selectie.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>De volgorde van je producten wijzigen</summary>
+          <p>Sleep in <strong>Producten</strong> een rij naar boven of beneden. Dat is de volgorde waarin ze op de website verschijnen.</p>
+          <p class="hint">Staat er iets in het zoekvak of is er een categoriefilter actief, dan kan je niet slepen — er zijn dan rijen verborgen, en dan weet het dashboard niet waar je iets tussen wil zetten. Wis het filter en het slepen werkt weer.</p>
+        </details>
+
+        <details class="help-item">
+          <summary id="helpSavingTitle">Opslaan</summary>
+          <div id="helpSavingBody"></div>
+        </details>
+
+        <details class="help-item">
+          <summary>Ik heb iets fout gedaan</summary>
+          <p>Bijna alles kan terug. Na een wijziging verschijnt rechtsonder <strong>Ongedaan maken</strong> — daarmee zet je precies die wijziging terug, ook een verwijderd product met al zijn foto's.</p>
+          <p>Verwijderen vraagt altijd eerst of je het zeker weet, en zegt erbij wat er verdwijnt. Bij twijfel: klik op <strong>Annuleren</strong>, er gebeurt dan niets.</p>
+          <p class="hint">Was je een product aan het bewerken toen je venster dichtviel? De volgende keer dat je het dashboard opent, biedt het je die tekst terug aan. De foto's die klaarstonden moet je wel opnieuw kiezen.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>Een markt of beurs toevoegen</summary>
+          <p>Onder <strong>Aanwezigheid</strong> zet je waar je binnenkort staat. Titel en datum zijn verplicht, de rest is optioneel:</p>
+          <ul>
+            <li><strong>Adres voor op de kaart:</strong> typ gewoon het adres. Bezoekers krijgen dan een knop "Bekijk op de kaart".</li>
+            <li><strong>Website van de markt:</strong> "naamvandemarkt.be" volstaat, zonder "https://".</li>
+          </ul>
+          <p class="hint">Zolang er niets in de agenda staat, verwijst de website bezoekers naar je Instagram.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>Teksten en menunamen aanpassen</summary>
+          <p>Onder <strong>Instellingen</strong> vind je drie groepen:</p>
+          <ul>
+            <li><strong>Bedrijf</strong> — je naam, e-mailadres, locatie, Instagram en je logo.</li>
+            <li><strong>Teksten</strong> — de titels en zinnen op de homepagina, de contactpagina, de bestelpagina en "waar vind je mij".</li>
+            <li><strong>Menu</strong> — hoe de pagina's bovenaan de website heten. Laat je een veld leeg, dan blijft de gewone naam staan.</li>
+          </ul>
+          <p class="hint">Je verhaal onder "Over mij" staat in zijn eigen tabblad, niet bij Instellingen.</p>
+        </details>
+
+        <details class="help-item">
+          <summary>Aanmelden op een ander toestel</summary>
+          <p>Je toegangscode wordt enkel in de browser bewaard waarin je ze plakt. Op een nieuwe gsm, tablet of computer moet je ze dus één keer opnieuw ingeven.</p>
+          <p>Bewaar ze ergens veilig. Ben je ze kwijt, dan maak je een nieuwe aan — de uitleg daarvoor staat op het aanmeldscherm onder <strong>"Ik heb nog geen toegangscode"</strong>.</p>
+        </details>
+      </div>
+    </section>
   </div>
 
 </main>
@@ -379,7 +472,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish41"></script>
-<script src="admin.js?v=publish41"></script>
+<script src="admin-github.js?v=publish42"></script>
+<script src="admin.js?v=publish42"></script>
 </body>
 </html>

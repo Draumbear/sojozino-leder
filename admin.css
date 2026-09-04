@@ -281,6 +281,37 @@ button.conn-status.off { cursor: default; }
    rather than describing it. */
 .star-example { color: var(--a-rust); font-size: 0.95rem; }
 
+/* Uitleg. Accordion rather than a wall of text: he arrives with one question,
+   not a wish to read a manual. */
+.help-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+.help-head h2 { margin-bottom: 0.3rem; }
+.help-item { border-top: 1px solid var(--a-line); padding: 0.2rem 0; }
+.help-item summary {
+  cursor: pointer; list-style: none;
+  padding: 0.85rem 0;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--a-espresso);
+}
+.help-item summary::-webkit-details-marker { display: none; }
+.help-item summary::before { content: '+'; display: inline-block; width: 1.2rem; color: var(--a-rust); font-weight: 700; }
+.help-item[open] summary::before { content: '3'; }
+.help-item summary:hover { color: var(--a-rust); }
+.help-item > *:not(summary) { margin: 0 0 0.7rem 1.2rem; font-size: 0.9rem; color: var(--a-ink-soft); line-height: 1.65; }
+.help-item ol, .help-item ul { padding-left: 1.1rem; }
+.help-item li { margin-bottom: 0.35rem; }
+.help-item .hint { font-size: 0.83rem; }
+
+/* Printing it turns it into the paper version, so there is no second document
+   to keep in step with this one. */
+@media print {
+  .admin-header, .admin-tabs, .dashboard-toolbar, .publish-dock, .toast-container,
+  .admin-tab[hidden], #printHelpBtn, #connectPanel { display: none !important; }
+  .admin-main { padding: 0; }
+  .admin-card { border: none; box-shadow: none; padding: 0; }
+  .help-item { break-inside: avoid; }
+  .help-item summary::before { content: ''; width: 0; }
+}
+
 .empty-state { text-align: center; padding: 2.4rem 1rem; color: var(--a-ink-faint); }
 
 /* Confirm dialog. Deliberately not confirm(): it names what is at stake and

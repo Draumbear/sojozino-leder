@@ -62,6 +62,21 @@ function applyPublishWording() {
       ? 'Plak je toegangscode om je website te bewerken. Wat je opslaat zet je daarna zelf online met de knop "Publiceer wijzigingen".'
       : 'Plak je toegangscode om je website te bewerken. Wat je opslaat staat meestal binnen een minuut op de website.';
   }
+  // The one help topic that changes with the hosting, so it is written here
+  // rather than in the markup -- a printed explanation of a publish step that
+  // no longer exists would be worse than no explanation at all.
+  const savingTitle = $('#helpSavingTitle');
+  const savingBody = $('#helpSavingBody');
+  if (savingTitle && savingBody) {
+    savingTitle.textContent = DEFER_PUBLISH ? 'Opslaan en publiceren' : 'Opslaan';
+    savingBody.innerHTML = DEFER_PUBLISH
+      ? `<p><strong>Opslaan</strong> bewaart je werk, maar zet het nog niet op de website. Rechtsonder verschijnt dan een zwart kadertje met hoeveel wijzigingen er klaarstaan.</p>
+         <p>Ben je klaar? Klik daar op <strong>Publiceer wijzigingen</strong>. Alles gaat dan in één keer online, meestal binnen een minuut.</p>
+         <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
+      : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
+         <p class="hint">Ververs de pagina op de website als je ze nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
+  }
+
   const hint = $('#overviewPublishHint');
   if (hint) {
     hint.textContent = DEFER_PUBLISH
@@ -1725,6 +1740,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
   initSettingsSubTabs();
+
+  const printBtn = $('#printHelpBtn');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      // Print the whole thing, not just whatever happens to be open.
+      $all('#tab-help details').forEach(d => { d.open = true; });
+      window.print();
+    });
+  }
   // The draft keeps the text, but the queued photos die with the page, so
   // it is still worth asking before the page goes.
   window.addEventListener('beforeunload', (e) => {
