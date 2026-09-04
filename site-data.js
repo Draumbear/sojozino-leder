@@ -45,6 +45,7 @@ function renderHeader(site) {
         </a>
         <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
         <ul class="nav-links" id="navLinks">${links}</ul>
+        ${site.instagramUrl ? `<a class="nav-instagram" href="${escapeHTML(site.instagramUrl)}" target="_blank" rel="noopener" aria-label="Sojozino op Instagram" title="Volg op Instagram">${INSTAGRAM_SVG}</a>` : ''}
       </nav>
     </header>`;
 
@@ -99,27 +100,26 @@ function renderContact(site) {
   setEditableText('contactIntro', site.contactIntro);
 }
 
-// The Instagram call to action. Only ever lived in the footer and on the
-// contact page, which is nowhere near the moment someone has just looked
-// through his work. Rendered from site.instagramUrl so it follows the
-// dashboard, and skipped entirely when no URL is set.
-function renderInstagramCta(site) {
-  const el = document.getElementById('instagramCta');
+// Instagram: an icon in the header on every page, and a button where he has
+// just been read about. A whole homepage section for it was too loud for what
+// is really a "by the way". Both come from site.instagramUrl, so they follow
+// the dashboard and vanish together if it is ever cleared.
+const INSTAGRAM_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"></circle></svg>`;
+
+function instagramHandle(url) {
+  return url.replace(/\/+$/, '').split('/').pop();
+}
+
+function renderInstagramButton(site) {
+  const el = document.getElementById('instagramButton');
   if (!el) return;
   const url = (site.instagramUrl || '').trim();
   if (!url) { el.remove(); return; }
-  const handle = url.replace(/\/+$/, '').split('/').pop();
+  const handle = instagramHandle(url);
   el.innerHTML = `
-    <section class="section insta-cta">
-      <div class="section-inner">
-        <p class="eyebrow reveal">Volg het atelier</p>
-        <h2 class="reveal">Nieuw werk zie je hier het eerst.</h2>
-        <p class="reveal">Elk stuk dat de deur uitgaat passeert eerst op Instagram — samen met de markten waar je ${escapeHTML(site.businessName || 'Sojozino')} kan vinden.</p>
-        <a class="btn reveal" href="${escapeHTML(url)}" target="_blank" rel="noopener">
-          Volg ${escapeHTML(handle ? '@' + handle : 'op Instagram')}
-        </a>
-      </div>
-    </section>`;
+    <a class="btn outline reveal" href="${escapeHTML(url)}" target="_blank" rel="noopener" style="margin-top:1rem;">
+      ${INSTAGRAM_SVG} Volg ${escapeHTML(handle ? '@' + handle : 'op Instagram')}
+    </a>`;
 }
 
 // A market's address as a link to a map. He can paste a Google Maps URL if he
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyHeroLogo(site);
   renderHero(site);
   renderContact(site);
-  renderInstagramCta(site);
+  renderInstagramButton(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after
   // this fires) call initReveal() again themselves; call once now for pages

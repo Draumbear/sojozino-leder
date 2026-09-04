@@ -381,12 +381,27 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .product-card .info h3 { font-size: 1.08rem; font-weight: 500; line-height: 1.25; }
 
 
-/* Instagram call to action. Centred and quiet -- it sits between the work and
-   the footer, so it should read as an invitation, not an interruption. */
-.insta-cta { text-align: center; }
-.insta-cta .section-inner { max-width: 44rem; }
-.insta-cta h2 { margin-bottom: 0.9rem; }
-.insta-cta p { margin: 0 auto 1.6rem; max-width: 34rem; }
+/* Instagram icon in the header. Sized off the nav text so it grows with the
+   rest of the bar on a wide screen rather than shrinking into a speck. */
+.nav-instagram {
+  display: inline-flex;
+  align-items: center;
+  color: var(--espresso-soft);
+  margin-left: clamp(1rem, 0.8rem + 0.5vw, 1.6rem);
+  flex-shrink: 0;
+}
+.nav-instagram svg { width: clamp(20px, 1.35vw, 24px); height: clamp(20px, 1.35vw, 24px); }
+.nav-instagram:hover { color: var(--rust); }
+
+/* Below the drawer breakpoint the hamburger moves last, so the icon sits
+   beside it rather than being pushed off the end of the row. */
+@media (max-width: 900px) {
+  .nav-toggle { order: 2; }
+  .nav-instagram { order: 1; margin-left: auto; }
+}
+
+.about-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+.about-actions .btn svg { width: 18px; height: 18px; margin-right: 0.45rem; vertical-align: -0.2em; }
 
 /* Long-form body copy: the privacy page, and anything else that is text rather
    than product. Narrow measure, generous leading, headings that separate. */
