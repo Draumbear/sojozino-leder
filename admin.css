@@ -134,6 +134,9 @@ button.conn-status.off { cursor: default; }
 .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 @media (max-width: 640px) { .admin-row { grid-template-columns: 1fr; } }
 
+/* display on the class beats the browser's own [hidden] rule, so hiding a
+   button with the attribute silently does nothing without this. */
+.btn-admin[hidden] { display: none; }
 .btn-admin {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font: inherit; font-weight: 700; font-size: 0.85rem;

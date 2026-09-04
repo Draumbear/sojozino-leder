@@ -77,6 +77,12 @@ function applyPublishWording() {
          <p class="hint">Ververs de pagina op de website als je ze nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
 
+  // Hidden here rather than only in refreshPublishBar: that runs on demand, so
+  // the button was momentarily reachable before it did, offering a step that
+  // does not exist while saves publish themselves.
+  const publishBtn = $('#publishBtn');
+  if (publishBtn) publishBtn.hidden = !DEFER_PUBLISH;
+
   const note = $('#publishNote');
   if (note) {
     note.textContent = DEFER_PUBLISH
@@ -280,6 +286,12 @@ async function publishChanges() {
 // "Geavanceerd". The token is the one thing he actually has to provide.
 const SITE_REPO = { owner: 'Draumbear', repo: 'sojozino-leder', branch: 'main' };
 
+// Where the site is served from. Configuration, not content: it changes when
+// the hosting does, alongside DEFER_PUBLISH, and never because of anything
+// Johnny does. It was a field on Instellingen, left empty -- which quietly
+// hid the "Bekijk live site" link it existed to provide.
+const SITE_URL = 'https://draumbear.github.io/sojozino-leder/';
+
 function initConnect() {
   const saved = GitHubStore.load() || {};
   $('#ghOwner').value = saved.owner || SITE_REPO.owner;
@@ -347,11 +359,11 @@ function setConnStatus(ok) {
   const el = $('#connStatus');
   el.textContent = ok ? 'Verbonden' : 'Niet verbonden';
   el.className = `conn-status ${ok ? 'ok' : 'off'}`;
-  // The live URL can't be derived from the repo -- the site is hosted on
-  // Netlify (or a custom domain), not GitHub Pages -- so it comes from
-  // site.json's siteUrl, set on the Instellingen tab. Hidden until it's set.
+  // site.json may still override it -- useful the day a custom domain goes
+  // live before this file catches up -- but it no longer has to be filled in
+  // for the link to work.
   const live = $('#viewLiveLink');
-  const url = ok ? (state.site?.siteUrl || '').trim() : '';
+  const url = ok ? ((state.site?.siteUrl || '').trim() || SITE_URL) : '';
   if (url) {
     live.href = url;
     live.classList.remove('hidden');
@@ -1432,7 +1444,7 @@ function snapshotSettings() {
     ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
       [`Menu: ${fallback}`, (s.navLabels || {})[href] || ''])),
     'Tagline': s.tagline, 'E-mail': s.email, 'Instagram': s.instagramUrl,
-    'Locatie': s.location, 'Website-adres': s.siteUrl, 'Accentkleur': s.accentColor,
+    'Locatie': s.location, 'Accentkleur': s.accentColor,
   };
 }
 
@@ -1711,7 +1723,6 @@ function renderSettingsTab() {
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
   $('#s-location').value = s.location || '';
-  $('#s-siteUrl').value = s.siteUrl || '';
   $('#s-accent').value = s.accentColor || '#c31f1f';
   $('#s-accentHex').value = s.accentColor || '#c31f1f';
   $('#s-logo-preview').src = s.logo?.mark || 'assets/logo-mark.png';
@@ -1736,7 +1747,7 @@ async function saveSettings() {
       [`Menu: ${fallback}`, ($(navFieldId(href)).value || '').trim()])),
     'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
     'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
-    'Website-adres': $('#s-siteUrl').value.trim(), 'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
+    'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
   };
   if (!await confirmSave('Deze instellingen opslaan?', describeSettingsChanges(proposed))) return;
 
@@ -1764,7 +1775,6 @@ async function saveSettings() {
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
       location: $('#s-location').value.trim(),
-      siteUrl: $('#s-siteUrl').value.trim(),
       accentColor: $('#s-accentHex').value.trim() || '#c31f1f',
     });
 
