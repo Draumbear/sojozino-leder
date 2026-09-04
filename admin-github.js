@@ -36,6 +36,24 @@ function isDeferredSave(message) {
   return (message || '').split('\n').some(line => line.trim() === SKIP_DEPLOY_MARKER);
 }
 
+// GitHub answers "Resource not accessible by personal access token" to every
+// kind of permission problem, which tells you nothing about which one. This
+// turns a failed request into something actionable, naming both the step that
+// failed and the setting that fixes it.
+// Plain text, no markup: these strings land in textContent (the connect panel
+// and the toasts), where tags would show up literally.
+const TOKEN_HELP = 'Ga naar github.com/settings/tokens, open dit token, en zet bij "Repository permissions" de rechten voor "Contents" op "Read and write". Controleer ook dat deze repository bij "Repository access" is aangevinkt.';
+
+function accessError(status, githubMessage, step) {
+  if (status === 401) {
+    return new Error(`Je token wordt niet meer aanvaard (verlopen of ingetrokken). Maak een nieuw token en verbind opnieuw.`);
+  }
+  if (status === 403 || status === 404) {
+    return new Error(`Geen toestemming om ${step}. ${TOKEN_HELP}`);
+  }
+  return new Error(githubMessage || `Er ging iets mis bij ${step} (${status}).`);
+}
+
 function utf8ToBase64(str) {
   return btoa(unescape(encodeURIComponent(str)));
 }
@@ -100,13 +118,26 @@ class GitHubAPI {
   async verify() {
     const res = await fetch(this.base, { headers: this.headers() });
     if (!res.ok) {
-      if (res.status === 401) throw new Error('GitHub rejected this token — it may be invalid or expired. Generate a new one and reconnect.');
-      if (res.status === 404) throw new Error('Repository not found — check owner/repo.');
+      if (res.status === 401) throw new Error('Dit token wordt niet aanvaard \u2014 het is ongeldig of verlopen. Maak een nieuw token aan.');
+      if (res.status === 404) throw new Error('Repository niet gevonden \u2014 controleer gebruikersnaam en repository-naam, en of dit token toegang heeft tot deze repository.');
       const err = await res.json().catch(() => ({}));
-      if (res.status === 403) throw new Error(err.message || 'GitHub denied access — check the token has "Contents: Read and write" permission for this repository.');
-      throw new Error(err.message || `GitHub error ${res.status}`);
+      throw accessError(res.status, err.message, 'deze repository te openen');
     }
-    return res.json();
+    const repo = await res.json();
+
+    // Seeing the repository proves almost nothing: a token with no permissions
+    // at all still passes that call, and the first real failure would then land
+    // much later, mid-save, as GitHub's unhelpful wording. So check here that
+    // the token can actually read repository contents, and warn now if GitHub
+    // says this account has no write access.
+    const probe = await fetch(`${this.base}/contents/data/site.json?_=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
+    if (probe.status === 403 || probe.status === 404) {
+      throw new Error(`Dit token mag de inhoud van de repository niet lezen. ${TOKEN_HELP}`);
+    }
+    if (repo.permissions && repo.permissions.push === false) {
+      throw new Error(`Dit token mag lezen maar niet schrijven, dus opslaan zou later mislukken. ${TOKEN_HELP}`);
+    }
+    return repo;
   }
 
   // Lists files directly inside a repo folder (non-recursive). Returns [] for
@@ -314,7 +345,7 @@ class GitHubAPI {
       const res = await fetch(`${this.base}/git/blobs`, {
         method: 'POST', headers: { ...this.headers(), 'Content-Type': 'application/json' }, body: JSON.stringify(body)
       });
-      if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.message || `Failed to upload ${f.path} (${res.status})`); }
+      if (!res.ok) { const err = await res.json().catch(() => ({})); throw accessError(res.status, err.message, `de foto ${f.path} te uploaden`); }
       const sha = (await res.json()).sha;
       return { path: f.path, mode: '100644', type: 'blob', sha };
     }));
@@ -343,7 +374,7 @@ class GitHubAPI {
         method: 'POST', headers: { ...this.headers(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries })
       });
-      if (!treeRes.ok) { const err = await treeRes.json().catch(() => ({})); throw new Error(err.message || `Failed to build commit tree (${treeRes.status})`); }
+      if (!treeRes.ok) { const err = await treeRes.json().catch(() => ({})); throw accessError(treeRes.status, err.message, 'de wijziging klaar te zetten'); }
       newTreeSha = (await treeRes.json()).sha;
     }
 
@@ -351,7 +382,7 @@ class GitHubAPI {
       method: 'POST', headers: { ...this.headers(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ message, tree: newTreeSha, parents: [parentSha] })
     });
-    if (!commitRes.ok) { const err = await commitRes.json().catch(() => ({})); throw new Error(err.message || `Failed to create commit (${commitRes.status})`); }
+    if (!commitRes.ok) { const err = await commitRes.json().catch(() => ({})); throw accessError(commitRes.status, err.message, 'de wijziging vast te leggen'); }
     const newCommitSha = (await commitRes.json()).sha;
 
     const updateRefRes = await fetch(`${this.base}/git/refs/heads/${this.branch}`, {
@@ -364,7 +395,7 @@ class GitHubAPI {
         return this._commitTreeEntries(treeEntries, message, retriesLeft - 1);
       }
       const err = await updateRefRes.json().catch(() => ({}));
-      throw new Error(err.message || `Failed to update ${this.branch} (${updateRefRes.status})`);
+      throw accessError(updateRefRes.status, err.message, 'de wijziging op te slaan');
     }
 
     return newCommitSha;
