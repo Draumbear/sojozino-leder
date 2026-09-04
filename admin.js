@@ -1327,6 +1327,12 @@ function snapshotSettings() {
     'Zin onder de titel': s.heroTagline,
     'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
     'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
+    'Kleine regel bestelpagina': s.orderEyebrow, 'Titel bestelpagina': s.orderHeading,
+    'Uitleg bestelpagina': s.orderIntro,
+    'Kleine regel marktpagina': s.marketsEyebrow, 'Titel marktpagina': s.marketsHeading,
+    'Uitleg marktpagina': s.marketsIntro,
+    ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
+      [`Menu: ${fallback}`, (s.navLabels || {})[href] || ''])),
     'Tagline': s.tagline, 'E-mail': s.email, 'Instagram': s.instagramUrl,
     'Locatie': s.location, 'Website-adres': s.siteUrl, 'Accentkleur': s.accentColor,
   };
@@ -1559,6 +1565,32 @@ async function savePresence(message) {
 }
 
 // ---------- Settings ----------
+// The menu names, keyed by the page they belong to. Kept as one object in
+// site.json rather than six loose fields, so adding a page later means adding
+// a row here and nothing else.
+const NAV_PAGES = [
+  ['index.html', 'Home'],
+  ['over-mij.html', 'Over mij'],
+  ['creaties.html', 'Creaties'],
+  ['bestellen.html', 'Bestellen'],
+  ['waar-vind-je-mij.html', 'Waar vind je mij'],
+  ['contact.html', 'Contact'],
+];
+
+function navFieldId(href) {
+  return `#s-nav-${href.replace(/\.html$/, '')}`;
+}
+
+function readNavLabels() {
+  const labels = {};
+  NAV_PAGES.forEach(([href]) => {
+    const value = ($(navFieldId(href)).value || '').trim();
+    // Blank means "use the default", so it is not stored at all.
+    if (value) labels[href] = value;
+  });
+  return labels;
+}
+
 function renderSettingsTab() {
   const s = state.site;
   $('#s-businessName').value = s.businessName || '';
@@ -1570,6 +1602,13 @@ function renderSettingsTab() {
   $('#s-heroSecondaryLabel').value = s.heroSecondaryLabel || '';
   $('#s-contactHeading').value = s.contactHeading || '';
   $('#s-contactIntro').value = s.contactIntro || '';
+  $('#s-orderEyebrow').value = s.orderEyebrow || '';
+  $('#s-orderHeading').value = s.orderHeading || '';
+  $('#s-orderIntro').value = s.orderIntro || '';
+  $('#s-marketsEyebrow').value = s.marketsEyebrow || '';
+  $('#s-marketsHeading').value = s.marketsHeading || '';
+  $('#s-marketsIntro').value = s.marketsIntro || '';
+  NAV_PAGES.forEach(([href]) => { $(navFieldId(href)).value = (s.navLabels || {})[href] || ''; });
   $('#s-tagline').value = s.tagline || '';
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
@@ -1591,6 +1630,12 @@ async function saveSettings() {
     'Zin onder de titel': $('#s-heroTagline').value.trim(),
     'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
     'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
+    'Kleine regel bestelpagina': $('#s-orderEyebrow').value.trim(), 'Titel bestelpagina': $('#s-orderHeading').value.trim(),
+    'Uitleg bestelpagina': $('#s-orderIntro').value.trim(),
+    'Kleine regel marktpagina': $('#s-marketsEyebrow').value.trim(), 'Titel marktpagina': $('#s-marketsHeading').value.trim(),
+    'Uitleg marktpagina': $('#s-marketsIntro').value.trim(),
+    ...Object.fromEntries(NAV_PAGES.map(([href, fallback]) =>
+      [`Menu: ${fallback}`, ($(navFieldId(href)).value || '').trim()])),
     'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
     'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
     'Website-adres': $('#s-siteUrl').value.trim(), 'Accentkleur': $('#s-accentHex').value.trim() || '#c31f1f',
@@ -1611,6 +1656,12 @@ async function saveSettings() {
       heroSecondaryLabel: $('#s-heroSecondaryLabel').value.trim(),
       contactHeading: $('#s-contactHeading').value.trim(),
       contactIntro: $('#s-contactIntro').value.trim(),
+      orderEyebrow: $('#s-orderEyebrow').value.trim(),
+      orderHeading: $('#s-orderHeading').value.trim(),
+      orderIntro: $('#s-orderIntro').value.trim(),
+      marketsEyebrow: $('#s-marketsEyebrow').value.trim(),
+      marketsHeading: $('#s-marketsHeading').value.trim(),
+      marketsIntro: $('#s-marketsIntro').value.trim(),
       tagline: $('#s-tagline').value.trim(),
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
@@ -1619,6 +1670,7 @@ async function saveSettings() {
       accentColor: $('#s-accentHex').value.trim() || '#c31f1f',
     });
 
+    state.site.navLabels = readNavLabels();
     state.site.logo = state.site.logo || {};
     const logoFile = $('#s-logo-input').files[0];
     if (logoFile) {

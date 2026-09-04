@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish36">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish36">
+<link rel="stylesheet" href="admin.css?v=publish38">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish38">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -261,7 +261,42 @@
           <label for="s-contactHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
           <textarea id="s-contactHeading" rows="2"></textarea>
         </div>
-        <div class="admin-field"><label for="s-contactIntro">Zin onder de titel</label><textarea id="s-contactIntro" rows="2"></textarea></div>
+        <div class="admin-field"><label for="s-contactIntro">Zin onder de titel</label><textarea id="s-contactIntro" rows="2"></textarea></div>      </div>
+
+      <div class="admin-card">
+        <h2>Namen in het menu</h2>
+        <p class="hint" style="margin-bottom:1.2rem;">Zo heten de pagina's bovenaan de website. De pagina's zelf blijven waar ze zijn — je verandert enkel hoe ze genoemd worden.</p>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-nav-index">Startpagina</label><input type="text" id="s-nav-index" placeholder="Home"></div>
+          <div class="admin-field"><label for="s-nav-over-mij">Over Johnny</label><input type="text" id="s-nav-over-mij" placeholder="Over mij"></div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-nav-creaties">De creaties</label><input type="text" id="s-nav-creaties" placeholder="Creaties"></div>
+          <div class="admin-field"><label for="s-nav-bestellen">Bestelpagina</label><input type="text" id="s-nav-bestellen" placeholder="Bestellen"></div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-nav-waar-vind-je-mij">Marktdata</label><input type="text" id="s-nav-waar-vind-je-mij" placeholder="Waar vind je mij"></div>
+          <div class="admin-field"><label for="s-nav-contact">Contactpagina</label><input type="text" id="s-nav-contact" placeholder="Contact"></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2>Tekst op de bestelpagina</h2>
+        <div class="admin-field"><label for="s-orderEyebrow">Kleine regel boven de titel</label><input type="text" id="s-orderEyebrow"></div>
+        <div class="admin-field">
+          <label for="s-orderHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
+          <textarea id="s-orderHeading" rows="2"></textarea>
+        </div>
+        <div class="admin-field"><label for="s-orderIntro">Uitleg onder de titel</label><textarea id="s-orderIntro" rows="3"></textarea></div>      </div>
+
+      <div class="admin-card">
+        <h2>Tekst op "waar vind je mij"</h2>
+        <div class="admin-field"><label for="s-marketsEyebrow">Kleine regel boven de titel</label><input type="text" id="s-marketsEyebrow"></div>
+        <div class="admin-field">
+          <label for="s-marketsHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
+          <textarea id="s-marketsHeading" rows="2"></textarea>
+        </div>
+        <div class="admin-field"><label for="s-marketsIntro">Uitleg onder de titel</label><textarea id="s-marketsIntro" rows="3"></textarea></div>
         <div class="admin-row">
           <div class="admin-field"><label for="s-email">E-mail</label><input type="email" id="s-email"></div>
           <div class="admin-field"><label for="s-instagram">Instagram-URL</label><input type="url" id="s-instagram"></div>
@@ -324,7 +359,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish36"></script>
-<script src="admin.js?v=publish36"></script>
+<script src="admin-github.js?v=publish38"></script>
+<script src="admin.js?v=publish38"></script>
 </body>
 </html>

@@ -4,6 +4,10 @@
 // / <div id="siteFooter"> placeholders get filled in here so nav/footer stay
 // identical everywhere without copy-pasting markup into every .html file.
 
+// The pages, and what they are called by default. The names are his to change
+// from the dashboard -- site.navLabels overrides by filename -- but which pages
+// exist, and where they live, stays here: renaming a menu item should never be
+// able to break a link.
 const NAV_LINKS = [
   { href: 'index.html', label: 'Home' },
   { href: 'over-mij.html', label: 'Over mij' },
@@ -12,6 +16,11 @@ const NAV_LINKS = [
   { href: 'waar-vind-je-mij.html', label: 'Waar vind je mij' },
   { href: 'contact.html', label: 'Contact' },
 ];
+
+function navLabel(site, href) {
+  const custom = ((site && site.navLabels || {})[href] || '').trim();
+  return custom || (NAV_LINKS.find(l => l.href === href) || {}).label || href;
+}
 
 function currentPage() {
   const p = window.location.pathname.split('/').pop();
@@ -34,7 +43,7 @@ function renderHeader(site) {
   if (!el) return;
   const page = currentPage();
   const links = NAV_LINKS.map(l =>
-    `<li><a href="${l.href}" class="${l.href === page ? 'active' : ''}">${escapeHTML(l.label)}</a></li>`
+    `<li><a href="${l.href}" class="${l.href === page ? 'active' : ''}">${escapeHTML(navLabel(site, l.href))}</a></li>`
   ).join('');
   el.innerHTML = `
     <header class="site-header">
@@ -64,8 +73,8 @@ function renderFooter(site) {
       <div class="brand-text">${escapeHTML(site.businessName)}</div>
       <p style="max-width:40ch;margin:0 auto;">${escapeHTML(site.tagline || '')}</p>
       <div class="footer-links">
-        <a href="creaties.html">Creaties</a>
-        <a href="waar-vind-je-mij.html">Waar vind je mij</a>
+        <a href="creaties.html">${escapeHTML(navLabel(site, 'creaties.html'))}</a>
+        <a href="waar-vind-je-mij.html">${escapeHTML(navLabel(site, 'waar-vind-je-mij.html'))}</a>
         <a href="${escapeHTML(site.instagramUrl || '#')}" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:${escapeHTML(site.email || '')}">${escapeHTML(site.email || '')}</a>
         <a href="privacy.html">Privacy</a>
@@ -98,6 +107,18 @@ function renderHero(site) {
 function renderContact(site) {
   setEditableText('contactHeading', site.contactHeading, { allowBreaks: true });
   setEditableText('contactIntro', site.contactIntro);
+}
+
+function renderOrderPage(site) {
+  setEditableText('orderEyebrow', site.orderEyebrow);
+  setEditableText('orderHeading', site.orderHeading, { allowBreaks: true });
+  setEditableText('orderIntro', site.orderIntro);
+}
+
+function renderMarketsPage(site) {
+  setEditableText('marketsEyebrow', site.marketsEyebrow);
+  setEditableText('marketsHeading', site.marketsHeading, { allowBreaks: true });
+  setEditableText('marketsIntro', site.marketsIntro);
 }
 
 // Instagram: an icon in the header on every page, and a button where he has
@@ -193,6 +214,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyHeroLogo(site);
   renderHero(site);
   renderContact(site);
+  renderOrderPage(site);
+  renderMarketsPage(site);
   renderInstagramButton(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after
