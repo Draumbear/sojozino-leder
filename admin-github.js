@@ -111,6 +111,7 @@ class GitHubAPI {
     this.owner = owner;
     this.repo = repo;
     this.branch = branch || 'main';
+    this._writes = Promise.resolve(); // tail of the write queue
   }
 
   get base() { return `https://api.github.com/repos/${this.owner}/${this.repo}`; }
@@ -121,6 +122,19 @@ class GitHubAPI {
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28'
     };
+  }
+
+  // Every write goes through here, so two can never be in flight at once.
+  // They used to be able to: a save that lost the race for the branch tip
+  // retried onto the new one while still carrying its own copy of
+  // products-index.json, quietly overwriting whatever had landed in between.
+  // Starring a product while a reorder was still committing lost one of them.
+  _enqueue(task) {
+    // .then(task, task) rather than .then(task): one failed write must not
+    // strand every write behind it.
+    const run = this._writes.then(task, task);
+    this._writes = run.catch(() => {});
+    return run;
   }
 
   async verify() {
@@ -204,7 +218,11 @@ class GitHubAPI {
   }
 
   // content: raw string (text) or { base64: '...' } for binary uploads.
-  async putFile(path, content, message) {
+  putFile(path, content, message) {
+    return this._enqueue(() => this._putFile(path, content, message));
+  }
+
+  async _putFile(path, content, message) {
     const existing = await this.getFile(path).catch(() => null);
     const body = {
       message: this._saveMessage(message),
@@ -229,7 +247,11 @@ class GitHubAPI {
     return this.putFile(path, JSON.stringify(obj, null, 2), message);
   }
 
-  async deleteFile(path, message) {
+  deleteFile(path, message) {
+    return this._enqueue(() => this._deleteFile(path, message));
+  }
+
+  async _deleteFile(path, message) {
     const existing = await this.getFile(path);
     if (!existing) return; // already gone
     const res = await fetch(`${this.base}/contents/${encodeURI(path)}`, {
@@ -357,17 +379,26 @@ class GitHubAPI {
   // SKIP_DEPLOY_MARKER above and publish().
   // files: [{ path, content }] to add/update (content: string or { base64 }),
   // or [{ path, delete: true }] to remove a path.
-  async commitBatch(files, message, target) {
-    if (!files.length) return null;
+  commitBatch(files, message, target) {
+    if (!files.length) return Promise.resolve(null);
+    return this._enqueue(() => this._commitBatch(files, message, target));
+  }
+
+  async _commitBatch(files, message, target) {
 
     // Blob creation is content-addressed and independent of the branch tip, so
     // it only needs to happen once — even if committing below has to retry
     // against a moved tip, these shas are still valid.
     const treeEntries = await Promise.all(files.map(async (f) => {
       if (f.delete) return { path: f.path, mode: '100644', type: 'blob', sha: null };
-      const body = typeof f.content === 'string'
-        ? { content: f.content, encoding: 'utf-8' }
-        : { content: f.content.base64, encoding: 'base64' };
+      // Resolved here rather than by the caller: a function means "whatever
+      // this file should contain at the moment the commit is actually built",
+      // so a queued write serialises current state instead of replaying a
+      // snapshot taken before the writes ahead of it landed.
+      const content = typeof f.content === 'function' ? f.content() : f.content;
+      const body = typeof content === 'string'
+        ? { content, encoding: 'utf-8' }
+        : { content: content.base64, encoding: 'base64' };
       const res = await fetch(`${this.base}/git/blobs`, {
         method: 'POST', headers: { ...this.headers(), 'Content-Type': 'application/json' }, body: JSON.stringify(body)
       });

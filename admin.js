@@ -228,6 +228,9 @@ function goToChange(target) {
 }
 
 async function publishChanges() {
+  // A queued reorder or star would otherwise land after the publish commit
+  // and sit there unpublished, which is the one moment that is confusing.
+  await flushProductIndex();
   const btn = $('#publishBtn');
   setBusy(btn, true, 'Publiceren…');
   try {
@@ -526,7 +529,7 @@ function uniqueSubcategorySlug(cat, base) {
 
 async function saveCategories(message) {
   try {
-    await api.commitBatch([{ path: 'data/categories.json', content: JSON.stringify(state.categories, null, 2) }], message, 'categories');
+    await api.commitBatch([{ path: 'data/categories.json', content: () => JSON.stringify(state.categories, null, 2) }], message, 'categories');
     savedToast('Categorieën opgeslagen.');
     renderCategoriesTab();
     renderProductsTab();
@@ -674,12 +677,39 @@ async function moveProductBefore(fromSlug, toSlug, rerender) {
   if (state.productsIndex.map(p => `${p.slug}:${p.order}`).join() === before) return;
 
   rerender();
+  const moved = state.productsIndex.find(p => p.slug === fromSlug);
+  saveProductIndexSoon(`Volgorde gewijzigd: ${moved ? moved.name : fromSlug}`);
+}
+
+// Starring and reordering are one click each and come in bursts -- five drags
+// is five commits, five Pages builds, and five chances to race. They all write
+// the same one file, so they wait a moment for her to finish and then go as a
+// single commit. Deliberate saves are untouched: pressing Opslaan means now,
+// and it carries photos that should not sit in a browser waiting for a timer.
+const INDEX_SAVE_DELAY = 1800;
+let indexSaveTimer = null;
+let indexSaveLabels = [];
+
+function saveProductIndexSoon(label) {
+  indexSaveLabels.push(label);
+  clearTimeout(indexSaveTimer);
+  indexSaveTimer = setTimeout(flushProductIndex, INDEX_SAVE_DELAY);
+}
+
+async function flushProductIndex() {
+  clearTimeout(indexSaveTimer);
+  indexSaveTimer = null;
+  if (!indexSaveLabels.length) return;
+  // One label reads better than a list; several mean she has been rearranging.
+  const message = indexSaveLabels.length === 1
+    ? indexSaveLabels[0]
+    : `Producten bijgewerkt (${indexSaveLabels.length} wijzigingen)`;
+  indexSaveLabels = [];
   try {
-    const moved = state.productsIndex.find(p => p.slug === fromSlug);
     const sha = await api.commitBatch(
-      [{ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) }],
-      `Volgorde gewijzigd: ${moved ? moved.name : fromSlug}`, 'products');
-    toast('Volgorde opgeslagen.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, 'Volgorde gewijzigd') });
+      [{ path: 'data/products-index.json', content: () => JSON.stringify(state.productsIndex, null, 2) }],
+      message, 'products');
+    toast('Opgeslagen.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, message) });
   } catch (e) {
     toast(e.message, 'err');
     await loadAll();
@@ -688,22 +718,13 @@ async function moveProductBefore(fromSlug, toSlug, rerender) {
 
 // Starring is a one-field change to the index, so it commits on its own
 // rather than going through the full product editor.
-async function toggleFeatured(slug, rerender) {
+function toggleFeatured(slug, rerender) {
   const p = state.productsIndex.find(x => x.slug === slug);
   if (!p) return;
   p.featured = !p.featured;
   rerender();
-  try {
-    await api.commitBatch(
-      [{ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) }],
-      `${p.featured ? 'Uitgelicht' : 'Niet meer uitgelicht'}: ${p.name}`,
-      `products/${slug}`);
-    toast(p.featured ? `"${p.name}" staat nu op de homepage.` : `"${p.name}" is van de homepage gehaald.`, 'ok');
-  } catch (e) {
-    p.featured = !p.featured; // put it back, the save didn't land
-    rerender();
-    toast(e.message, 'err');
-  }
+  toast(p.featured ? `"${p.name}" staat nu op de homepage.` : `"${p.name}" is van de homepage gehaald.`, 'ok');
+  saveProductIndexSoon(`${p.featured ? 'Uitgelicht' : 'Niet meer uitgelicht'}: ${p.name}`);
 }
 
 async function deleteProduct(slug) {
@@ -737,7 +758,7 @@ async function deleteProduct(slug) {
       ...allImages.map(img => ({ path: img.src, delete: true })),
     ];
     state.productsIndex = state.productsIndex.filter(x => x.slug !== slug);
-    files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
+    files.push({ path: 'data/products-index.json', content: () => JSON.stringify(state.productsIndex, null, 2) });
     const sha = await api.commitBatch(files, `Product verwijderd: ${p.name}`, 'products');
     renderProductsTab();
     renderOverview();
@@ -1345,7 +1366,7 @@ async function saveProduct() {
     };
     if (existingIdx >= 0) state.productsIndex[existingIdx] = indexEntry;
     else state.productsIndex.push(indexEntry);
-    files.push({ path: 'data/products-index.json', content: JSON.stringify(state.productsIndex, null, 2) });
+    files.push({ path: 'data/products-index.json', content: () => JSON.stringify(state.productsIndex, null, 2) });
 
     await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`, `products/${slug}`);
     productCache[slug] = productData;
@@ -1476,7 +1497,7 @@ async function savePresence(message) {
   const btn = $('#savePresenceBtn');
   setBusy(btn, true, 'Opslaan…');
   try {
-    await api.commitBatch([{ path: 'data/presence.json', content: JSON.stringify(state.presence, null, 2) }], message, 'presence');
+    await api.commitBatch([{ path: 'data/presence.json', content: () => JSON.stringify(state.presence, null, 2) }], message, 'presence');
     toast('Opgeslagen.', 'ok');
     renderPresenceTab();
     renderOverview();
@@ -1576,6 +1597,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // The draft keeps the text, but the queued photos die with the page, so
   // it is still worth asking before the page goes.
   window.addEventListener('beforeunload', (e) => {
+    // Fire-and-forget: the browser will not wait, but the request usually
+    // gets away, and the alternative is dropping the change entirely.
+    if (indexSaveTimer) flushProductIndex();
     if (!editorHasUnsavedWork()) return;
     e.preventDefault();
     e.returnValue = '';
