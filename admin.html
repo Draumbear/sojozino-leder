@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish20">
+<link rel="stylesheet" href="admin.css?v=publish21">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
@@ -64,15 +64,19 @@
 
   <!-- Dashboard -->
   <div id="dashboard" class="hidden">
-    <div id="publishBar" class="publish-bar hidden">
-      <div class="publish-bar-head">
-        <div class="publish-bar-text">
-          <strong id="publishCount"></strong>
-          <span>Je bewerkingen zijn bewaard, maar staan nog niet op de website. Klik op publiceren wanneer je klaar bent.</span>
-        </div>
-        <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
+    <!-- Docked bottom-right rather than across the top: it has to stay reachable
+         from anywhere on the page without taking a slice of every screen. -->
+    <div id="publishBar" class="publish-dock hidden">
+      <button class="pd-summary" id="publishToggle" type="button" aria-expanded="false" aria-controls="publishBody">
+        <span class="pd-dot" aria-hidden="true"></span>
+        <span id="publishCount"></span>
+        <span class="pd-chevron" aria-hidden="true">⌃</span>
+      </button>
+      <div class="pd-body" id="publishBody" hidden>
+        <p class="pd-note">Je bewerkingen zijn bewaard, maar staan nog niet op de website.</p>
+        <ul class="publish-list" id="publishList"></ul>
       </div>
-      <ul class="publish-list" id="publishList"></ul>
+      <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
     </div>
     <div class="dashboard-toolbar">
       <div class="admin-tabs">
@@ -288,7 +292,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish20"></script>
-<script src="admin.js?v=publish20"></script>
+<script src="admin-github.js?v=publish21"></script>
+<script src="admin.js?v=publish21"></script>
 </body>
 </html>

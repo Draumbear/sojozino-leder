@@ -1130,11 +1130,17 @@ async function offerDraftRecovery() {
   });
 
   if (restore) {
+    // The editor lives inside the Producten tab, so restoring while Overzicht
+    // is showing would refill a form she cannot see. Switch there first, then
+    // openProductEditor puts the panel beside the product and scrolls to it.
+    $('.admin-tabs button[data-tab="products"]').click();
     await openProductEditor(draft.slug);
     $('#pe-name').value = draft.form.name || '';
     if (draft.form.category) $('#pe-category').value = draft.form.category;
     renderSubcategorySelect(draft.form.subcategory || '');
     $('#pe-description').value = draft.form.description || '';
+    $('#productEditor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    $('#pe-name').focus();
     toast('Je tekst is teruggezet. Voeg de foto\u2019s opnieuw toe als je die had klaarstaan.', 'ok');
     return;
   }
@@ -1565,6 +1571,12 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
   $('#publishBtn').addEventListener('click', publishChanges);
+  $('#publishToggle').addEventListener('click', () => {
+    const dock = $('#publishBar');
+    const open = dock.classList.toggle('open');
+    $('#publishBody').hidden = !open;
+    $('#publishToggle').setAttribute('aria-expanded', String(open));
+  });
   $('#publishList').addEventListener('click', async (e) => {
     const goto = e.target.closest('.pc-goto');
     if (goto) { goToChange(goto.dataset.target); return; }
