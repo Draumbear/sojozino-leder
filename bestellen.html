@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bestellen — Sojozino</title>
-<meta name="description" content="Bestel een creatie van Sojozino of vraag iets op maat: kies je categorie en stuk, beschrijf je vraag en laat je gegevens na.">
+<meta name="description" content="Bestel een creatie van Sojozino of vraag iets op maat: kies een stuk, beschrijf je vraag en laat je gegevens na.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=a2a5f3da">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=a2a5f3da">
+<link rel="stylesheet" href="styles.css?v=9f031957">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=9f031957">
 </head>
 <body>
 <div class="grain"></div>
@@ -17,7 +17,7 @@
   <!-- Filled in from data/site.json; what is written here is the fallback. -->
   <p class="eyebrow reveal" id="orderEyebrow">Bestellen</p>
   <h1 class="reveal" id="orderHeading">Kies je stuk, of<br>vraag iets op maat.</h1>
-  <p class="reveal" id="orderIntro">Kies hieronder een categorie en (optioneel) een specifiek stuk, beschrijf kort je vraag of wens, en laat je gegevens na. Johnny neemt zo snel mogelijk contact met je op.</p>
+  <p class="reveal" id="orderIntro">Kies hieronder een stuk — of laat het open voor iets op maat — beschrijf kort je vraag of wens, en laat je gegevens na. Johnny neemt zo snel mogelijk contact met je op.</p>
 </div>
 
 <div class="section" style="padding-top:0;max-width:720px;">
@@ -42,42 +42,60 @@
     <input type="hidden" name="onderverdeling" id="of-subcategory-hidden">
     <input type="hidden" name="stuk" id="of-product-hidden">
 
+    <!--
+      The piece is the choice that matters, so it leads and is filled from the
+      start: the old form asked for a category first and left "Stuk" looking
+      empty until you had guessed your way into one. The category dropdown is
+      now a filter for a long list, not a gate in front of it.
+    -->
     <div class="order-field">
-      <label for="of-category">Categorie</label>
-      <select id="of-category" required>
-        <option value="">Kies een categorie…</option>
-      </select>
-    </div>
-    <div class="order-field" id="of-subcategory-wrap" hidden>
-      <label for="of-subcategory">Onderverdeling</label>
-      <select id="of-subcategory">
-        <option value="">Alle onderverdelingen</option>
-      </select>
-    </div>
-    <div class="order-field">
-      <label for="of-product">Stuk</label>
+      <label for="of-product">Welk stuk?</label>
       <select id="of-product">
         <option value="">Iets op maat / nog niet gekozen</option>
       </select>
+      <p class="field-hint" id="of-product-hint">Staat je stuk er niet bij? Laat het op <em>iets op maat</em> staan en beschrijf het hieronder.</p>
     </div>
+
+    <!-- Optional, and folded away: most visitors pick a piece and never open
+         this. It exists for the long list, and for anyone who wants to say
+         "iets in deze richting" without naming a piece. -->
+    <details class="order-filter" id="of-filter">
+      <summary>Lijst filteren op categorie</summary>
+      <div class="order-filter-body">
+        <div class="order-field">
+          <label for="of-category">Categorie</label>
+          <select id="of-category">
+            <option value="">Alle categorieën</option>
+          </select>
+        </div>
+        <div class="order-field" id="of-subcategory-wrap" hidden>
+          <label for="of-subcategory">Onderverdeling</label>
+          <select id="of-subcategory">
+            <option value="">Alle onderverdelingen</option>
+          </select>
+        </div>
+      </div>
+    </details>
     <div class="order-field">
-      <label for="of-message">Je vraag of wens</label>
+      <label for="of-message">Je vraag of wens <span class="req" aria-hidden="true">*</span></label>
       <textarea id="of-message" name="bericht" rows="5" placeholder="Beschrijf hier je bestelling, wens of vraag op maat — kleur, afmetingen, gravure, timing…" required></textarea>
     </div>
     <div class="order-row">
       <div class="order-field">
-        <label for="of-name">Naam</label>
-        <input type="text" id="of-name" name="naam" required>
+        <label for="of-name">Naam <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="of-name" name="naam" autocomplete="name" required>
       </div>
       <div class="order-field">
-        <label for="of-email">E-mailadres</label>
-        <input type="email" id="of-email" name="email" required>
+        <label for="of-email">E-mailadres <span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="of-email" name="email" autocomplete="email" required>
+        <p class="field-hint">Zonder e-mailadres kan Johnny je niet antwoorden.</p>
       </div>
     </div>
     <div class="order-field">
       <label for="of-phone">Telefoonnummer <span class="hint-inline">(optioneel)</span></label>
-      <input type="tel" id="of-phone" name="telefoon">
+      <input type="tel" id="of-phone" name="telefoon" autocomplete="tel">
     </div>
+    <p class="req-legend"><span class="req" aria-hidden="true">*</span> Verplicht in te vullen.</p>
     <button type="submit" class="btn" id="orderSubmitBtn">Vraag versturen</button>
     <p class="order-hint">Dit formulier gaat rechtstreeks naar Johnny — geen e-mailprogramma nodig.</p>
     <p class="order-error hidden" id="orderError">Er ging iets mis bij het versturen. Probeer het opnieuw, of mail rechtstreeks naar <a href="mailto:sojozino@gmail.com">sojozino@gmail.com</a>.</p>
@@ -91,7 +109,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=a2a5f3da"></script>
-<script src="bestellen.js?v=a2a5f3da"></script>
+<script src="site-data.js?v=9f031957"></script>
+<script src="bestellen.js?v=9f031957"></script>
 </body>
 </html>

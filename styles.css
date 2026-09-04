@@ -976,6 +976,69 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .order-success { text-align: center; }
 .order-success h2 { margin-bottom: 0.6rem; }
 
+/* bestellen.js toggles .hidden on the form, the error line and the thank-you
+   card -- but nothing ever defined it, so the error and the "Bedankt!" card
+   were sitting under the form on every visit. */
+.hidden { display: none !important; }
+
+/* A line of guidance under the control it belongs to, rather than a paragraph
+   of instructions above the form that nobody reads twice. */
+.field-hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--espresso-soft);
+  opacity: 0.85;
+}
+.field-hint em { font-style: normal; font-weight: 700; }
+.field-hint strong { color: var(--espresso); }
+
+.req { color: var(--rust); font-weight: 700; }
+.req-legend {
+  margin: 0 0 1.2rem;
+  font-size: 0.78rem;
+  color: var(--espresso-soft);
+  opacity: 0.85;
+}
+
+/* The category filter is closed by default: it narrows a list that is already
+   complete, so it is help, not a step. */
+.order-filter { margin: 0 0 1.2rem; }
+.order-filter > summary {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--rust);
+  padding: 0.25rem 0;
+  list-style: none;
+}
+.order-filter > summary::-webkit-details-marker { display: none; }
+.order-filter > summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1em;
+  font-weight: 700;
+}
+.order-filter[open] > summary::before { content: "\2212"; }
+.order-filter > summary:hover { text-decoration: underline; }
+.order-filter-body {
+  margin-top: 0.9rem;
+  padding: 1rem 1.1rem 0.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.015);
+}
+
+/* Only after a failed submit, and only on the field at fault -- a form that
+   turns red while you are still filling it in is nagging, not helping. */
+.order-field.has-error select,
+.order-field.has-error input,
+.order-field.has-error textarea {
+  border-color: var(--rust);
+  box-shadow: 0 0 0 3px rgba(195, 31, 31, 0.12);
+}
+
 /* Honeypot field for Netlify's spam filter -- kept in the layout (not
    display:none, which some bots skip) but moved fully off-screen so real
    visitors never see or tab into it. */
