@@ -747,6 +747,9 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .banner-photo {
   width: 100%;
   aspect-ratio: 21/9;
+  /* Capped: at 1240px wide the ratio alone makes this 530px tall, which on a
+     desktop screen is the whole fold spent on one photo of a tent. */
+  max-height: 420px;
   object-fit: cover;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
@@ -772,7 +775,12 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 /* ---------- Presence / markets ---------- */
 .presence-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  /* auto-fit rather than auto-fill so empty tracks collapse, and a capped track
+     width with justify-content:center so whatever is left over sits in the
+     middle. One market on the calendar was stranded in the top-left corner of a
+     four-column grid; now it is centred, and so is a trailing row of three. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 340px));
+  justify-content: center;
   gap: 1.6rem;
 }
 .presence-card { padding: 1.6rem; }
@@ -795,6 +803,17 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 }
 .presence-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
 .presence-loc { font-size: 0.85rem; color: var(--espresso-soft); font-weight: 600; margin-bottom: 0.6rem; }
+/* Link, not an embedded map: an iframe would pull Google into every page load
+   and undo the point of self-hosting the fonts. */
+.presence-map {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--rust);
+}
+.presence-map:hover { text-decoration: underline; }
+
 .presence-card.past { opacity: 0.55; }
 /* Spans the whole grid: as a plain grid item this sat in the first column,
    reading as a narrow left-aligned block rather than a centred message. */

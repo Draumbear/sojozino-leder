@@ -116,6 +116,18 @@ function renderInstagramCta(site) {
     </section>`;
 }
 
+// A market's address as a link to a map. He can paste a Google Maps URL if he
+// has one to hand, or just type the address -- typing is the likelier of the
+// two on a phone, so both are accepted and a search URL is built from plain
+// text. Deliberately a link and not an embedded map: an iframe would load
+// Google on every visit and undo the point of self-hosting the fonts.
+function mapsLink(address) {
+  const value = (address || '').trim();
+  if (!value) return null;
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+}
+
 function applyAccent(site) {
   if (site.accentColor) {
     document.documentElement.style.setProperty('--rust', site.accentColor);
@@ -169,4 +181,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink };
