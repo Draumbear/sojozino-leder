@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish42">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish42">
+<link rel="stylesheet" href="admin.css?v=publish44">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish44">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -87,7 +87,7 @@
         <span class="pd-chevron" aria-hidden="true">⌃</span>
       </button>
       <div class="pd-body" id="publishBody" hidden>
-        <p class="pd-note">Je bewerkingen zijn bewaard, maar staan nog niet op de website.</p>
+        <p class="pd-note" id="publishNote"></p>
         <ul class="publish-list" id="publishList"></ul>
       </div>
       <button class="btn-admin" id="publishBtn">Publiceer wijzigingen</button>
@@ -470,9 +470,14 @@
   </div>
 </div>
 
-<div class="toast-container" id="toastContainer"></div>
+<div class="toast-container" id="toastContainer">
+  <!-- What is being uploaded and what is behind it. First child of the
+       toast stack, so it inherits the offset that keeps it clear of the
+       publish dock. -->
+  <div class="queue-status" id="queueStatus" hidden></div>
+</div>
 
-<script src="admin-github.js?v=publish42"></script>
-<script src="admin.js?v=publish42"></script>
+<script src="admin-github.js?v=publish44"></script>
+<script src="admin.js?v=publish44"></script>
 </body>
 </html>

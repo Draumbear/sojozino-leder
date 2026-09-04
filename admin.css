@@ -294,7 +294,7 @@ button.conn-status.off { cursor: default; }
 }
 .help-item summary::-webkit-details-marker { display: none; }
 .help-item summary::before { content: '+'; display: inline-block; width: 1.2rem; color: var(--a-rust); font-weight: 700; }
-.help-item[open] summary::before { content: '3'; }
+.help-item[open] summary::before { content: '–'; }
 .help-item summary:hover { color: var(--a-rust); }
 .help-item > *:not(summary) { margin: 0 0 0.7rem 1.2rem; font-size: 0.9rem; color: var(--a-ink-soft); line-height: 1.65; }
 .help-item ol, .help-item ul { padding-left: 1.1rem; }
@@ -309,7 +309,8 @@ button.conn-status.off { cursor: default; }
   .admin-main { padding: 0; }
   .admin-card { border: none; box-shadow: none; padding: 0; }
   .help-item { break-inside: avoid; }
-  .help-item summary::before { content: ''; width: 0; }
+  .help-item summary::before,
+  .help-item[open] summary::before { content: none; display: none; }
 }
 
 .empty-state { text-align: center; padding: 2.4rem 1rem; color: var(--a-ink-faint); }
@@ -354,6 +355,26 @@ button.conn-status.off { cursor: default; }
 /* Toasts share the bottom-right corner with the publish dock, so they sit on
    top of whatever height the dock currently is -- see the observer in admin.js
    that keeps --dock-height honest through collapsing, expanding and hiding. */
+/* What is uploading, and what is behind it. Sits in the toast stack so it
+   clears the publish dock without a second position to keep in step. */
+.queue-status {
+  background: var(--a-espresso); color: #fff;
+  border-radius: var(--a-radius-sm);
+  box-shadow: var(--a-shadow-sm);
+  padding: 0.7rem 0.9rem;
+  max-width: 340px;
+  font-size: 0.82rem;
+}
+.queue-status[hidden] { display: none; }
+.qs-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.qs-list li { display: flex; align-items: center; gap: 0.5rem; }
+.qs-waiting { color: rgba(255, 255, 255, 0.55); }
+.qs-step { color: rgba(255, 255, 255, 0.55); }
+.qs-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35); flex-shrink: 0;
+}
+
 .toast-container {
   position: fixed;
   bottom: calc(1.4rem + var(--dock-height, 0px));

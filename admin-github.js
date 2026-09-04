@@ -112,6 +112,7 @@ class GitHubAPI {
     this.repo = repo;
     this.branch = branch || 'main';
     this._writes = Promise.resolve(); // tail of the write queue
+    this._queue = [];                 // what is in it, for the dashboard
   }
 
   get base() { return `https://api.github.com/repos/${this.owner}/${this.repo}`; }
@@ -129,12 +130,44 @@ class GitHubAPI {
   // retried onto the new one while still carrying its own copy of
   // products-index.json, quietly overwriting whatever had landed in between.
   // Starring a product while a reorder was still committing lost one of them.
-  _enqueue(task) {
+  // Every queued write announces itself, so the dashboard can say what is
+  // being uploaded and what is behind it. Without this the queue is invisible:
+  // she presses Opslaan, the page looks idle, and there is nothing to
+  // distinguish "working" from "stuck".
+  _announce() {
+    document.dispatchEvent(new CustomEvent('gh-queue', { detail: {
+      active: this._queue[0] || null,
+      waiting: this._queue.slice(1),
+    } }));
+  }
+
+  // What a write is called while it is in the queue. The commit message is
+  // already a plain-language description of the change, so it doubles as one.
+  _enqueue(task, label) {
+    this._queue = this._queue || [];
+    const entry = { label: label || 'Wijziging opslaan', step: null };
+    this._queue.push(entry);
+    this._announce();
+
+    const finish = (result) => {
+      this._queue.splice(this._queue.indexOf(entry), 1);
+      this._announce();
+      return result;
+    };
     // .then(task, task) rather than .then(task): one failed write must not
     // strand every write behind it.
-    const run = this._writes.then(task, task);
+    const run = this._writes
+      .then(() => task(entry), () => task(entry))
+      .then(finish, (e) => { finish(); throw e; });
     this._writes = run.catch(() => {});
     return run;
+  }
+
+  // Called from inside a running write to report where it has got to.
+  _step(entry, step) {
+    if (!entry) return;
+    entry.step = step;
+    this._announce();
   }
 
   async verify() {
@@ -219,7 +252,7 @@ class GitHubAPI {
 
   // content: raw string (text) or { base64: '...' } for binary uploads.
   putFile(path, content, message) {
-    return this._enqueue(() => this._putFile(path, content, message));
+    return this._enqueue(() => this._putFile(path, content, message), message);
   }
 
   async _putFile(path, content, message) {
@@ -248,7 +281,7 @@ class GitHubAPI {
   }
 
   deleteFile(path, message) {
-    return this._enqueue(() => this._deleteFile(path, message));
+    return this._enqueue(() => this._deleteFile(path, message), message);
   }
 
   async _deleteFile(path, message) {
@@ -352,16 +385,20 @@ class GitHubAPI {
   // first. Read from the branch history rather than kept locally, so the list
   // is right across browsers and devices. Returns null if the history can't be
   // read — callers treat that as "unknown", not as "nothing pending".
-  async pendingChanges() {
-    if (!DEFER_PUBLISH) return [];
-    const url = `${this.base}/commits?sha=${this.branch}&per_page=100&_=${Date.now()}`;
+  // Undoing a change does not depend on whether it has been published, so this
+  // list is not either. With publishing deferred it stops at the last published
+  // commit -- those are the ones still waiting. Without, it simply returns the
+  // most recent changes, which are all live but every bit as undoable.
+  async pendingChanges(limit = 100) {
+    const url = `${this.base}/commits?sha=${this.branch}&per_page=${limit}&_=${Date.now()}`;
     const res = await fetch(url, { headers: this.headers(), cache: 'no-store' });
     if (!res.ok) return null;
     const commits = await res.json();
     const pending = [];
     for (const c of commits) {
       const message = c.commit.message;
-      if (!isDeferredSave(message)) break;
+      // Only a deferred setup has a boundary to stop at.
+      if (DEFER_PUBLISH && !isDeferredSave(message)) break;
       const target = (message.match(/\[target: ([^\]]+)\]/) || [])[1] || null;
       pending.push({
         sha: c.sha,
@@ -381,14 +418,16 @@ class GitHubAPI {
   // or [{ path, delete: true }] to remove a path.
   commitBatch(files, message, target) {
     if (!files.length) return Promise.resolve(null);
-    return this._enqueue(() => this._commitBatch(files, message, target));
+    return this._enqueue((entry) => this._commitBatch(files, message, target, entry), message);
   }
 
-  async _commitBatch(files, message, target) {
+  async _commitBatch(files, message, target, entry) {
 
     // Blob creation is content-addressed and independent of the branch tip, so
     // it only needs to happen once — even if committing below has to retry
     // against a moved tip, these shas are still valid.
+    const uploads = files.filter(f => !f.delete).length;
+    let done = 0;
     const treeEntries = await Promise.all(files.map(async (f) => {
       if (f.delete) return { path: f.path, mode: '100644', type: 'blob', sha: null };
       // Resolved here rather than by the caller: a function means "whatever
@@ -404,9 +443,12 @@ class GitHubAPI {
       });
       if (!res.ok) { const err = await res.json().catch(() => ({})); throw accessError(res.status, err.message, `de foto ${f.path} te uploaden`); }
       const sha = (await res.json()).sha;
+      done += 1;
+      this._step(entry, uploads > 1 ? `bestand ${done} van ${uploads}` : 'uploaden');
       return { path: f.path, mode: '100644', type: 'blob', sha };
     }));
 
+    this._step(entry, 'vastleggen');
     return this._commitTreeEntries(treeEntries, this._saveMessage(message, target));
   }
 

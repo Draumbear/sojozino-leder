@@ -77,6 +77,13 @@ function applyPublishWording() {
          <p class="hint">Ververs de pagina op de website als je ze nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
 
+  const note = $('#publishNote');
+  if (note) {
+    note.textContent = DEFER_PUBLISH
+      ? 'Je bewerkingen zijn bewaard, maar staan nog niet op de website.'
+      : 'Al deze wijzigingen staan online. Klik "Ongedaan maken" om er één terug te zetten.';
+  }
+
   const hint = $('#overviewPublishHint');
   if (hint) {
     hint.textContent = DEFER_PUBLISH
@@ -186,17 +193,24 @@ function watchWrites(gh) {
 // browser, so it stays right even if the last edits were made on another device.
 const PENDING_LIST_LIMIT = 6;
 
+// How many recent changes to offer an undo for when nothing is being held
+// back. Enough to cover a session's mistakes, short enough to stay scannable.
+const RECENT_CHANGE_COUNT = 8;
+
 async function refreshPublishBar() {
   const bar = $('#publishBar');
   if (!api || !bar) return;
-  const pending = await api.pendingChanges().catch(() => null);
+  const pending = await api.pendingChanges(DEFER_PUBLISH ? 100 : RECENT_CHANGE_COUNT).catch(() => null);
   if (!pending || !pending.length) {
     bar.classList.add('hidden');
     return;
   }
-  $('#publishCount').textContent = pending.length === 1
-    ? '1 wijziging staat nog niet online'
-    : `${pending.length} wijzigingen staan nog niet online`;
+  // Publishing is only a step where saves are held back; otherwise this is
+  // purely a history with an undo against each line.
+  $('#publishBtn').hidden = !DEFER_PUBLISH;
+  $('#publishCount').textContent = DEFER_PUBLISH
+    ? (pending.length === 1 ? '1 wijziging staat nog niet online' : `${pending.length} wijzigingen staan nog niet online`)
+    : 'Recente wijzigingen';
 
   const shown = pending.slice(0, PENDING_LIST_LIMIT);
   const rest = pending.length - shown.length;
@@ -767,6 +781,7 @@ function saveProductIndexSoon(label, delay = STAR_SAVE_DELAY) {
   indexSaveDelay = Math.max(indexSaveDelay, delay);
   clearTimeout(indexSaveTimer);
   indexSaveTimer = setTimeout(flushProductIndex, indexSaveDelay);
+  renderQueueStatus();
 }
 
 async function flushProductIndex() {
@@ -779,6 +794,7 @@ async function flushProductIndex() {
     : `Producten bijgewerkt (${indexSaveLabels.length} wijzigingen)`;
   indexSaveLabels = [];
   indexSaveDelay = STAR_SAVE_DELAY;
+  renderQueueStatus();
   try {
     const sha = await api.commitBatch(
       [{ path: 'data/products-index.json', content: () => JSON.stringify(state.productsIndex, null, 2) }],
@@ -1193,6 +1209,50 @@ function bindVariantsManagerEvents(wrap) {
     });
   });
 }
+
+// ---------- What is being saved ----------
+// A queued write is invisible from the outside: she presses Opslaan, the page
+// looks idle, and nothing separates "uploading twelve photos" from "stuck". So
+// the queue reports itself, and the changes still waiting on their debounce
+// timer are shown alongside -- from her side those are equally "not saved yet".
+let queueState = { active: null, waiting: [] };
+
+function pendingTimerLabel() {
+  if (!indexSaveTimer || !indexSaveLabels.length) return null;
+  return indexSaveLabels.length === 1
+    ? indexSaveLabels[0]
+    : `${indexSaveLabels.length} wijzigingen aan de producten`;
+}
+
+function renderQueueStatus() {
+  const el = $('#queueStatus');
+  if (!el) return;
+  const { active, waiting } = queueState;
+  const timerLabel = pendingTimerLabel();
+  if (!active && !waiting.length && !timerLabel) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+
+  const rows = [];
+  if (active) {
+    rows.push(`<li class="qs-active"><span class="spinner"></span>
+      <span>${esc(active.label)}${active.step ? ` <span class="qs-step">— ${esc(active.step)}</span>` : ''}</span></li>`);
+  }
+  waiting.forEach(w => rows.push(`<li class="qs-waiting"><span class="qs-dot"></span><span>${esc(w.label)}</span></li>`));
+  if (timerLabel) {
+    rows.push(`<li class="qs-waiting"><span class="qs-dot"></span><span>${esc(timerLabel)} <span class="qs-step">— zo dadelijk</span></span></li>`);
+  }
+
+  el.innerHTML = `<ul class="qs-list">${rows.join('')}</ul>`;
+  el.hidden = false;
+}
+
+document.addEventListener('gh-queue', (e) => {
+  queueState = e.detail;
+  renderQueueStatus();
+});
 
 // ---------- Unsaved work ----------
 // The product editor is where half an hour can disappear to one closed tab, so
