@@ -75,12 +75,20 @@ function updateLightboxChrome() {
   counter.textContent = multi ? `${photoIndex + 1} / ${images.length}` : '';
 }
 
+function updateVariantLabel() {
+  const el = document.getElementById('variantCurrent');
+  if (!el) return;
+  const v = product.variants[variantIndex];
+  el.textContent = v.name || `Variant ${variantIndex + 1}`;
+}
+
 function setVariant(vi) {
   if (vi === variantIndex) return;
   variantIndex = ((vi % product.variants.length) + product.variants.length) % product.variants.length;
   document.querySelectorAll('.variant-swatch').forEach((el, i) => {
     el.classList.toggle('active', i === variantIndex);
   });
+  updateVariantLabel();
   renderGallery();
 }
 
@@ -194,23 +202,30 @@ async function renderProduct() {
 
   document.title = `${data.name} — Sojozino`;
 
+  // Variant names live in a hover/focus tooltip rather than under each
+  // swatch: printed labels wrap to two or three lines at different lengths,
+  // which pushed the squares to uneven heights.
   const hasVariants = product.variants.length > 1;
   const swatchesHTML = hasVariants ? `
     <div class="variant-picker">
       <p class="eyebrow">Kies een variant</p>
       <div class="variant-swatches" id="variantSwatches">
-        ${product.variants.map((v, i) => `
-          <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}">
-            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="${escapeHTML(v.name || data.name)}">
-            <span>${escapeHTML(v.name || `Variant ${i + 1}`)}</span>
-          </button>`).join('')}
+        ${product.variants.map((v, i) => {
+          const label = v.name || `Variant ${i + 1}`;
+          return `
+          <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
+                  title="${escapeHTML(label)}" aria-label="${escapeHTML(label)}">
+            <img src="${escapeHTML(v.images[0]?.src || '')}" alt="">
+            <span>${escapeHTML(label)}</span>
+          </button>`;
+        }).join('')}
       </div>
+      <p class="variant-current" id="variantCurrent"></p>
     </div>` : '';
 
   document.getElementById('productRoot').innerHTML = `
     <div class="product-detail">
       <div class="spotlight">
-        ${swatchesHTML}
         <div class="spotlight-main" id="spotlightMain">
           <img id="spotlightImg" src="" alt="">
           <button class="spotlight-zoom" id="spotlightZoom" aria-label="Foto vergroten" type="button">&#128269;</button>
@@ -224,6 +239,7 @@ async function renderProduct() {
         ${catName ? `<span class="cat-tag">${escapeHTML(catName)}</span>` : ''}
         <h1>${escapeHTML(data.name)}</h1>
         <p>${escapeHTML(data.description || '')}</p>
+        ${swatchesHTML}
       </div>
     </div>
     <div class="lightbox" id="lightbox" hidden>
@@ -235,6 +251,7 @@ async function renderProduct() {
     </div>`;
 
   initSpotlight();
+  updateVariantLabel();
   renderGallery();
 }
 

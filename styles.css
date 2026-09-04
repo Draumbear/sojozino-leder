@@ -302,7 +302,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 /* ---------- Product grid ---------- */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
   gap: 1.6rem;
 }
 /* Deliberately softer than the rest of the site's hard-edged treatment: a
@@ -540,45 +540,74 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
    swaps the whole spotlight gallery to that variant's photos, the way a
    colour swatch does on a product page, instead of mixing every variant's
    photos into one long scroll. */
-.variant-picker { margin-bottom: 1.1rem; }
+.variant-picker { margin-top: 1.8rem; }
 .variant-picker .eyebrow { margin-bottom: 0.6rem; }
 .variant-swatches {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+  align-items: flex-start;
 }
 .variant-swatch {
-  width: 74px;
+  position: relative;
+  width: 64px;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   font: inherit;
+  line-height: 0; /* no text box under the image to offset the squares */
 }
 .variant-swatch img {
-  width: 74px; height: 74px;
+  width: 64px; height: 64px;
   object-fit: cover;
   border-radius: var(--radius);
   border: 2px solid var(--espresso);
   display: block;
 }
-/* Labels wrap rather than truncate -- a variant name like
-   "Den Zita - Zwart Croco" is the only thing distinguishing two swatches of
-   the same product, so cutting it to "Den Zita -…" makes them
-   indistinguishable. */
+/* Name as a hover/focus tooltip: printed under each swatch it wrapped to
+   different line counts, which pushed the squares to uneven heights. */
+/* Below the swatch, not above: the fixed site header covers the space above
+   it whenever the picker sits high in the viewport, which hid the tooltip. */
 .variant-swatch span {
-  display: block;
-  font-size: 0.68rem;
-  line-height: 1.25;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-3px);
+  background: var(--espresso);
+  color: #fff;
+  padding: 0.32rem 0.6rem;
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 0.7rem;
   font-weight: 600;
-  text-align: center;
-  margin-top: 0.3rem;
-  color: var(--espresso-soft);
-  overflow-wrap: anywhere;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 5;
 }
+.variant-swatch span::after {
+  content: '';
+  position: absolute;
+  bottom: 100%; left: 50%;
+  margin-left: -4px;
+  border: 4px solid transparent;
+  border-bottom-color: var(--espresso);
+}
+.variant-swatch:hover span,
+.variant-swatch:focus-visible span { opacity: 1; transform: translateX(-50%) translateY(0); }
 .variant-swatch:hover img { border-color: var(--rust); }
 .variant-swatch.active img { border-color: var(--rust); box-shadow: 0 0 0 2px var(--rust); }
-.variant-swatch.active span { color: var(--rust); }
+
+/* Name of the variant currently being shown, so it's readable without hovering. */
+.variant-current {
+  margin: 0.7rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--rust);
+}
 .spotlight-thumbs img {
   width: 62px; height: 62px;
   object-fit: cover;
@@ -703,7 +732,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 /* ---------- Presence / markets ---------- */
 .presence-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 1.6rem;
 }
 .presence-card { padding: 1.6rem; }
@@ -727,7 +756,16 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .presence-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
 .presence-loc { font-size: 0.85rem; color: var(--espresso-soft); font-weight: 600; margin-bottom: 0.6rem; }
 .presence-card.past { opacity: 0.55; }
-.presence-empty { text-align: center; color: var(--espresso-soft); padding: 2rem; }
+/* Spans the whole grid: as a plain grid item this sat in the first column,
+   reading as a narrow left-aligned block rather than a centred message. */
+.presence-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--espresso-soft);
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 46ch;
+}
 
 /* ---------- About page ---------- */
 .about-page {
@@ -844,4 +882,4 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .reveal.in { opacity: 1; transform: none; }
 
-.empty-note { text-align: center; color: var(--espresso-soft); padding: 3rem 0; }
+.empty-note { grid-column: 1 / -1; text-align: center; color: var(--espresso-soft); padding: 3rem 0; }
