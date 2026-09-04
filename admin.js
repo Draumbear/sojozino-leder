@@ -571,7 +571,7 @@ function renderVariantsManager() {
     const existingTiles = v.images.map((img, ii) => {
       const isCover = editorCoverKey.variantIdx === vi && editorCoverKey.imageIdx === ii;
       return `
-      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing" draggable="true" title="Sleep om te herschikken">
+      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing" draggable="true" title="Klik om te vergroten — sleep om te herschikken">
         ${isCover ? '<span class="cover-badge">Cover</span>' : ''}
         <img src="${esc(img.src)}" alt="" draggable="false">
         <div class="tile-actions">
@@ -586,7 +586,7 @@ function renderVariantsManager() {
       .map((p, gi) => ({ p, gi }))
       .filter(({ p }) => p.variantIdx === vi)
       .map(({ p, gi }) => `
-      <div class="image-tile" data-kind="pending">
+      <div class="image-tile" data-vidx="${vi}" data-kind="pending" title="Klik om te vergroten">
         <img src="${URL.createObjectURL(p.file)}" alt="">
         <div class="tile-actions"><button data-action="remove-pending" data-pending-idx="${gi}">✕ nieuw</button></div>
       </div>`).join('');
@@ -672,8 +672,61 @@ function bindImageDragging(wrap) {
   });
 }
 
+// ---------- Photo viewer ----------
+// The tiles in the product editor are 110px, which is enough to tell photos
+// apart but not to judge one. Clicking opens it full size, with the rest of
+// that variant's photos reachable from there. Sources are read off the DOM
+// rather than from editorVariants so that photos still queued for upload --
+// which only exist as object URLs -- are included on equal footing.
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+
+function openPhotoLightbox(img) {
+  const manager = img.closest('.image-manager');
+  const images = [...manager.querySelectorAll('.image-tile img')];
+  lightboxPhotos = images.map(el => el.src);
+  showPhoto(images.indexOf(img));
+  $('#adminLightbox').hidden = false;
+}
+
+function showPhoto(index) {
+  if (!lightboxPhotos.length) return;
+  // Wraps around, so holding one arrow key never dead-ends.
+  lightboxIndex = (index + lightboxPhotos.length) % lightboxPhotos.length;
+  $('#alImg').src = lightboxPhotos[lightboxIndex];
+  $('#alCounter').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
+  const single = lightboxPhotos.length < 2;
+  $('#alPrev').hidden = single;
+  $('#alNext').hidden = single;
+  $('#alCounter').hidden = single;
+}
+
+function closePhotoLightbox() {
+  $('#adminLightbox').hidden = true;
+  $('#alImg').src = '';
+  lightboxPhotos = [];
+}
+
+function initPhotoLightbox() {
+  const box = $('#adminLightbox');
+  // Clicking the backdrop closes; clicking the photo or a control does not.
+  box.addEventListener('click', (e) => { if (e.target === box) closePhotoLightbox(); });
+  $('#alClose').addEventListener('click', closePhotoLightbox);
+  $('#alPrev').addEventListener('click', () => showPhoto(lightboxIndex - 1));
+  $('#alNext').addEventListener('click', () => showPhoto(lightboxIndex + 1));
+  document.addEventListener('keydown', (e) => {
+    if (box.hidden) return;
+    if (e.key === 'Escape') closePhotoLightbox();
+    else if (e.key === 'ArrowLeft') showPhoto(lightboxIndex - 1);
+    else if (e.key === 'ArrowRight') showPhoto(lightboxIndex + 1);
+  });
+}
+
 function bindVariantsManagerEvents(wrap) {
   wrap.onclick = (e) => {
+    const photo = e.target.closest('.image-tile img');
+    if (photo) { openPhotoLightbox(photo); return; }
+
     const removeVariantBtn = e.target.closest('[data-action="remove-variant"]');
     if (removeVariantBtn) {
       const vi = Number(removeVariantBtn.dataset.vidx);
@@ -985,6 +1038,7 @@ async function saveSettings() {
 document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
+  initPhotoLightbox();
 
   $('#saveProductBtn').addEventListener('click', saveProduct);
   $('#cancelProductBtn').addEventListener('click', closeProductEditor);

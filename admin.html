@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish2">
+<link rel="stylesheet" href="admin.css?v=publish3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
@@ -245,9 +245,19 @@
 
 </main>
 
+<!-- Full-size viewer for the product photos. The tiles are 110px, which is
+     enough to tell photos apart but not to judge one. -->
+<div class="admin-lightbox" id="adminLightbox" hidden>
+  <button class="al-close" id="alClose" type="button" aria-label="Sluiten">&times;</button>
+  <button class="al-nav prev" id="alPrev" type="button" aria-label="Vorige foto">&#8249;</button>
+  <img id="alImg" src="" alt="">
+  <button class="al-nav next" id="alNext" type="button" aria-label="Volgende foto">&#8250;</button>
+  <div class="al-counter" id="alCounter"></div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish2"></script>
-<script src="admin.js?v=publish2"></script>
+<script src="admin-github.js?v=publish3"></script>
+<script src="admin.js?v=publish3"></script>
 </body>
 </html>

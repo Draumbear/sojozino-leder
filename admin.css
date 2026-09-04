@@ -207,6 +207,51 @@
 .image-tile .tile-actions { display: flex; justify-content: space-between; margin-top: 0.35rem; gap: 0.2rem; }
 .image-tile button { flex: 1; font-size: 0.68rem; padding: 0.3rem 0.2rem; border-radius: 4px; border: 1px solid var(--a-line); background: #fff; cursor: pointer; }
 .image-tile button:hover { border-color: var(--a-rust); color: var(--a-rust); }
+/* Full-size photo viewer, opened by clicking a tile in the product editor. */
+.admin-lightbox {
+  position: fixed; inset: 0;
+  z-index: 500;
+  background: rgba(10, 10, 10, 0.92);
+  display: flex; align-items: center; justify-content: center;
+  padding: 3.5rem;
+  cursor: zoom-out;
+}
+.admin-lightbox[hidden] { display: none; }
+.admin-lightbox img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--a-radius-sm);
+  cursor: default;
+}
+.admin-lightbox .al-close,
+.admin-lightbox .al-nav {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.admin-lightbox .al-close:hover,
+.admin-lightbox .al-nav:hover { background: var(--a-rust); border-color: var(--a-rust); }
+.al-close { top: 1.1rem; right: 1.1rem; width: 40px; height: 40px; font-size: 1.6rem; }
+.al-nav { top: 50%; transform: translateY(-50%); width: 46px; height: 46px; font-size: 1.6rem; }
+.al-nav.prev { left: 1.1rem; }
+.al-nav.next { right: 1.1rem; }
+.al-nav[hidden] { display: none; }
+.al-counter {
+  position: absolute;
+  bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+/* Says the tile opens: the tile is also a drag handle, so the cursor is the
+   only hint that clicking does something different from dragging. */
+.image-tile img { cursor: zoom-in; }
+
 .image-tile[draggable="true"] { cursor: grab; }
 .image-tile.dragging { opacity: 0.4; cursor: grabbing; }
 /* Marks where the dragged photo will land. */
