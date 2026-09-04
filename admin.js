@@ -678,7 +678,7 @@ async function moveProductBefore(fromSlug, toSlug, rerender) {
 
   rerender();
   const moved = state.productsIndex.find(p => p.slug === fromSlug);
-  saveProductIndexSoon(`Volgorde gewijzigd: ${moved ? moved.name : fromSlug}`);
+  saveProductIndexSoon(`Volgorde gewijzigd: ${moved ? moved.name : fromSlug}`, REORDER_SAVE_DELAY);
 }
 
 // Starring and reordering are one click each and come in bursts -- five drags
@@ -686,14 +686,22 @@ async function moveProductBefore(fromSlug, toSlug, rerender) {
 // the same one file, so they wait a moment for her to finish and then go as a
 // single commit. Deliberate saves are untouched: pressing Opslaan means now,
 // and it carries photos that should not sit in a browser waiting for a timer.
-const INDEX_SAVE_DELAY = 1800;
+// Two speeds, because the two actions are paced differently. A star is one
+// click and she is usually done; rearranging a category means dragging, looking
+// at the result, and dragging again, with real thinking time in between.
+const STAR_SAVE_DELAY = 1800;
+const REORDER_SAVE_DELAY = 6000;
 let indexSaveTimer = null;
 let indexSaveLabels = [];
+let indexSaveDelay = STAR_SAVE_DELAY;
 
-function saveProductIndexSoon(label) {
+// The longest wait asked for wins until the batch goes: a quick star in the
+// middle of rearranging should not cut the dragging window short.
+function saveProductIndexSoon(label, delay = STAR_SAVE_DELAY) {
   indexSaveLabels.push(label);
+  indexSaveDelay = Math.max(indexSaveDelay, delay);
   clearTimeout(indexSaveTimer);
-  indexSaveTimer = setTimeout(flushProductIndex, INDEX_SAVE_DELAY);
+  indexSaveTimer = setTimeout(flushProductIndex, indexSaveDelay);
 }
 
 async function flushProductIndex() {
@@ -705,6 +713,7 @@ async function flushProductIndex() {
     ? indexSaveLabels[0]
     : `Producten bijgewerkt (${indexSaveLabels.length} wijzigingen)`;
   indexSaveLabels = [];
+  indexSaveDelay = STAR_SAVE_DELAY;
   try {
     const sha = await api.commitBatch(
       [{ path: 'data/products-index.json', content: () => JSON.stringify(state.productsIndex, null, 2) }],
