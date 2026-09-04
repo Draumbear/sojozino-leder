@@ -41,26 +41,6 @@ async function initHome() {
   const catByslug = Object.fromEntries((categories || []).map(c => [c.slug, c]));
   const enriched = (products || []).map(p => ({ ...p, categoryName: window.SojozinoSite.categoryLabel(catByslug[p.category]) }));
 
-  // Four category tiles, each using the first product's cover as its image
-  // and linking into the filtered gallery.
-  const tilesEl = document.getElementById('categoryTiles');
-  if (tilesEl) {
-    const esc = window.SojozinoSite.escapeHTML;
-    tilesEl.innerHTML = (categories || []).map(c => {
-      const inCat = enriched.filter(p => p.category === c.slug);
-      if (!inCat.length) return '';
-      const img = (inCat.find(p => p.featured) || inCat[0]).cover;
-      return `
-        <a class="category-tile reveal" href="creaties.html?cat=${encodeURIComponent(c.slug)}">
-          <img src="${esc(img?.src)}" alt="" loading="lazy">
-          <span class="ct-label">
-            <strong>${esc(c.name)}</strong>
-            <small>${inCat.length} ${inCat.length === 1 ? 'stuk' : 'stuks'}</small>
-          </span>
-        </a>`;
-    }).join('');
-  }
-
   const featuredEl = document.getElementById('featuredGrid');
   if (featuredEl) {
     // Whatever Johnny has starred in the dashboard. Falls back to a spread

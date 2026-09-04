@@ -380,50 +380,6 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 }
 .product-card .info h3 { font-size: 1.08rem; font-weight: 500; line-height: 1.25; }
 
-/* ---------- Category tiles (homepage) ---------- */
-.category-tiles {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-}
-@media (max-width: 820px) { .category-tiles { grid-template-columns: repeat(2, 1fr); } }
-.category-tile {
-  position: relative;
-  display: block;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  border-radius: var(--radius);
-  background: var(--espresso);
-}
-.category-tile img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.78;
-  transition: transform 0.4s ease, opacity 0.25s ease;
-}
-.category-tile:hover img { transform: scale(1.05); opacity: 0.62; }
-.ct-label {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 1.6rem 1rem 1rem;
-  background: linear-gradient(to top, rgba(10,10,10,0.85), rgba(10,10,10,0));
-  color: #fff;
-  text-align: center;
-}
-.ct-label strong {
-  display: block;
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-.ct-label small {
-  display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.75;
-  margin-top: 0.15rem;
-}
 
 /* ---------- Category filter pills ---------- */
 .filter-bar {
