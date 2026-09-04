@@ -177,6 +177,24 @@ function externalLink(value) {
   return `https://${v}`;
 }
 
+// A market's address, and the links that go with it. The address is worth
+// printing rather than hiding behind a link: someone standing in the street
+// wants to read it, and someone planning a trip wants to tap it. Skipped when
+// it is a pasted URL, which is not something to read out.
+function addressBlock(entry) {
+  const raw = (entry.address || '').trim();
+  const isUrl = /^https?:\/\//i.test(raw);
+  const map = mapsLink(raw);
+  const site = externalLink(entry.website);
+  if (!map && !site) return '';
+  return `
+    ${raw && !isUrl ? `<p class="presence-address">${escapeHTML(raw)}</p>` : ''}
+    <div class="presence-links">
+      ${map ? `<a href="${escapeHTML(map)}" target="_blank" rel="noopener">Openen in Maps &#8599;</a>` : ''}
+      ${site ? `<a href="${escapeHTML(site)}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
+    </div>`;
+}
+
 function initReveal() {
   const items = document.querySelectorAll('.reveal');
   if (!items.length) return;
@@ -226,4 +244,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote, addressBlock };

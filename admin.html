@@ -15,7 +15,7 @@
   <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
   <div class="admin-header-right">
     <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
-    <button class="header-chip" id="helpChip" data-tab="help" type="button">? Uitleg</button>
+    <button class="header-chip" id="helpChip" type="button" aria-pressed="false">? Uitleg</button>
     <!-- A history with an undo against each line, so it belongs in the chrome
          rather than floating over the work. Collapsed to a quiet count until
          she asks for it. -->
@@ -214,7 +214,7 @@
         <div class="admin-field">
           <label for="pr-address">Adres voor op de kaart (optioneel)</label>
           <input type="text" id="pr-address" placeholder="bv. Wapenplein 1, 8400 Oostende">
-          <span class="hint">Typ gewoon het adres — bezoekers krijgen een knop "Bekijk op de kaart". Een Google Maps-link plakken mag ook.</span>
+          <span class="hint">Typ gewoon het adres — bezoekers zien het staan, met een knop "Openen in Maps" ernaast. Een Google Maps-link plakken mag ook; dan tonen we enkel de knop.</span>
         </div>
         <div class="admin-field">
           <label for="pr-website">Website van de markt (optioneel)</label>
@@ -344,6 +344,10 @@
       <button class="btn-admin" id="saveSettingsBtn">Opslaan</button>
     </section>
 
+  </div>
+
+  <!-- Outside #dashboard on purpose: help has to work before she is signed
+       in, which is exactly when someone needs it most. -->
     <!-- Uitleg -->
     <section id="tab-help" class="admin-tab" hidden>
       <div class="admin-card help-card">
@@ -411,7 +415,7 @@
           <summary>Een markt of beurs toevoegen</summary>
           <p>Onder <strong>Aanwezigheid</strong> zet je waar je binnenkort staat. Titel en datum zijn verplicht, de rest is optioneel:</p>
           <ul>
-            <li><strong>Adres voor op de kaart:</strong> typ gewoon het adres. Bezoekers krijgen dan een knop "Bekijk op de kaart".</li>
+            <li><strong>Adres voor op de kaart:</strong> typ gewoon het adres. Het adres komt op de website te staan, met een knop "Openen in Maps" ernaast.</li>
             <li><strong>Website van de markt:</strong> "naamvandemarkt.be" volstaat, zonder "https://".</li>
           </ul>
           <p class="hint">Zolang er niets in de agenda staat, verwijst de website bezoekers naar je Instagram.</p>
@@ -435,7 +439,6 @@
         </details>
       </div>
     </section>
-  </div>
 
 </main>
 

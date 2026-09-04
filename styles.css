@@ -832,6 +832,11 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 /* Links, not an embedded map: an iframe would pull Google into every page load
    and undo the point of self-hosting the fonts. Wraps, because a market with
    both an address and a website has two of these and the cards are narrow. */
+.presence-address {
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+  color: var(--espresso-soft);
+}
 .presence-links {
   display: flex;
   flex-wrap: wrap;

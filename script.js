@@ -74,10 +74,7 @@ async function initHome(site) {
           <h3>${esc(next.title)}</h3>
           <div class="presence-loc">${esc(next.location)}</div>
           ${next.description ? `<p>${esc(next.description)}</p>` : ''}
-          <div class="presence-links">
-            ${window.SojozinoSite.mapsLink(next.address) ? `<a href="${esc(window.SojozinoSite.mapsLink(next.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
-            ${window.SojozinoSite.externalLink(next.website) ? `<a href="${esc(window.SojozinoSite.externalLink(next.website))}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
-          </div>
+          ${window.SojozinoSite.addressBlock(next)}
         </div>`;
     } else {
       // No date on the calendar yet, so point at the place he actually
@@ -209,10 +206,7 @@ async function initPresence(site) {
         <h3>${esc(m.title)}</h3>
         <div class="presence-loc">${esc(m.location)}</div>
         ${m.description ? `<p>${esc(m.description)}</p>` : ''}
-        <div class="presence-links">
-          ${window.SojozinoSite.mapsLink(m.address) ? `<a href="${esc(window.SojozinoSite.mapsLink(m.address))}" target="_blank" rel="noopener">Bekijk op de kaart &#8599;</a>` : ''}
-          ${window.SojozinoSite.externalLink(m.website) ? `<a href="${esc(window.SojozinoSite.externalLink(m.website))}" target="_blank" rel="noopener">Website van de markt &#8599;</a>` : ''}
-        </div>
+        ${window.SojozinoSite.addressBlock(m)}
       </div>`;
   }
 

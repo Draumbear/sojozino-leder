@@ -457,15 +457,31 @@ function initSettingsSubTabs() {
   });
 }
 
+// Uitleg is not one of the working tabs: it sits outside the dashboard so it
+// works before signing in, and it replaces whatever was on screen rather than
+// living alongside it.
+function showHelp(on) {
+  const chip = $('#helpChip');
+  $('#tab-help').hidden = !on;
+  chip.classList.toggle('active', on);
+  chip.setAttribute('aria-pressed', String(on));
+  // Whichever of the two was showing comes back when help closes.
+  const connected = !!api;
+  $('#dashboard').classList.toggle('hidden', on || !connected);
+  $('#connectPanel').classList.toggle('hidden', on || connected);
+}
+
 function initTabs() {
-  // Selected by the attribute rather than by living in the tab row, so the
-  // Uitleg chip in the header opens its tab the same way the row does.
-  $all('[data-tab]').forEach(btn => {
+  $all('.admin-tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
-      $all('[data-tab]').forEach(b => b.classList.toggle('active', b === btn));
-      $all('.admin-tab').forEach(t => t.hidden = t.id !== `tab-${btn.dataset.tab}`);
+      showHelp(false);
+      $all('.admin-tabs button').forEach(b => b.classList.toggle('active', b === btn));
+      $all('#dashboard .admin-tab').forEach(t => t.hidden = t.id !== `tab-${btn.dataset.tab}`);
     });
   });
+
+  // A toggle, so the same button gets her back out again.
+  $('#helpChip').addEventListener('click', () => showHelp($('#tab-help').hidden));
 }
 
 // ---------- Overview ----------
