@@ -482,7 +482,7 @@ function uniqueSubcategorySlug(cat, base) {
 async function saveCategories(message) {
   try {
     await api.commitBatch([{ path: 'data/categories.json', content: JSON.stringify(state.categories, null, 2) }], message, 'categories');
-    toast('Categorieën opgeslagen.', 'ok');
+    toast('Categorieën opgeslagen. Klik bovenaan op "Publiceer wijzigingen" om ze online te zetten.', 'ok');
     renderCategoriesTab();
     renderProductsTab();
     renderOverview();
@@ -1123,7 +1123,7 @@ async function saveProduct() {
 
     await api.commitBatch(files, `${editingSlug ? 'Product bijgewerkt' : 'Product toegevoegd'}: ${name}`, `products/${slug}`);
     productCache[slug] = productData;
-    toast('Product opgeslagen.', 'ok');
+    toast('Product opgeslagen. Klik bovenaan op "Publiceer wijzigingen" om het online te zetten.', 'ok');
     closeProductEditor();
     renderProductsTab();
     renderOverview();

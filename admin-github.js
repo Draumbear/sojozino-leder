@@ -76,7 +76,10 @@ function uniqueUploadName(safeName) {
 async function toWebP(file, { maxDimension = 1800, quality = 0.82 } = {}) {
   if (!file.type || !file.type.startsWith('image/') || file.type === 'image/svg+xml') return file;
   try {
-    const bitmap = await createImageBitmap(file);
+    // 'from-image' pinned rather than left to the default: current browsers
+    // apply EXIF orientation here, but the spec default was 'none' and older
+    // Chrome and Edge follow that -- which would upload phone photos sideways.
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
     let { width, height } = bitmap;
     if (width > maxDimension || height > maxDimension) {
       const scale = maxDimension / Math.max(width, height);
