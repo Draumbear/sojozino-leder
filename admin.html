@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=dea72987">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=dea72987">
+<link rel="stylesheet" href="admin.css?v=bf51654d">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=bf51654d">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -36,7 +36,7 @@
       <button class="conn-status off" id="connStatus" type="button" aria-haspopup="true" aria-expanded="false">Niet verbonden</button>
       <div class="conn-menu-items" id="connMenu" hidden>
         <p class="conn-who">Wijzigingen komen op naam van</p>
-        <input type="text" id="connAuthor" class="conn-author">
+        <select id="connAuthor" class="conn-author"></select>
         <button class="btn-admin secondary small" id="saveAuthorBtn" type="button">Naam bewaren</button>
         <hr class="conn-sep">
         <button class="btn-admin secondary small" id="disconnectBtn" type="button">Ontkoppelen</button>
@@ -57,7 +57,8 @@
          repository does not need a code change. -->
     <div class="admin-field">
       <label for="ghAuthor">Je naam</label>
-      <input type="text" id="ghAuthor" placeholder="Johnny Decoopman" autocomplete="name">
+      <!-- Options come from DASHBOARD_USERS in admin.js. -->
+      <select id="ghAuthor"><option value="">Kies je naam…</option></select>
       <span class="hint">Komt bij elke wijziging te staan, zodat achteraf duidelijk is wie wat heeft aangepast.</span>
     </div>
     <div class="admin-field">
@@ -502,7 +503,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=dea72987"></script>
-<script src="admin.js?v=dea72987"></script>
+<script src="admin-github.js?v=bf51654d"></script>
+<script src="admin.js?v=bf51654d"></script>
 </body>
 </html>

@@ -299,12 +299,32 @@ const SITE_REPO = { owner: 'Draumbear', repo: 'sojozino-leder', branch: 'main' }
 // hid the "Bekijk live site" link it existed to provide.
 const SITE_URL = 'https://draumbear.github.io/sojozino-leder/';
 
+// Who edits this site. A list rather than a text field: the author's e-mail is
+// derived from this name, so a typo would quietly become a fourth contributor
+// in the history. Add a line here if someone else ever gets access.
+const DASHBOARD_USERS = ['Johnny Decoopman', 'Tanguy Swerts'];
+
+function fillUserOptions(sel, { placeholder } = {}) {
+  sel.innerHTML = (placeholder ? `<option value="">${placeholder}</option>` : '') +
+    DASHBOARD_USERS.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+}
+
 function initConnect() {
+  fillUserOptions($('#ghAuthor'), { placeholder: 'Kies je naam\u2026' });
+  fillUserOptions($('#connAuthor'));
   const saved = GitHubStore.load() || {};
   $('#ghOwner').value = saved.owner || SITE_REPO.owner;
   $('#ghRepo').value = saved.repo || SITE_REPO.repo;
   $('#ghBranch').value = saved.branch || SITE_REPO.branch;
   $('#ghToken').value = saved.token || '';
+  // A name saved before this list existed, or since removed from it, would
+  // select nothing and silently read as "not chosen" -- so it is kept as its
+  // own option rather than lost.
+  if (saved.authorName && !DASHBOARD_USERS.includes(saved.authorName)) {
+    [$('#ghAuthor'), $('#connAuthor')].forEach(sel => {
+      sel.insertAdjacentHTML('beforeend', `<option value="${esc(saved.authorName)}">${esc(saved.authorName)}</option>`);
+    });
+  }
   $('#ghAuthor').value = saved.authorName || '';
   if (saved.token) connect(saved, { silent: true });
 
@@ -314,10 +334,10 @@ function initConnect() {
       repo: $('#ghRepo').value.trim() || SITE_REPO.repo,
       branch: $('#ghBranch').value.trim() || SITE_REPO.branch,
       token: $('#ghToken').value.trim(),
-      authorName: $('#ghAuthor').value.trim(),
+      authorName: $('#ghAuthor').value,
     };
     if (!cfg.authorName) {
-      $('#connectError').textContent = 'Vul je naam in, zodat je wijzigingen op jouw naam komen te staan.';
+      $('#connectError').textContent = 'Kies je naam, zodat je wijzigingen op jouw naam komen te staan.';
       $('#ghAuthor').focus();
       return;
     }
@@ -329,10 +349,11 @@ function initConnect() {
     connect(cfg, { silent: false });
   });
 
-  // Enter in either field is the obvious way to submit a short form.
-  ['#ghAuthor', '#ghToken'].forEach(sel => $(sel).addEventListener('keydown', (e) => {
+  // Enter in the token field is the obvious way to submit a short form.
+  // A <select> keeps its own Enter behaviour.
+  $('#ghToken').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') $('#connectBtn').click();
-  }));
+  });
 
   // The status chip doubles as the menu that holds Ontkoppelen.
   const menu = $('#connMenu');
@@ -356,7 +377,7 @@ function initConnect() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
   $('#saveAuthorBtn').addEventListener('click', () => {
-    const name = $('#connAuthor').value.trim();
+    const name = $('#connAuthor').value;
     if (!name) { $('#connAuthor').focus(); return; }
     const cfg = { ...(GitHubStore.load() || {}), authorName: name };
     GitHubStore.save(cfg);
