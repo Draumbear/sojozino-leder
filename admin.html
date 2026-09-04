@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin.css?v=20260904">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     <h2>Verbind met GitHub</h2>
     <p class="hint" style="margin-bottom:1.2rem;">
       Dit dashboard bewerkt je website door rechtstreeks te committen naar je GitHub-repository,
-      waarna GitHub Pages de site automatisch opnieuw publiceert — meestal binnen een minuut.
+      waarna Netlify de site automatisch opnieuw publiceert — meestal binnen een minuut.
       Je hebt een <strong>fine-grained personal access token</strong> nodig, beperkt tot deze ene repository.
     </p>
     <ol class="setup-steps">
@@ -85,7 +85,7 @@
           <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
           <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
         </div>
-        <p class="hint" style="margin-top:1.4rem;">Elke wijziging die je opslaat wordt meteen naar je website gepubliceerd (via GitHub Pages, meestal binnen een minuut zichtbaar).</p>
+        <p class="hint" style="margin-top:1.4rem;">Elke wijziging die je opslaat wordt meteen naar je website gepubliceerd (via Netlify, meestal binnen een minuut zichtbaar).</p>
       </div>
     </section>
 
@@ -204,7 +204,10 @@
           <div class="admin-field"><label for="s-email">E-mail</label><input type="email" id="s-email"></div>
           <div class="admin-field"><label for="s-instagram">Instagram-URL</label><input type="url" id="s-instagram"></div>
         </div>
-        <div class="admin-field"><label for="s-location">Locatie</label><input type="text" id="s-location"></div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-location">Locatie</label><input type="text" id="s-location"></div>
+          <div class="admin-field"><label for="s-siteUrl">Website-adres <span class="hint">(voor de "Bekijk live site"-link)</span></label><input type="url" id="s-siteUrl" placeholder="https://sojozino.netlify.app"></div>
+        </div>
         <div class="admin-field">
           <label for="s-accent">Accentkleur</label>
           <div style="display:flex;align-items:center;gap:0.6rem;">
@@ -215,8 +218,18 @@
       </div>
       <div class="admin-card">
         <h2>Logo</h2>
-        <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
-        <input type="file" id="s-logo-input" accept="image/*">
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Logo-teken <span class="hint">(alleen de draak — staat in de menubalk en als tabblad-icoon)</span></label>
+            <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
+            <input type="file" id="s-logo-input" accept="image/*">
+          </div>
+          <div class="admin-field">
+            <label>Volledig logo <span class="hint">(met tekst errond — staat groot bovenaan de homepage)</span></label>
+            <img id="s-logofull-preview" src="assets/logo-full.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
+            <input type="file" id="s-logofull-input" accept="image/*">
+          </div>
+        </div>
       </div>
       <button class="btn-admin" id="saveSettingsBtn">Opslaan &amp; publiceren</button>
     </section>
@@ -226,7 +239,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js"></script>
-<script src="admin.js"></script>
+<script src="admin-github.js?v=20260904"></script>
+<script src="admin.js?v=20260904"></script>
 </body>
 </html>

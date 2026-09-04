@@ -16,10 +16,12 @@
     "Neem gerust een kijkje op de website. Bij vragen of suggesties kan u Johnny steeds bereiken via sojozino@gmail.com."
   ],
   "instagramUrl": "https://www.instagram.com/sojozino_leder/",
+  "siteUrl": "",
   "email": "sojozino@gmail.com",
   "location": "Oostende, België",
   "logo": {
-    "mark": "assets/logo-mark.png"
+    "mark": "assets/logo-mark.png",
+    "full": "assets/logo-full.png"
   },
   "accentColor": "#c31f1f"
 }

@@ -200,7 +200,7 @@ class GitHubAPI {
 
   // Commits any number of file changes as a single atomic commit + push, so one
   // user action (e.g. "Save product" touching several images plus a JSON file)
-  // triggers exactly one GitHub Pages deploy instead of one per file.
+  // triggers exactly one site rebuild/deploy instead of one per file.
   // files: [{ path, content }] to add/update (content: string or { base64 }),
   // or [{ path, delete: true }] to remove a path.
   async commitBatch(files, message) {

@@ -93,11 +93,20 @@ function getSite() {
   return sitePromise;
 }
 
+// The hero uses the full logo (dragon + curved wordmark), the header uses
+// the dragon on its own -- so a logo replaced through the dashboard has to
+// update both, not just the header mark.
+function applyHeroLogo(site) {
+  const heroMark = document.querySelector('.hero-mark');
+  if (heroMark && site.logo?.full) heroMark.src = site.logo.full;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const site = await getSite();
   renderHeader(site);
   renderFooter(site);
   applyAccent(site);
+  applyHeroLogo(site);
   document.dispatchEvent(new CustomEvent('site:loaded', { detail: site }));
   // Late-added .reveal elements (e.g. rendered by a page's own script after
   // this fires) call initReveal() again themselves; call once now for pages

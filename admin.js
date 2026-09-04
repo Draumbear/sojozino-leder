@@ -1,7 +1,7 @@
 // Sojozino admin dashboard. Talks straight to the GitHub Contents/Git Data
 // API via admin-github.js's GitHubAPI class — every Save button below builds
 // one commitBatch() call (JSON files + any new/removed images) so a single
-// user action is a single atomic commit + a single GitHub Pages redeploy.
+// user action is a single atomic commit + a single site redeploy.
 // No server, no build step: this file + admin-github.js + admin.html is the
 // whole dashboard.
 
@@ -104,9 +104,13 @@ function setConnStatus(ok) {
   const el = $('#connStatus');
   el.textContent = ok ? 'Verbonden' : 'Niet verbonden';
   el.className = `conn-status ${ok ? 'ok' : 'off'}`;
+  // The live URL can't be derived from the repo -- the site is hosted on
+  // Netlify (or a custom domain), not GitHub Pages -- so it comes from
+  // site.json's siteUrl, set on the Instellingen tab. Hidden until it's set.
   const live = $('#viewLiveLink');
-  if (ok && api) {
-    live.href = `https://${api.owner}.github.io/${api.repo}/`;
+  const url = ok ? (state.site?.siteUrl || '').trim() : '';
+  if (url) {
+    live.href = url;
     live.classList.remove('hidden');
   } else {
     live.classList.add('hidden');
@@ -153,6 +157,7 @@ async function loadAll() {
   renderAboutTab();
   renderPresenceTab();
   renderSettingsTab();
+  setConnStatus(true); // re-run now that site.json (and its siteUrl) is loaded
 }
 
 // ---------- Tabs ----------
@@ -747,9 +752,11 @@ function renderSettingsTab() {
   $('#s-email').value = s.email || '';
   $('#s-instagram').value = s.instagramUrl || '';
   $('#s-location').value = s.location || '';
+  $('#s-siteUrl').value = s.siteUrl || '';
   $('#s-accent').value = s.accentColor || '#c31f1f';
   $('#s-accentHex').value = s.accentColor || '#c31f1f';
   $('#s-logo-preview').src = s.logo?.mark || 'assets/logo-mark.png';
+  $('#s-logofull-preview').src = s.logo?.full || 'assets/logo-full.png';
 }
 
 async function saveSettings() {
@@ -764,14 +771,22 @@ async function saveSettings() {
       email: $('#s-email').value.trim(),
       instagramUrl: $('#s-instagram').value.trim(),
       location: $('#s-location').value.trim(),
+      siteUrl: $('#s-siteUrl').value.trim(),
       accentColor: $('#s-accentHex').value.trim() || '#c31f1f',
     });
 
+    state.site.logo = state.site.logo || {};
     const logoFile = $('#s-logo-input').files[0];
     if (logoFile) {
       const prepared = await api.prepareUpload(logoFile, 'assets', { optimize: false });
       files.push({ path: 'assets/logo-mark.png', content: prepared.content });
-      state.site.logo = { mark: 'assets/logo-mark.png' };
+      state.site.logo.mark = 'assets/logo-mark.png';
+    }
+    const logoFullFile = $('#s-logofull-input').files[0];
+    if (logoFullFile) {
+      const prepared = await api.prepareUpload(logoFullFile, 'assets', { optimize: false });
+      files.push({ path: 'assets/logo-full.png', content: prepared.content });
+      state.site.logo.full = 'assets/logo-full.png';
     }
 
     files.push({ path: 'data/site.json', content: JSON.stringify(state.site, null, 2) });
@@ -808,6 +823,10 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#a-photo-input').addEventListener('change', () => {
     const f = $('#a-photo-input').files[0];
     if (f) $('#a-photo-preview').src = URL.createObjectURL(f);
+  });
+  $('#s-logofull-input').addEventListener('change', () => {
+    const f = $('#s-logofull-input').files[0];
+    if (f) $('#s-logofull-preview').src = URL.createObjectURL(f);
   });
   $('#s-logo-input').addEventListener('change', () => {
     const f = $('#s-logo-input').files[0];

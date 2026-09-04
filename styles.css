@@ -227,15 +227,21 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   color: var(--cream-ink);
 }
 .hero-inner { max-width: 1000px; margin: 0 auto; }
+/* The full logo (dragon + curved wordmark) needs to sit large enough for
+   the wordmark to read, on a light disc since the artwork is black. */
 .hero-mark-badge {
-  width: 84px; height: 84px;
+  width: 172px; height: 172px;
   margin: 0 auto 1.6rem;
   background: var(--cream-ink);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   border: 2px solid var(--rust);
 }
-.hero-mark { width: 52px; height: 52px; object-fit: contain; }
+.hero-mark { width: 146px; height: 146px; object-fit: contain; }
+@media (max-width: 620px) {
+  .hero-mark-badge { width: 136px; height: 136px; }
+  .hero-mark { width: 116px; height: 116px; }
+}
 .hero .eyebrow { color: var(--rust); }
 .hero h1 {
   font-size: clamp(2.4rem, 5.5vw, 4.2rem);
@@ -293,25 +299,38 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.6rem;
 }
+/* Deliberately softer than the rest of the site's hard-edged treatment: a
+   full-strength black outline around every tile in a dense photo grid reads
+   as harsh, and competes with the products themselves. Buttons and the hero
+   keep the bold look. */
 .product-card {
   display: block;
   background: var(--cream-ink);
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1.5px solid var(--espresso);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(23, 20, 15, 0.05);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
-.product-card:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow); }
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: 0 10px 22px rgba(23, 20, 15, 0.14);
+}
+/* `contain`, not `cover`: most of these photos are landscape, and cropping
+   them into a portrait tile cut the ends off the product. Nearly all are
+   shot on a white/light backdrop, so a white tile makes the letterboxing
+   invisible in practice while guaranteeing the whole piece is visible. */
 .product-card .thumb {
-  aspect-ratio: 4/5;
+  aspect-ratio: 1/1;
   overflow: hidden;
-  background: var(--parchment-2);
+  background: #fff;
 }
 .product-card .thumb img {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%; height: 100%; object-fit: contain;
   transition: transform 0.35s ease;
 }
-.product-card:hover .thumb img { transform: scale(1.06); }
+.product-card:hover .thumb img { transform: scale(1.04); }
 .product-card .info { padding: 1rem 1.1rem 1.2rem; }
 .product-card .info .cat {
   font-size: 0.68rem;
@@ -365,8 +384,13 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   border: 2px solid var(--espresso);
   box-shadow: var(--shadow-sm);
 }
+/* Landscape variant, for a wide photo (e.g. the market tent) in the same
+   image-beside-text layout the portrait About shot uses. */
+.about-teaser.landscape { grid-template-columns: 1.1fr 1fr; }
+.about-teaser.landscape img { aspect-ratio: 4/3; }
 @media (max-width: 820px) {
-  .about-teaser { grid-template-columns: 1fr; gap: 2rem; }
+  .about-teaser,
+  .about-teaser.landscape { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 /* ---------- Product detail / spotlight gallery ---------- */
@@ -572,6 +596,32 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   .lightbox-nav { width: 44px; height: 44px; font-size: 1.4rem; }
   .lightbox-nav.prev { left: 0.5rem; }
   .lightbox-nav.next { right: 0.5rem; }
+}
+
+/* ---------- Photo blocks ---------- */
+.banner-photo {
+  width: 100%;
+  aspect-ratio: 21/9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.photo-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+}
+.photo-duo > * { min-width: 0; }
+.photo-duo img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+@media (max-width: 700px) {
+  .photo-duo { grid-template-columns: 1fr; }
+  .banner-photo { aspect-ratio: 4/3; }
 }
 
 /* ---------- Presence / markets ---------- */

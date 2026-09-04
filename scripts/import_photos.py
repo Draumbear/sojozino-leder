@@ -182,6 +182,7 @@ def load_existing_products():
             out[d["slug"]] = {
                 "description": d.get("description") or None,
                 "subcategory": d.get("subcategory") or None,
+                "coverImage": d.get("coverImage") or None,
             }
         except (OSError, json.JSONDecodeError):
             continue
@@ -275,14 +276,27 @@ def main():
                     })
                 variants.append({"name": vname, "images": images})
 
-            # Cover thumbnail (separate, smaller file for grid views) -- always
-            # the first photo of the first variant.
+            prior = existing.get(slug) or {}
+
+            # Cover thumbnail (separate, smaller file for grid views).
+            # Defaults to the first photo, but a cover picked by hand (see
+            # scripts/set_covers.py) or through the dashboard is remembered
+            # in the product's "coverImage" and wins -- the first photo is
+            # often a detail shot rather than the whole product.
+            flat = [(img["src"], src) for v, src_list in
+                    zip(variants, [files for _n, files in variant_sources])
+                    for img, src in zip(v["images"], src_list)]
             cover_src = variant_sources[0][1][0]
+            cover_image = prior.get("coverImage")
+            if cover_image:
+                match = next((orig for out_src, orig in flat if out_src == cover_image), None)
+                if match:
+                    cover_src = match
+                else:
+                    cover_image = None
             cover_dst = os.path.join(ASSETS, slug, "cover.jpg")
             resize_save(cover_src, cover_dst, THUMB_DIM)
             cover = {"src": f"assets/products/{slug}/cover.jpg", "alt": name}
-
-            prior = existing.get(slug) or {}
             description = prior.get("description") or (
                 f"Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust "
                 f"contact op voor meer details over {name.lower()}."
@@ -308,6 +322,7 @@ def main():
                     "category": cat_slug,
                     "subcategory": subcategory,
                     "description": description,
+                    "coverImage": cover_image,
                     "variants": variants,
                 }, f, ensure_ascii=False, indent=2)
 
