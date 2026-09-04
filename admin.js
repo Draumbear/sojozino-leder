@@ -49,7 +49,7 @@ function uniqueSlug(base, excludeSlug) {
 // wording is derived from the flag rather than written out twice and forgotten.
 function savedToast(what) {
   toast(DEFER_PUBLISH
-    ? `${what} Klik rechtsonder op "Publiceer wijzigingen" om het online te zetten.`
+    ? `${what} Klik bovenaan op "Recente wijzigingen" en dan op "Publiceer wijzigingen" om het online te zetten.`
     : `${what} Binnen een minuut staat het op de website.`, 'ok');
 }
 
@@ -70,8 +70,8 @@ function applyPublishWording() {
   if (savingTitle && savingBody) {
     savingTitle.textContent = DEFER_PUBLISH ? 'Opslaan en publiceren' : 'Opslaan';
     savingBody.innerHTML = DEFER_PUBLISH
-      ? `<p><strong>Opslaan</strong> bewaart je werk, maar zet het nog niet op de website. Rechtsonder verschijnt dan een zwart kadertje met hoeveel wijzigingen er klaarstaan.</p>
-         <p>Ben je klaar? Klik daar op <strong>Publiceer wijzigingen</strong>. Alles gaat dan in één keer online, meestal binnen een minuut.</p>
+      ? `<p><strong>Opslaan</strong> bewaart je werk, maar zet het nog niet op de website. Bovenaan telt <strong>Recente wijzigingen</strong> mee hoeveel er klaarstaan.</p>
+         <p>Ben je klaar? Klik daarop en dan op <strong>Publiceer wijzigingen</strong>. Alles gaat in één keer online, meestal binnen een minuut.</p>
          <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
       : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
          <p class="hint">Ververs de pagina op de website als je ze nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
@@ -93,8 +93,8 @@ function applyPublishWording() {
   const hint = $('#overviewPublishHint');
   if (hint) {
     hint.textContent = DEFER_PUBLISH
-      ? 'Wijzigingen worden bewaard zodra je op opslaan klikt, maar gaan pas live wanneer je rechtsonder op "Publiceer wijzigingen" klikt. Zo kun je rustig meerdere dingen aanpassen en ze in één keer online zetten.'
-      : 'Alles wat je opslaat gaat meteen naar de website — meestal binnen een minuut zichtbaar. Vergist? Elke wijziging kun je terugzetten met "Ongedaan maken".';
+      ? 'Wijzigingen worden bewaard zodra je op opslaan klikt, maar gaan pas live wanneer je bovenaan bij "Recente wijzigingen" op "Publiceer wijzigingen" klikt. Zo kun je rustig meerdere dingen aanpassen en ze in één keer online zetten.'
+      : 'Alles wat je opslaat gaat meteen naar de website — meestal binnen een minuut zichtbaar. Vergist? Klik bovenaan op "Recente wijzigingen" en zet die ene wijziging terug.';
   }
 }
 
