@@ -46,6 +46,9 @@ async function initHome(site) {
     // Whatever Johnny has starred in the dashboard. Falls back to a spread
     // across categories (rather than the first six, which were all
     // handbags) until anything is starred.
+    // Eight is the cap the dashboard enforces too, so the page can never show
+    // more than he was allowed to pick.
+    const MAX_FEATURED = 8;
     let featured = enriched.filter(p => p.featured);
     if (!featured.length) {
       const byCat = new Map();
@@ -53,7 +56,7 @@ async function initHome(site) {
       featured = [...byCat.values()];
       enriched.forEach(p => { if (featured.length < 6 && !featured.includes(p)) featured.push(p); });
     }
-    featuredEl.innerHTML = featured.slice(0, 6).map(productCardHTML).join('') ||
+    featuredEl.innerHTML = featured.slice(0, MAX_FEATURED).map(productCardHTML).join('') ||
       '<p class="empty-note">Binnenkort te zien.</p>';
   }
 

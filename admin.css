@@ -162,6 +162,30 @@ button.conn-status.off { cursor: default; }
 .admin-tabs button.active { background: var(--a-espresso); color: #fff; }
 
 .admin-tab[hidden] { display: none; }
+
+/* Sub-tabs inside Instellingen. Deliberately lighter than the main row -- a
+   second set of equally loud tabs would read as a competing navigation rather
+   than a subdivision of the one above it. */
+.sub-tabs {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--a-line);
+}
+.sub-tabs button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.9rem;
+  margin-bottom: -1px;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--a-ink-faint);
+  cursor: pointer;
+}
+.sub-tabs button:hover { color: var(--a-espresso); }
+.sub-tabs button.active { color: var(--a-espresso); border-bottom-color: var(--a-rust); }
+.settings-panel[hidden] { display: none; }
 /* Saves are deliberately not published straight away (they'd each cost a
    Netlify build), so this bar is the standing reminder that work is waiting
    and the one place to actually put it live. */
@@ -252,6 +276,10 @@ button.conn-status.off { cursor: default; }
   color: var(--a-ink-faint); font-size: 1.1rem; line-height: 1;
   cursor: grab; user-select: none; flex-shrink: 0;
 }
+
+/* The star as it appears in the row, so the hint can point at the actual thing
+   rather than describing it. */
+.star-example { color: var(--a-rust); font-size: 0.95rem; }
 
 .empty-state { text-align: center; padding: 2.4rem 1rem; color: var(--a-ink-faint); }
 

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=publish38">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish38">
+<link rel="stylesheet" href="admin.css?v=publish40">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish40">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -231,6 +231,16 @@
 
     <!-- Settings -->
     <section id="tab-settings" class="admin-tab" hidden>
+      <!-- Seven cards in one column was a scroll to find anything. Grouped
+           by what she came to change: who the business is, the words on the
+           pages, what the menu calls them. -->
+      <div class="sub-tabs" id="settingsSubTabs">
+        <button data-sub="bedrijf" class="active" type="button">Bedrijf</button>
+        <button data-sub="teksten" type="button">Teksten</button>
+        <button data-sub="menu" type="button">Menu</button>
+      </div>
+
+      <div class="settings-panel" data-sub="bedrijf">
       <div class="admin-card">
         <h2>Bedrijfsgegevens</h2>
         <div class="admin-row">
@@ -240,6 +250,24 @@
         <div class="admin-field"><label for="s-tagline">Tagline <span class="hint">(onderaan elke pagina)</span></label><input type="text" id="s-tagline"></div>
       </div>
 
+      <div class="admin-card">
+        <h2>Logo</h2>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Logo-teken <span class="hint">(alleen de draak — staat in de menubalk en als tabblad-icoon)</span></label>
+            <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
+            <input type="file" id="s-logo-input" accept="image/*">
+          </div>
+          <div class="admin-field">
+            <label>Volledig logo <span class="hint">(met tekst errond — staat groot bovenaan de homepage)</span></label>
+            <img id="s-logofull-preview" src="assets/logo-full.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
+            <input type="file" id="s-logofull-input" accept="image/*">
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="settings-panel" data-sub="teksten" hidden>
       <div class="admin-card">
         <h2>Tekst op de homepagina</h2>
         <p class="hint" style="margin-bottom:1.2rem;">De grote titel bovenaan de homepagina, met de kleine rode regel erboven en de zin eronder.</p>
@@ -262,23 +290,6 @@
           <textarea id="s-contactHeading" rows="2"></textarea>
         </div>
         <div class="admin-field"><label for="s-contactIntro">Zin onder de titel</label><textarea id="s-contactIntro" rows="2"></textarea></div>      </div>
-
-      <div class="admin-card">
-        <h2>Namen in het menu</h2>
-        <p class="hint" style="margin-bottom:1.2rem;">Zo heten de pagina's bovenaan de website. De pagina's zelf blijven waar ze zijn — je verandert enkel hoe ze genoemd worden.</p>
-        <div class="admin-row">
-          <div class="admin-field"><label for="s-nav-index">Startpagina</label><input type="text" id="s-nav-index" placeholder="Home"></div>
-          <div class="admin-field"><label for="s-nav-over-mij">Over Johnny</label><input type="text" id="s-nav-over-mij" placeholder="Over mij"></div>
-        </div>
-        <div class="admin-row">
-          <div class="admin-field"><label for="s-nav-creaties">De creaties</label><input type="text" id="s-nav-creaties" placeholder="Creaties"></div>
-          <div class="admin-field"><label for="s-nav-bestellen">Bestelpagina</label><input type="text" id="s-nav-bestellen" placeholder="Bestellen"></div>
-        </div>
-        <div class="admin-row">
-          <div class="admin-field"><label for="s-nav-waar-vind-je-mij">Marktdata</label><input type="text" id="s-nav-waar-vind-je-mij" placeholder="Waar vind je mij"></div>
-          <div class="admin-field"><label for="s-nav-contact">Contactpagina</label><input type="text" id="s-nav-contact" placeholder="Contact"></div>
-        </div>
-      </div>
 
       <div class="admin-card">
         <h2>Tekst op de bestelpagina</h2>
@@ -313,21 +324,30 @@
           </div>
         </div>
       </div>
+      </div>
+
+      <div class="settings-panel" data-sub="menu" hidden>
       <div class="admin-card">
-        <h2>Logo</h2>
+        <h2>Namen in het menu</h2>
+        <p class="hint" style="margin-bottom:1.2rem;">Zo heten de pagina's bovenaan de website. De pagina's zelf blijven waar ze zijn — je verandert enkel hoe ze genoemd worden.</p>
         <div class="admin-row">
-          <div class="admin-field">
-            <label>Logo-teken <span class="hint">(alleen de draak — staat in de menubalk en als tabblad-icoon)</span></label>
-            <img id="s-logo-preview" src="assets/logo-mark.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
-            <input type="file" id="s-logo-input" accept="image/*">
-          </div>
-          <div class="admin-field">
-            <label>Volledig logo <span class="hint">(met tekst errond — staat groot bovenaan de homepage)</span></label>
-            <img id="s-logofull-preview" src="assets/logo-full.png" alt="" style="width:80px;height:80px;object-fit:contain;margin-bottom:0.6rem;display:block;">
-            <input type="file" id="s-logofull-input" accept="image/*">
-          </div>
+          <div class="admin-field"><label for="s-nav-index">Startpagina</label><input type="text" id="s-nav-index" placeholder="Home"></div>
+          <div class="admin-field"><label for="s-nav-over-mij">Over Johnny</label><input type="text" id="s-nav-over-mij" placeholder="Over mij"></div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-nav-creaties">De creaties</label><input type="text" id="s-nav-creaties" placeholder="Creaties"></div>
+          <div class="admin-field"><label for="s-nav-bestellen">Bestelpagina</label><input type="text" id="s-nav-bestellen" placeholder="Bestellen"></div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field"><label for="s-nav-waar-vind-je-mij">Marktdata</label><input type="text" id="s-nav-waar-vind-je-mij" placeholder="Waar vind je mij"></div>
+          <div class="admin-field"><label for="s-nav-contact">Contactpagina</label><input type="text" id="s-nav-contact" placeholder="Contact"></div>
         </div>
       </div>
+
+      </div>
+
+      <!-- Outside the panels: one Opslaan for the whole tab, reachable
+           whichever group she is looking at. -->
       <button class="btn-admin" id="saveSettingsBtn">Opslaan</button>
     </section>
   </div>
@@ -359,7 +379,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="admin-github.js?v=publish38"></script>
-<script src="admin.js?v=publish38"></script>
+<script src="admin-github.js?v=publish40"></script>
+<script src="admin.js?v=publish40"></script>
 </body>
 </html>

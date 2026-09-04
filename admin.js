@@ -394,6 +394,19 @@ async function loadAll() {
 }
 
 // ---------- Tabs ----------
+// Instellingen has its own row of tabs inside the tab. Same idea as the main
+// row, but scoped to one section, so it does not need the main tabs' state.
+function initSettingsSubTabs() {
+  const bar = $('#settingsSubTabs');
+  if (!bar) return;
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-sub]');
+    if (!btn) return;
+    $all('#settingsSubTabs button').forEach(b => b.classList.toggle('active', b === btn));
+    $all('.settings-panel').forEach(p => { p.hidden = p.dataset.sub !== btn.dataset.sub; });
+  });
+}
+
 function initTabs() {
   $all('.admin-tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -626,14 +639,15 @@ function renderProductsTab() {
         <div class="rc-info"><strong>${esc(p.name)}</strong><span>${esc(catByslug[p.category] || '—')}</span></div>
         <div class="rc-actions">
           <button class="btn-feature${p.featured ? ' on' : ''}" data-action="feature"
-                  title="${p.featured ? 'Van de homepage halen' : 'Op de homepage tonen'}">${p.featured ? '★' : '☆'}</button>
+                  aria-label="${p.featured ? 'Van de homepagina halen' : 'Op de homepagina tonen'}"
+                  title="${p.featured ? 'Staat op de homepagina — klik om weg te halen' : 'Klik om dit op de homepagina te tonen'}">${p.featured ? '★' : '☆'}</button>
           <button class="btn-admin secondary small" data-action="edit">Bewerken</button>
           <button class="btn-admin danger small" data-action="delete">Verwijderen</button>
         </div>
       </div>`).join('') : '<div class="empty-state">Geen producten gevonden.</div>';
     $('#featuredHint').innerHTML = (featuredCount
-      ? `${featuredCount} product${featuredCount === 1 ? '' : 'en'} uitgelicht op de homepage.`
-      : 'Niets uitgelicht — de homepage toont voorlopig automatisch een selectie.')
+      ? `Met de ster <span class="star-example">&#9733;</span> kies je wat op de homepagina komt — nu ${featuredCount} van de ${MAX_FEATURED}.`
+      : `Met de ster <span class="star-example">&#9734;</span> kies je wat op de homepagina komt, maximaal ${MAX_FEATURED}. Zolang je niets kiest, toont de homepagina zelf een selectie.`)
       + (list.length
         ? (filtering
           ? ' <em>Wis het zoekvak en het categoriefilter om de volgorde te kunnen slepen.</em>'
@@ -763,9 +777,18 @@ async function flushProductIndex() {
 
 // Starring is a one-field change to the index, so it commits on its own
 // rather than going through the full product editor.
+// The homepage has room for eight. Refusing the ninth here, with the reason,
+// beats silently dropping it at render time -- he would star something, see no
+// change on the site, and have nothing to go on.
+const MAX_FEATURED = 8;
+
 function toggleFeatured(slug, rerender) {
   const p = state.productsIndex.find(x => x.slug === slug);
   if (!p) return;
+  if (!p.featured && state.productsIndex.filter(x => x.featured).length >= MAX_FEATURED) {
+    toast(`Er passen er ${MAX_FEATURED} op de homepagina. Haal er eerst één weg met de ster.`, 'err');
+    return;
+  }
   p.featured = !p.featured;
   rerender();
   toast(p.featured ? `"${p.name}" staat nu op de homepage.` : `"${p.name}" is van de homepage gehaald.`, 'ok');
@@ -1701,6 +1724,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPublishWording();
   initConnect();
   initTabs();
+  initSettingsSubTabs();
   // The draft keeps the text, but the queued photos die with the page, so
   // it is still worth asking before the page goes.
   window.addEventListener('beforeunload', (e) => {
