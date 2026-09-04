@@ -190,22 +190,32 @@ function linkLabel(url) {
   return host.length <= LINK_LABEL_MAX ? host : 'Website van de markt';
 }
 
-// A market's address, and the links that go with it. The address is worth
-// printing rather than hiding behind a link: someone standing in the street
-// wants to read it, and someone planning a trip wants to tap it. Skipped when
-// it is a pasted URL, which is not something to read out.
-function addressBlock(entry) {
+// Where the market is: the town and the street on one block rather than two
+// lines separated by the description. The address is worth printing rather
+// than hiding behind a link -- someone standing in the street wants to read
+// it -- but a pasted Maps URL is not something to read out, so that is left
+// to the button.
+function whereBlock(entry) {
+  const town = (entry.location || '').trim();
   const raw = (entry.address || '').trim();
-  const isUrl = /^https?:\/\//i.test(raw);
-  const map = mapsLink(raw);
+  const street = /^https?:\/\//i.test(raw) ? '' : raw;
+  if (!town && !street) return '';
+  return `<p class="presence-where">
+    ${town ? `<span class="pw-town">${escapeHTML(town)}</span>` : ''}
+    ${street ? `<span class="pw-street">${escapeHTML(street)}</span>` : ''}
+  </p>`;
+}
+
+// The card's footer. Side by side, because two stacked links in a narrow card
+// read as a list of things to do rather than a pair of ways to the same place.
+function marketLinks(entry) {
+  const map = mapsLink(entry.address);
   const site = externalLink(entry.website);
   if (!map && !site) return '';
-  return `
-    ${raw && !isUrl ? `<p class="presence-address">${escapeHTML(raw)}</p>` : ''}
-    <div class="presence-links">
-      ${map ? `<a href="${escapeHTML(map)}" target="_blank" rel="noopener">Openen in Maps &#8599;</a>` : ''}
-      ${site ? `<a href="${escapeHTML(site)}" target="_blank" rel="noopener">${escapeHTML(linkLabel(site))} &#8599;</a>` : ''}
-    </div>`;
+  return `<div class="presence-links">
+    ${map ? `<a href="${escapeHTML(map)}" target="_blank" rel="noopener">Openen in Maps &#8599;</a>` : ''}
+    ${site ? `<a href="${escapeHTML(site)}" target="_blank" rel="noopener">${escapeHTML(linkLabel(site))} &#8599;</a>` : ''}
+  </div>`;
 }
 
 function initReveal() {
@@ -257,4 +267,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote, addressBlock };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote, whereBlock, marketLinks };

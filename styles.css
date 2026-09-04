@@ -809,39 +809,52 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   justify-content: center;
   gap: 1.6rem;
 }
-.presence-card { padding: 1.6rem; }
+/* Four groups, not six evenly spaced lines: when, what, where, and what you
+   can do about it. The date leads as a small label rather than the loudest
+   thing on the card -- the market's name is what she is scanning for. */
+.presence-card {
+  padding: 1.5rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
 .presence-date {
-  font-family: var(--serif);
-  font-size: 1.5rem;
+  order: -1;
+  margin: 0 0 0.15rem;
+  font-size: 0.78rem;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--rust);
-  margin-bottom: 0.5rem;
 }
 .presence-date .weekday {
   display: block;
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
   color: var(--cognac-dark);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
-.presence-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
-.presence-loc { font-size: 0.85rem; color: var(--espresso-soft); font-weight: 600; margin-bottom: 0.6rem; }
-/* Links, not an embedded map: an iframe would pull Google into every page load
-   and undo the point of self-hosting the fonts. Wraps, because a market with
-   both an address and a website has two of these and the cards are narrow. */
-.presence-address {
-  margin: 0.6rem 0 0;
-  font-size: 0.88rem;
+.presence-card h3 {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+/* Town and street belong together; they were two lines with the description
+   wedged between them. */
+.presence-where { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+.pw-town { display: block; font-weight: 700; color: var(--espresso-soft); }
+.pw-street { display: block; color: var(--cognac-dark); }
+.presence-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.9rem;
   color: var(--espresso-soft);
 }
+/* Pushed to the bottom, so cards of different lengths line their actions up
+   with each other. */
 .presence-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 1.1rem;
-  margin-top: 0.7rem;
+  gap: 0.3rem 1.2rem;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 .presence-links:empty { display: none; }
 .presence-links a {

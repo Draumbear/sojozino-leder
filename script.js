@@ -70,11 +70,11 @@ async function initHome(site) {
       const dateStr = d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
       marketEl.innerHTML = `
         <div class="card presence-card reveal" style="max-width:480px;margin:0 auto;text-align:left;">
-          <div class="presence-date"><span class="weekday">Volgende markt</span>${dateStr}</div>
+          <p class="presence-date"><span class="weekday">Volgende markt</span>${dateStr}</p>
           <h3>${esc(next.title)}</h3>
-          <div class="presence-loc">${esc(next.location)}</div>
-          ${next.description ? `<p>${esc(next.description)}</p>` : ''}
-          ${window.SojozinoSite.addressBlock(next)}
+          ${window.SojozinoSite.whereBlock(next)}
+          ${next.description ? `<p class="presence-note">${esc(next.description)}</p>` : ''}
+          ${window.SojozinoSite.marketLinks(next)}
         </div>`;
     } else {
       // No date on the calendar yet, so point at the place he actually
@@ -202,11 +202,11 @@ async function initPresence(site) {
     const dateStr = d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
     return `
       <div class="card presence-card reveal${isPast ? ' past' : ''}">
-        <div class="presence-date"><span class="weekday">${isPast ? 'Was te vinden op' : ''}</span>${dateStr}</div>
+        <p class="presence-date">${isPast ? '<span class="weekday">Was te vinden op</span>' : ''}${dateStr}</p>
         <h3>${esc(m.title)}</h3>
-        <div class="presence-loc">${esc(m.location)}</div>
-        ${m.description ? `<p>${esc(m.description)}</p>` : ''}
-        ${window.SojozinoSite.addressBlock(m)}
+        ${window.SojozinoSite.whereBlock(m)}
+        ${m.description ? `<p class="presence-note">${esc(m.description)}</p>` : ''}
+        ${window.SojozinoSite.marketLinks(m)}
       </div>`;
   }
 
