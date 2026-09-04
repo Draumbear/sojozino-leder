@@ -388,6 +388,27 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .insta-cta h2 { margin-bottom: 0.9rem; }
 .insta-cta p { margin: 0 auto 1.6rem; max-width: 34rem; }
 
+/* Long-form body copy: the privacy page, and anything else that is text rather
+   than product. Narrow measure, generous leading, headings that separate. */
+.prose { max-width: 42rem; }
+.prose h2 {
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+  margin: 2.4rem 0 0.7rem;
+}
+.prose h2:first-child { margin-top: 0; }
+.prose p {
+  margin: 0 0 1rem;
+  font-size: clamp(1rem, 0.9rem + 0.3vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--espresso-soft);
+}
+.prose a { color: var(--rust); text-decoration: underline; text-underline-offset: 0.15em; }
+.prose .privacy-updated {
+  margin-top: 2.6rem;
+  font-size: 0.85rem;
+  color: var(--cognac-dark);
+}
+
 /* ---------- Category filter pills ---------- */
 .filter-bar {
   display: flex;

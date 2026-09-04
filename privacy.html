@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacybeleid — Sojozino</title>
+<meta name="description" content="Welke gegevens Sojozino bijhoudt, waarvoor, en hoe lang.">
+<link rel="icon" href="assets/logo-mark.png" type="image/png">
+<link rel="stylesheet" href="styles.css?v=publish27">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=publish27">
+</head>
+<body>
+<div class="grain"></div>
+<div id="siteHeader"></div>
+
+<div class="page-hero">
+  <p class="eyebrow reveal">Privacy</p>
+  <h1 class="reveal">Wat er met je gegevens gebeurt.</h1>
+  <p class="reveal">Kort samengevat: deze website verzamelt niets uit zichzelf. Enkel wat je zelf invult op het bestelformulier komt bij Johnny terecht, en enkel om je vraag te beantwoorden.</p>
+</div>
+
+<div class="section" style="padding-top:0;">
+  <div class="section-inner prose">
+
+    <h2>Wie is verantwoordelijk</h2>
+    <p id="privacyController">Sojozino, Oostende, België.</p>
+
+    <h2>Welke gegevens en waarvoor</h2>
+    <p>Als je het bestelformulier invult, worden de gegevens die je daar zelf ingeeft doorgestuurd: je <strong>naam</strong>, je <strong>e-mailadres</strong>, eventueel je <strong>telefoonnummer</strong>, het stuk waarin je geïnteresseerd bent en je bericht.</p>
+    <p>Die gegevens worden enkel gebruikt om je bestelling of je vraag te beantwoorden. Ze worden niet gebruikt voor reclame, niet doorverkocht en niet gedeeld met anderen, behalve waar dat nodig is om je bestelling uit te voeren (bijvoorbeeld een verzenddienst).</p>
+
+    <h2>Hoe lang</h2>
+    <p>Je bericht en de bijhorende gegevens worden bewaard zolang ze nodig zijn voor je bestelling en de communicatie erover, en daarna voor zover de boekhoudkundige bewaarplicht dat vereist. Je kan altijd vragen om ze eerder te verwijderen.</p>
+
+    <h2>Cookies en meekijken</h2>
+    <p>Deze website plaatst <strong>geen cookies</strong>. Er is geen bezoekersstatistiek, geen trackingpixel, geen advertentienetwerk en geen sociaal-mediaknop die je volgt. Er is dan ook geen cookiemelding, omdat er niets is om toestemming voor te vragen.</p>
+    <p>De lettertypes worden vanaf deze website zelf geladen en niet bij een externe partij opgehaald, zodat je IP-adres daarvoor nergens naartoe gaat.</p>
+
+    <h2>Hosting</h2>
+    <p>De website wordt gehost bij GitHub Pages (GitHub, Inc.). Zoals elke webhost registreert GitHub technische gegevens van bezoeken, waaronder je IP-adres, om de website te kunnen afleveren en te beveiligen. Daar heeft Sojozino geen toegang toe en er wordt niets mee gedaan.</p>
+
+    <h2>Links naar elders</h2>
+    <p>Vanaf deze website kan je doorklikken naar Instagram. Vanaf het moment dat je daarop klikt, geldt het privacybeleid van die dienst en niet meer dit beleid.</p>
+
+    <h2>Je rechten</h2>
+    <p>Je hebt het recht om te vragen welke gegevens over jou bewaard worden, om ze te laten verbeteren of verwijderen, en om bezwaar te maken tegen het gebruik ervan. Eén mailtje volstaat — het adres staat hieronder.</p>
+    <p>Ben je niet tevreden met hoe je vraag behandeld wordt, dan kan je klacht indienen bij de Belgische <a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank" rel="noopener">Gegevensbeschermingsautoriteit</a>.</p>
+
+    <h2>Contact</h2>
+    <p id="privacyContact"></p>
+
+    <p class="privacy-updated">Laatst bijgewerkt op 4 september 2026.</p>
+  </div>
+</div>
+
+<div id="siteFooter"></div>
+
+<script src="site-data.js?v=publish27"></script>
+<script>
+// Name, place and mail address come from the dashboard rather than being typed
+// in here, so this page cannot quietly drift out of date with the rest of the site.
+document.addEventListener('site:loaded', (e) => {
+  const site = e.detail;
+  const esc = window.SojozinoSite.escapeHTML;
+  const who = [site.businessName, site.ownerName].filter(Boolean).map(esc).join(' — ');
+  document.getElementById('privacyController').innerHTML =
+    `${who || 'Sojozino'}${site.location ? ', ' + esc(site.location) : ''}.`;
+  document.getElementById('privacyContact').innerHTML = site.email
+    ? `Vragen over je gegevens? Mail naar <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>.`
+    : 'Vragen over je gegevens? Neem contact op via de contactpagina.';
+  window.SojozinoSite.initReveal();
+});
+</script>
+</body>
+</html>

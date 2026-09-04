@@ -67,6 +67,7 @@ function renderFooter(site) {
         <a href="waar-vind-je-mij.html">Waar vind je mij</a>
         <a href="${escapeHTML(site.instagramUrl || '#')}" target="_blank" rel="noopener">Instagram</a>
         <a href="mailto:${escapeHTML(site.email || '')}">${escapeHTML(site.email || '')}</a>
+        <a href="privacy.html">Privacy</a>
       </div>
       <div class="footer-meta">${escapeHTML(site.location || '')} — © ${new Date().getFullYear()} Tanguy Swerts</div>
     </footer>`;
