@@ -85,6 +85,19 @@ button.conn-status.off { cursor: default; }
 .connect-help summary:hover { color: var(--a-rust); }
 .connect-help > *:not(summary) { margin-top: 0.9rem; }
 
+/* Uitleg is a plain button beside the tabs, so its selected state has to be
+   drawn: the tab row's own .active styling does not reach it. */
+#helpChip.active { background: var(--a-espresso); color: #fff; }
+
+/* The title doubles as a way back to Overzicht, the way a site's logo does.
+   Styled to stay a heading rather than announce itself as a control. */
+.dashboard-home {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: none; border: none; padding: 0;
+  font: inherit; color: inherit; cursor: pointer;
+}
+.dashboard-home:hover { color: var(--a-rust); }
+
 .admin-main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
 
 .admin-card {

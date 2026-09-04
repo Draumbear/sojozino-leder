@@ -12,10 +12,9 @@
 <body class="admin-body">
 
 <header class="admin-header">
-  <h1><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</h1>
+  <h1><button class="dashboard-home" id="homeBtn" data-tab="overview" type="button"><img src="assets/logo-mark.png" alt=""> Sojozino Dashboard</button></h1>
   <div class="admin-header-right">
     <a href="#" id="viewLiveLink" class="hint hidden" target="_blank" rel="noopener">Bekijk live site &#8599;</a>
-    <button class="header-chip" id="helpChip" type="button" aria-pressed="false">? Uitleg</button>
     <!-- A history with an undo against each line, so it belongs in the chrome
          rather than floating over the work. Collapsed to a quiet count until
          she asks for it. -->
@@ -102,6 +101,8 @@
         <button data-tab="presence">Aanwezigheid</button>
         <button data-tab="settings">Instellingen</button>
       </div>
+      <!-- Beside the tabs, not among them: help is not a place she works. -->
+      <button class="btn-admin secondary small" id="helpChip" data-tab="help" type="button">? Uitleg</button>
     </div>
 
     <!-- Overview -->
@@ -344,10 +345,6 @@
       <button class="btn-admin" id="saveSettingsBtn">Opslaan</button>
     </section>
 
-  </div>
-
-  <!-- Outside #dashboard on purpose: help has to work before she is signed
-       in, which is exactly when someone needs it most. -->
     <!-- Uitleg -->
     <section id="tab-help" class="admin-tab" hidden>
       <div class="admin-card help-card">
@@ -440,6 +437,8 @@
         </details>
       </div>
     </section>
+  </div>
+
 
 </main>
 

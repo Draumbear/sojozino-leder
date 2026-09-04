@@ -457,31 +457,22 @@ function initSettingsSubTabs() {
   });
 }
 
-// Uitleg is not one of the working tabs: it sits outside the dashboard so it
-// works before signing in, and it replaces whatever was on screen rather than
-// living alongside it.
-function showHelp(on) {
-  const chip = $('#helpChip');
-  $('#tab-help').hidden = !on;
-  chip.classList.toggle('active', on);
-  chip.setAttribute('aria-pressed', String(on));
-  // Whichever of the two was showing comes back when help closes.
-  const connected = !!api;
-  $('#dashboard').classList.toggle('hidden', on || !connected);
-  $('#connectPanel').classList.toggle('hidden', on || connected);
-}
-
 function initTabs() {
-  $all('.admin-tabs button').forEach(btn => {
+  // Bound by the attribute rather than by living in the tab row, so Uitleg and
+  // the title both open a section the same way while staying visibly separate
+  // from the tabs themselves.
+  $all('[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => {
-      showHelp(false);
-      $all('.admin-tabs button').forEach(b => b.classList.toggle('active', b === btn));
-      $all('#dashboard .admin-tab').forEach(t => t.hidden = t.id !== `tab-${btn.dataset.tab}`);
+      $all('[data-tab]').forEach(b => b.classList.toggle('active', b === btn));
+      // The title is a way home, not a tab, so it hands its selected state to
+      // the tab it opens rather than keeping it.
+      if (btn.id === 'homeBtn') {
+        btn.classList.remove('active');
+        $('.admin-tabs button[data-tab="overview"]').classList.add('active');
+      }
+      $all('.admin-tab').forEach(t => t.hidden = t.id !== `tab-${btn.dataset.tab}`);
     });
   });
-
-  // A toggle, so the same button gets her back out again.
-  $('#helpChip').addEventListener('click', () => showHelp($('#tab-help').hidden));
 }
 
 // ---------- Overview ----------
