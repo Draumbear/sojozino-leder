@@ -273,6 +273,23 @@ async function connect(cfg, { silent }) {
   try {
     const candidate = new GitHubAPI(cfg);
     await candidate.verify();
+
+    // The write check is advisory: it is far likelier to be right than wrong,
+    // but being wrong would mean refusing a token that works, so she decides.
+    if (candidate.writeCheck && !candidate.writeCheck.ok) {
+      const go = await askConfirm({
+        title: 'Dit token lijkt niet te mogen opslaan',
+        lines: [
+          'De test om iets weg te schrijven werd geweigerd, dus opslaan zou later waarschijnlijk mislukken.',
+          esc(TOKEN_HELP),
+          `<span class="pc-when">GitHub antwoordde ${candidate.writeCheck.status}: ${esc(candidate.writeCheck.detail)}</span>`,
+        ],
+        confirmLabel: 'Toch verbinden',
+        cancelLabel: 'Token eerst aanpassen',
+      });
+      if (!go) throw new Error(`Dit token mag deze repository waarschijnlijk niet aanpassen. ${TOKEN_HELP}`);
+    }
+
     api = watchWrites(candidate);
     GitHubStore.save(cfg);
     setConnStatus(true);

@@ -144,12 +144,20 @@ class GitHubAPI {
       body: JSON.stringify({ content: 'sojozino-permissietest', encoding: 'utf-8' })
     });
     if (!probe.ok) {
-      if (probe.status === 403 || probe.status === 404) {
-        throw new Error(`Dit token mag deze repository niet aanpassen, dus opslaan zou later mislukken. ${TOKEN_HELP}`);
-      }
       const err = await probe.json().catch(() => ({}));
-      throw accessError(probe.status, err.message, 'de toegang te controleren');
+      // Reported, not enforced. If this check is ever wrong it would lock her
+      // out of a dashboard that works, which is a worse failure than the one it
+      // is here to prevent -- so it hands the verdict back and lets the caller
+      // offer to continue. GitHub's own status and wording ride along, because
+      // without them "no permission" is unarguable and undiagnosable.
+      this.writeCheck = {
+        ok: false,
+        status: probe.status,
+        detail: err.message || 'geen extra uitleg van GitHub',
+      };
+      return repo;
     }
+    this.writeCheck = { ok: true };
     return repo;
   }
 
