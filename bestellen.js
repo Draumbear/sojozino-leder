@@ -143,6 +143,25 @@ async function initOrderForm() {
   prodSel.addEventListener('change', syncHidden);
   renderProductOptions();
 
+  // Closing the panel also clears the filter: a narrowed list with the reason
+  // folded away is the same trap as the old category-first form. Whatever
+  // piece was already chosen survives, because widening the list can only add
+  // options.
+  const filterPanel = document.getElementById('of-filter');
+  const filterToggle = document.getElementById('of-filter-toggle');
+  filterToggle.addEventListener('click', () => {
+    const open = filterPanel.hidden;
+    filterPanel.hidden = !open;
+    filterToggle.setAttribute('aria-expanded', String(open));
+    filterToggle.textContent = open ? 'Filter sluiten' : 'Lijst filteren op categorie';
+    if (!open && catSel.value) {
+      catSel.value = '';
+      renderSubcategoryOptions();
+      renderProductOptions();
+    }
+    if (open) catSel.focus();
+  });
+
   // Browsers word their own validation bubbles, and on a Dutch page an English
   // "Please fill out this field" is one more thing to decode. Cleared on input
   // so a corrected field stops complaining.

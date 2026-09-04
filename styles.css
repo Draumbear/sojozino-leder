@@ -1000,34 +1000,42 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   opacity: 0.85;
 }
 
-/* The category filter is closed by default: it narrows a list that is already
-   complete, so it is help, not a step. */
-.order-filter { margin: 0 0 1.2rem; }
-.order-filter > summary {
-  cursor: pointer;
-  display: inline-block;
-  font-size: 0.82rem;
+/* The filter is offered on the same line as the question it answers, and
+   opens directly above the list it narrows. Closed by default: it narrows a
+   list that is already complete, so it is help, not a step. */
+.field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.2rem;
+  flex-wrap: wrap;
+}
+.field-head label { margin-bottom: 0.45rem; }
+.filter-toggle {
+  border: 0;
+  background: none;
+  padding: 0 0 0.45rem;
+  font: inherit;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--rust);
-  padding: 0.25rem 0;
-  list-style: none;
+  cursor: pointer;
 }
-.order-filter > summary::-webkit-details-marker { display: none; }
-.order-filter > summary::before {
+.filter-toggle::before {
   content: "+";
   display: inline-block;
   width: 1em;
-  font-weight: 700;
 }
-.order-filter[open] > summary::before { content: "\2212"; }
-.order-filter > summary:hover { text-decoration: underline; }
-.order-filter-body {
-  margin-top: 0.9rem;
+.filter-toggle[aria-expanded="true"]::before { content: "\2212"; }
+.filter-toggle:hover { text-decoration: underline; }
+.order-filter {
+  margin: 0 0 0.9rem;
   padding: 1rem 1.1rem 0.1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(0, 0, 0, 0.015);
 }
+.order-filter[hidden] { display: none; }
 
 /* Only after a failed submit, and only on the field at fault -- a form that
    turns red while you are still filling it in is nagging, not helping. */
