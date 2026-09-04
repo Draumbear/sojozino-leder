@@ -199,7 +199,9 @@ async function renderProduct() {
   const cat = categories.find(c => c.slug === data.category) || {};
   const sub = (cat.subcategories || []).find(s => s.slug === data.subcategory);
   const catLabel = window.SojozinoSite.categoryLabel;
-  const catName = sub ? `${catLabel(cat)} — ${catLabel(sub)}` : catLabel(cat);
+  // The more specific of the two wins: a toilettas is a toilettas, and saying
+  // it lives under kleine lederwaren adds nothing on the product's own page.
+  const catName = sub ? catLabel(sub) : catLabel(cat);
 
   document.title = `${data.name} — Sojozino`;
 

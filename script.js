@@ -12,7 +12,9 @@ async function loadJSON(path) {
 
 function productCardHTML(p) {
   const esc = window.SojozinoSite.escapeHTML;
-  const catLabel = p.subcategoryName ? `${p.categoryName} — ${p.subcategoryName}` : (p.categoryName || '');
+  // The subcategory alone: "Kleine lederwaren — Toilettas" spends most of a
+  // short label on the drawer something is filed in rather than what it is.
+  const catLabel = p.subcategoryName || p.categoryName || '';
   // "fit" is set per photo by scripts/classify_covers.py: studio shots on a
   // white backdrop are contained (whole product visible, letterboxing
   // invisible against a white tile), busier photos fill the tile instead.
