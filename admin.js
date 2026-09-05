@@ -72,11 +72,11 @@ function applyPublishWording() {
     savingBody.innerHTML = DEFER_PUBLISH
       ? `<p><strong>Opslaan</strong> bewaart je werk, maar zet het nog niet op de website. Bovenaan telt <strong>Recente wijzigingen</strong> mee hoeveel er klaarstaan.</p>
          <p>Ben je klaar? Klik daarop en dan op <strong>Publiceer wijzigingen</strong>. Alles gaat in één keer online, meestal binnen een minuut.</p>
-         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één bewaard. Onderaan zie je staan wat er nog wacht — wacht tot dat leeg is voor je publiceert, dan gaat alles in één keer mee.</p>
+         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één geüpload. Onderaan zie je staan wat er nog wacht — wacht tot dat leeg is voor je publiceert, dan gaat alles in één keer mee.</p>
          <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
       : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
          <p>Onderaan het scherm zie je <strong>Wordt online gezet</strong> staan, en zodra het gelukt is <strong>Staat online</strong>. Je hoeft dus niet zelf te gaan kijken.</p>
-         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één opgeslagen, netjes in de volgorde waarin je ze maakte. Onderaan zie je staan wat er nog wacht. De website loopt dan even achter — een paar minuten na een drukke sessie is normaal. Je hoeft niets te doen: alles komt er vanzelf op.</p>
+         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één online gezet, netjes in de volgorde waarin je ze maakte. Onderaan zie je staan wat er nog wacht. De website loopt dan even achter — een paar minuten na een drukke sessie kan normaal zijn. Je hoeft niets te doen: alles komt er vanzelf op.</p>
          <p class="hint">Ververs de pagina op de website als je ze daarna nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
 
@@ -1437,7 +1437,7 @@ function renderQueueStatus() {
   // Only once something is actually waiting: a note that is always there is
   // furniture, and he stops reading it long before the day it matters.
   const note = waiting.length >= 2
-    ? '<p class="qs-note">Je wijzigingen worden één voor één opgeslagen. Hoe meer je na elkaar aanpast, hoe langer het duurt voor de website helemaal bij is.</p>'
+    ? `<p class="qs-note">Je wijzigingen worden één voor één ${DEFER_PUBLISH ? 'geüpload' : 'online gezet'}. Hoe meer je na elkaar aanpast, hoe langer het kan duren voor de website helemaal bij is.</p>`
     : '';
   el.innerHTML = `<ul class="qs-list">${rows.join('')}</ul>${note}`;
   el.hidden = false;
