@@ -655,3 +655,13 @@ button.conn-status.off { cursor: default; }
   overflow-wrap: anywhere;
   color: var(--a-ink-soft);
 }
+
+/* Which release is running, and which build of the files. A report names both
+   without anyone having to ask. */
+.dashboard-version {
+  font-size: 0.72rem;
+  color: var(--a-ink-soft);
+  opacity: 0.75;
+  white-space: nowrap;
+  margin-left: auto;
+}

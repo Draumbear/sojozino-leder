@@ -314,6 +314,11 @@ async function publishChanges() {
   }
 }
 
+// The dashboard's own version, separate from the build hash beside it: the hash
+// says which files are running, this says which release they belong to. Bumped
+// by hand, because a release is a judgement, not a checksum.
+const DASHBOARD_VERSION = '1.0';
+
 // ---------- Iets melden ----------
 // "Het werkt niet" costs a round trip. What turns it into something diagnosable
 // is the state around it, and none of that is something Johnny could be
@@ -364,6 +369,7 @@ function assetVersion() {
 // putting a fragment of a credential into a file in the repository.
 function collectDiagnostics() {
   return {
+    dashboard: DASHBOARD_VERSION,
     scherm: currentScreen(),
     versie: assetVersion(),
     verbonden: !!api,
@@ -422,6 +428,11 @@ async function sendReport() {
   } finally {
     setBusy(btn, false);
   }
+}
+
+function showDashboardVersion() {
+  const el = $('#dashboardVersion');
+  if (el) el.textContent = `v${DASHBOARD_VERSION} · ${assetVersion()}`;
 }
 
 function initReport() {
@@ -2269,6 +2280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
   initReport();
+  showDashboardVersion();
   initSettingsSubTabs();
 
   const printBtn = $('#printHelpBtn');
