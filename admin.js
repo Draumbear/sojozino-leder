@@ -1597,6 +1597,44 @@ function describeSettingsChanges(after) {
   return lines;
 }
 
+// The change list is only worth having if it says what changed. "Instellingen
+// bijgewerkt" told her a commit had happened, not which of the thirty-odd
+// fields had moved -- so Ongedaan maken meant undoing something unnamed. She
+// has just read and approved a list of exactly what is changing; that same list
+// becomes the commit message.
+function plainText(html) {
+  return String(html)
+    .replace(/<[^>]+>/g, '')
+    .replace(/&rarr;/g, '\u2192')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Only the first line reaches the change list, so it carries the summary and
+// the rest of the detail travels in the commit body, where the history keeps
+// it. Long values are cut rather than wrapped: a whole paragraph of body text
+// in a one-line summary hides the field name it belongs to.
+const SUMMARY_MAX = 80;
+
+function summariseChanges(lines, fallback) {
+  const plain = (lines || []).map(plainText).filter(Boolean);
+  if (!plain.length) return fallback;
+
+  const shorten = (line) => line.length <= SUMMARY_MAX
+    ? line
+    : line.slice(0, SUMMARY_MAX - 1).replace(/\s+\S*$/, '') + '\u2026';
+
+  let head;
+  if (plain.length === 1) head = shorten(plain[0]);
+  else if (plain.length === 2 && plain.join('; ').length <= SUMMARY_MAX) head = plain.join('; ');
+  else head = `${shorten(plain[0].split(':')[0])} en ${plain.length - 1} andere wijziging${plain.length === 2 ? '' : 'en'}`;
+
+  return plain.length > 1 ? `${head}\n\n${plain.map(l => '- ' + l).join('\n')}` : head;
+}
+
 // Shows the list and waits for a yes. Returns false when there is nothing to
 // save -- pressing Opslaan with no edits should say so, not make an empty commit.
 async function confirmSave(title, lines) {
@@ -1717,7 +1755,7 @@ async function saveAbout() {
     }
 
     files.push({ path: 'data/site.json', content: JSON.stringify(state.site, null, 2) });
-    await api.commitBatch(files, 'Over-mij bijgewerkt', 'about');
+    await api.commitBatch(files, summariseChanges(lines.map(l => `Over mij \u2014 ${l}`), 'Over-mij bijgewerkt'), 'about');
     toast('Opgeslagen.', 'ok');
     renderAboutTab();
   } catch (e) {
@@ -1890,7 +1928,8 @@ async function saveSettings() {
     'Tagline': $('#s-tagline').value.trim(), 'E-mail': $('#s-email').value.trim(),
     'Instagram': $('#s-instagram').value.trim(), 'Locatie': $('#s-location').value.trim(),
   };
-  if (!await confirmSave('Deze instellingen opslaan?', describeSettingsChanges(proposed))) return;
+  const changes = describeSettingsChanges(proposed);
+  if (!await confirmSave('Deze instellingen opslaan?', changes)) return;
 
   const btn = $('#saveSettingsBtn');
   setBusy(btn, true, 'Opslaan…');
@@ -1938,7 +1977,7 @@ async function saveSettings() {
     }
 
     files.push({ path: 'data/site.json', content: JSON.stringify(state.site, null, 2) });
-    await api.commitBatch(files, 'Instellingen bijgewerkt', 'settings');
+    await api.commitBatch(files, summariseChanges(changes, 'Instellingen bijgewerkt'), 'settings');
     toast('Opgeslagen.', 'ok');
     renderSettingsTab();
   } catch (e) {
