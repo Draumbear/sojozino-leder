@@ -103,9 +103,10 @@ function applyPublishWording() {
 
 // ---------- Toasts ----------
 function toast(message, type = 'info', action) {
+  noteTrail(`${type === 'err' || type === 'fail' ? 'fout' : 'melding'}: ${message}`);
   const container = $('#toastContainer');
   const el = document.createElement('div');
-  el.className = `toast ${type}`;
+  el.className = `toast ${type === 'fail' ? 'err' : type}`;
   el.textContent = message;
   if (action) {
     const btn = document.createElement('button');
@@ -115,9 +116,20 @@ function toast(message, type = 'info', action) {
     btn.addEventListener('click', () => { el.remove(); action.onClick(); });
     el.appendChild(btn);
   }
+  // The moment he most wants to tell you is the moment something failed, and
+  // the moment he is least likely to go hunting for a button. Only when there
+  // is no other offer attached, so this never displaces an undo.
+  if (type === 'fail' && !action && typeof openReport === 'function') {
+    const report = document.createElement('button');
+    report.className = 'toast-action';
+    report.type = 'button';
+    report.textContent = 'Meld dit';
+    report.addEventListener('click', () => { el.remove(); openReport(`Ik kreeg deze melding: "${message}"\n\nWat ik probeerde te doen: `); });
+    el.appendChild(report);
+  }
   container.appendChild(el);
   // An offer to undo is no use if it disappears before it has been read.
-  setTimeout(() => el.remove(), action ? 12000 : 4200);
+  setTimeout(() => el.remove(), (action || type === 'fail') ? 12000 : 4200);
 }
 
 // Replaces confirm(). `lines` are shown as a list under the question, so a
@@ -167,7 +179,7 @@ async function undoChange(sha, what) {
     await refreshPublishBar();
     watchRevertedFiles(result && result.paths);
   } catch (e) {
-    toast(`Terugzetten mislukt: ${e.message}`, 'err');
+    toast(`Terugzetten mislukt: ${e.message}`, 'fail');
   }
 }
 
@@ -295,11 +307,131 @@ async function publishChanges() {
     await api.publish();
     toast('Je website wordt nu bijgewerkt — meestal binnen een minuut zichtbaar.', 'ok');
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
     await refreshPublishBar();
   }
+}
+
+// ---------- Iets melden ----------
+// "Het werkt niet" costs a round trip. What turns it into something diagnosable
+// is the state around it, and none of that is something Johnny could be
+// expected to write down -- so it travels with the report whether or not he
+// thinks to mention it.
+//
+// The report is committed as a file rather than opened as a GitHub issue: an
+// issue needs Issues:write, which his token does not carry, and asking him to
+// regenerate a token is exactly the errand this feature exists to save.
+const TRAIL_MAX = 15;
+const trail = [];
+let lastScriptError = null;
+
+function noteTrail(what) {
+  trail.push({ at: new Date().toISOString(), what: String(what).slice(0, 200) });
+  if (trail.length > TRAIL_MAX) trail.shift();
+}
+
+// Errors he never saw are the ones worth having: a save that failed silently
+// leaves nothing on screen but does leave this.
+window.addEventListener('error', (e) => {
+  lastScriptError = { message: e.message, source: `${e.filename || '?'}:${e.lineno || 0}` };
+  noteTrail(`FOUT: ${e.message}`);
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const reason = e.reason && (e.reason.message || e.reason);
+  lastScriptError = { message: String(reason).slice(0, 300), source: 'promise' };
+  noteTrail(`FOUT: ${String(reason).slice(0, 200)}`);
+});
+
+function currentScreen() {
+  const tab = [...$all('#dashboard .admin-tab')].find(t => !t.hidden);
+  if (!tab) return 'niet aangemeld';
+  // The settings sub-panels keep their own visibility, so reading them from
+  // anywhere else reported "products / bedrijf" -- two screens at once, and a
+  // wild goose chase for whoever reads the report.
+  const sub = tab.id === 'tab-settings' ? [...$all('.settings-panel')].find(p => !p.hidden) : null;
+  return tab.id.replace('tab-', '') + (sub && sub.dataset.sub ? ` / ${sub.dataset.sub}` : '');
+}
+
+function assetVersion() {
+  const src = document.querySelector('script[src*="admin.js"]');
+  return (src && (src.getAttribute('src').split('v=')[1] || '')) || 'onbekend';
+}
+
+// Deliberately nothing from the token: not the value, not its length, not a
+// prefix. There is no diagnosis it would help with that is worth the risk of
+// putting a fragment of a credential into a file in the repository.
+function collectDiagnostics() {
+  return {
+    scherm: currentScreen(),
+    versie: assetVersion(),
+    verbonden: !!api,
+    naam: (GitHubStore.load() || {}).authorName || null,
+    publicerenUitgesteld: DEFER_PUBLISH,
+    wachtrij: queueState.active
+      ? { bezig: queueState.active.label, wachtend: queueState.waiting.map(w => w.label) }
+      : { bezig: null, wachtend: [] },
+    laatsteFout: lastScriptError,
+    browser: navigator.userAgent,
+    taal: navigator.language,
+    scherm_grootte: `${window.innerWidth}x${window.innerHeight} (scherm ${screen.width}x${screen.height})`,
+    online: navigator.onLine,
+    stappen: trail.slice(),
+  };
+}
+
+function openReport(prefill) {
+  const box = $('#rpMessage');
+  box.value = prefill || '';
+  $('#rpPreview').textContent = JSON.stringify(collectDiagnostics(), null, 2);
+  $('#reportModal').hidden = false;
+  box.focus();
+}
+
+function closeReport() { $('#reportModal').hidden = true; }
+
+async function sendReport() {
+  const message = $('#rpMessage').value.trim();
+  if (!message) {
+    toast('Schrijf even kort op wat er misging.', 'err');
+    $('#rpMessage').focus();
+    return;
+  }
+  if (!api) {
+    // Without a connection there is nothing to commit to, and losing what he
+    // just typed would be the worst possible answer to a bug report.
+    toast('Je bent niet verbonden — meld dit even rechtstreeks aan Tanguy.', 'err');
+    return;
+  }
+
+  const btn = $('#rpSend');
+  setBusy(btn, true, 'Versturen…');
+  try {
+    const now = new Date();
+    const stamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const report = { gemeld: now.toISOString(), door: (GitHubStore.load() || {}).authorName || null, bericht: message, ...collectDiagnostics() };
+    // Its own file per report, named by the moment: two reports can never
+    // collide, and nothing already sent can be overwritten by a later one.
+    await api.putFile(`feedback/${stamp}.json`, JSON.stringify(report, null, 2), `Melding van Johnny: ${message.split('\n')[0].slice(0, 60)}`);
+    closeReport();
+    toast('Bedankt — je melding is verstuurd. Tanguy kijkt ernaar.', 'ok');
+    noteTrail('melding verstuurd');
+  } catch (e) {
+    toast(`Versturen mislukt: ${e.message}`, 'fail');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+
+function initReport() {
+  $('#reportChip').addEventListener('click', () => openReport());
+  $('#rpCancel').addEventListener('click', closeReport);
+  $('#rpSend').addEventListener('click', sendReport);
+  $('#reportModal').addEventListener('click', (e) => { if (e.target === $('#reportModal')) closeReport(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !$('#reportModal').hidden) closeReport();
+  });
 }
 
 // ---------- Connect flow ----------
@@ -704,7 +836,7 @@ async function saveCategories(message) {
     renderProductsTab();
     renderOverview();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   }
 }
 
@@ -892,7 +1024,7 @@ async function flushProductIndex() {
       message, 'products');
     toast('Opgeslagen.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, message) });
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
     await loadAll();
   }
 }
@@ -963,7 +1095,7 @@ async function deleteProduct(slug) {
     renderOverview();
     toast('Product verwijderd.', 'ok', { label: 'Ongedaan maken', onClick: () => undoChange(sha, `Product verwijderd: ${p.name}`) });
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   }
 }
 
@@ -1761,7 +1893,7 @@ async function saveProduct() {
     renderProductsTab();
     renderOverview();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -1807,7 +1939,7 @@ async function saveAbout() {
     toast('Opgeslagen.', 'ok');
     renderAboutTab();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -1926,7 +2058,7 @@ async function saveMarketPhotos() {
     savedToast('De foto\u2019s zijn opgeslagen.');
     renderMarketPhotos();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -1961,7 +2093,7 @@ async function savePresence(message) {
     renderPresenceTab();
     renderOverview();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -2099,7 +2231,7 @@ async function saveSettings() {
     toast('Opgeslagen.', 'ok');
     renderSettingsTab();
   } catch (e) {
-    toast(e.message, 'err');
+    toast(e.message, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -2126,7 +2258,7 @@ async function clearHistoryList() {
     await refreshPublishBar();
     toast('De lijst is gewist.', 'ok');
   } catch (e) {
-    toast(`Wissen mislukt: ${e.message}`, 'err');
+    toast(`Wissen mislukt: ${e.message}`, 'fail');
   } finally {
     setBusy(btn, false);
   }
@@ -2136,6 +2268,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPublishWording();
   initConnect();
   initTabs();
+  initReport();
   initSettingsSubTabs();
 
   const printBtn = $('#printHelpBtn');

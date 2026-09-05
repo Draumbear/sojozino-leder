@@ -630,3 +630,28 @@ button.conn-status.off { cursor: default; }
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.7);
 }
+
+/* ---------- Iets melden ---------- */
+.report-details { margin-top: 0.9rem; }
+.report-details > summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--a-ink-soft);
+  padding: 0.2rem 0;
+}
+.report-details > summary:hover { color: var(--a-espresso); }
+.report-preview {
+  margin: 0.6rem 0 0;
+  max-height: 11rem;
+  overflow: auto;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--a-line);
+  border-radius: 6px;
+  background: var(--a-bg2);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--a-ink-soft);
+}

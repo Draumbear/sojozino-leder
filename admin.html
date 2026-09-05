@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=f40b59e4">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=f40b59e4">
+<link rel="stylesheet" href="admin.css?v=0cb8ac39">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=0cb8ac39">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -114,6 +114,9 @@
       </div>
       <!-- Beside the tabs, not among them: help is not a place she works. -->
       <button class="btn-admin secondary small" id="helpChip" data-tab="help" type="button">Uitleg</button>
+      <!-- Beside Uitleg on purpose: the two things you reach for when something
+           is not going the way you expected. -->
+      <button class="btn-admin secondary small" id="reportChip" type="button">Iets melden</button>
     </div>
 
     <!-- Overview -->
@@ -495,6 +498,13 @@
         </details>
 
         <details class="help-item">
+          <summary>Iets werkt niet — hoe meld je dat?</summary>
+          <p>Klik bovenaan op <strong>Iets melden</strong> en schrijf kort op wat je probeerde te doen en wat er in plaats daarvan gebeurde. Ging er net iets mis? Dan staat er ook een knopje <strong>Meld dit</strong> in de melding zelf.</p>
+          <p>Je hoeft geen technische dingen uit te leggen: welk scherm je open had, welke browser je gebruikt en wat je laatste stappen waren, gaan automatisch mee. Je toegangscode wordt nooit meegestuurd.</p>
+          <p class="hint">Werkt het dashboard helemaal niet meer? Dan werkt deze knop ook niet — bel of mail Tanguy dan gewoon.</p>
+        </details>
+
+        <details class="help-item">
           <summary>Teksten en menunamen aanpassen</summary>
           <p>Onder <strong>Instellingen</strong> vind je drie groepen:</p>
           <ul>
@@ -540,6 +550,32 @@
   </div>
 </div>
 
+<!-- Reports are committed to the repository as a file rather than opened as a
+     GitHub issue: an issue needs a token permission Johnny's does not have, and
+     asking him to regenerate it is exactly the kind of errand this is meant to
+     save. Contents write is what he already has. -->
+<div class="modal-overlay" id="reportModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rpTitle">
+    <h3 id="rpTitle">Iets melden</h3>
+    <div class="modal-body">
+      <p class="hint" id="rpIntro">Werkt er iets niet zoals je verwacht? Beschrijf kort wat je probeerde te doen en wat er gebeurde. Tanguy krijgt je bericht en kijkt ernaar.</p>
+      <div class="admin-field">
+        <label for="rpMessage">Wat probeerde je te doen, en wat gebeurde er?</label>
+        <textarea id="rpMessage" rows="5" placeholder="bv. Ik wou een foto toevoegen bij Tties, maar na het opslaan stond ze er niet bij."></textarea>
+      </div>
+      <details class="report-details">
+        <summary>Wat wordt er meegestuurd?</summary>
+        <p class="hint">Automatisch worden ook technische gegevens meegestuurd, zodat Tanguy niet hoeft te raden: welk scherm je open had, welke browser je gebruikt, en wat de laatste stappen waren. Geen wachtwoorden, en niets van je toegangscode.</p>
+        <pre class="report-preview" id="rpPreview"></pre>
+      </details>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-admin secondary" id="rpCancel" type="button">Annuleren</button>
+      <button class="btn-admin" id="rpSend" type="button">Versturen</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toastContainer">
   <!-- What is being uploaded and what is behind it. First child of the
        toast stack, so it inherits the offset that keeps it clear of the
@@ -547,7 +583,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=f40b59e4"></script>
-<script src="admin.js?v=f40b59e4"></script>
+<script src="admin-github.js?v=0cb8ac39"></script>
+<script src="admin.js?v=0cb8ac39"></script>
 </body>
 </html>
