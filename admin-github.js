@@ -400,7 +400,11 @@ class GitHubAPI {
       return { path: f.filename, mode: '100644', type: 'blob', sha: before };
     }));
     if (!entries.length) throw new Error('Deze wijziging raakte geen bestanden aan.');
-    return this._commitTreeEntries(entries, this._saveMessage(message));
+    const newSha = await this._commitTreeEntries(entries, this._saveMessage(message));
+    // The caller needs to know what moved: undoing a change is as much a
+    // change to the live site as making one, and deserves the same "staat
+    // online" as any other save.
+    return { sha: newSha, paths: entries.map(e => e.path) };
   }
 
   // Blob sha of a path at a given commit, or null when it did not exist there.

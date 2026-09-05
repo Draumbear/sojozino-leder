@@ -159,13 +159,27 @@ function askConfirm({ title, lines = [], confirmLabel = 'Ja, doorgaan', cancelLa
 // Used both by the undo offered right after a delete and by the publish bar.
 async function undoChange(sha, what) {
   try {
-    await api.revertCommit(sha, `Ongedaan gemaakt: ${what}`);
+    const result = await api.revertCommit(sha, `Ongedaan gemaakt: ${what}`);
     toast('Teruggezet.', 'ok');
     await loadAll();
     await refreshPublishBar();
+    watchRevertedFiles(result && result.paths);
   } catch (e) {
     toast(`Terugzetten mislukt: ${e.message}`, 'err');
   }
+}
+
+// A revert is built from blob shas, so unlike a save it never held the file's
+// text -- and the deploy watcher works by reading the published file back and
+// comparing. One extra read of whatever the revert restored gives it something
+// to compare against. Deliberately not awaited: the undo is already done, and
+// the row appears when it appears.
+function watchRevertedFiles(paths) {
+  const path = (paths || []).find(p => /\.(json|html|css|js|txt|xml)$/i.test(p));
+  if (!path) return; // photos only: nothing cheap to compare
+  api.getFile(path)
+    .then(file => { if (file) trackDeployment([{ path, content: file.content }]); })
+    .catch(() => { /* the undo worked; only the status row is missing */ });
 }
 
 function setBusy(btn, busy, busyLabel = 'Bezig…') {
