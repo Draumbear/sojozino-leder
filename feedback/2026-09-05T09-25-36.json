@@ -1,0 +1,21 @@
+{
+  "gemeld": "2026-09-05T09:25:36.280Z",
+  "door": "Johnny Decoopman",
+  "bericht": "test",
+  "dashboard": "1.0",
+  "scherm": "overview",
+  "versie": "c0927152",
+  "verbonden": true,
+  "naam": "Johnny Decoopman",
+  "publicerenUitgesteld": false,
+  "wachtrij": {
+    "bezig": null,
+    "wachtend": []
+  },
+  "laatsteFout": null,
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+  "taal": "en",
+  "scherm_grootte": "1600x739 (scherm 1680x1050)",
+  "online": true,
+  "stappen": []
+}
