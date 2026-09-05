@@ -27,7 +27,19 @@ let editingSlug = null; // null while creating a new product
 
 function $(sel, root = document) { return root.querySelector(sel); }
 function $all(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
-function esc(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
+function esc(str) {
+  // Quotes as well as angle brackets. The div/textContent trick escapes < > &
+  // but leaves " and ' alone, which is silently fine in text and wrong in an
+  // attribute: a value containing a quote closes the attribute and everything
+  // after it is parsed as markup. Most of this file's interpolations are in
+  // attributes.
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 function slugify(text) {
   return (text || '')
