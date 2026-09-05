@@ -11,6 +11,18 @@
 const SKIP_DEPLOY_MARKER = '[skip netlify]';
 // Trailer naming the dashboard screen a save came from, e.g. 'products/tties'.
 const TARGET_PREFIX = '[target: ';
+// On every commit this dashboard makes, deferred or not. "Recente wijzigingen"
+// is a list of things Johnny did and can undo -- without this it was simply the
+// branch history, so engineering commits appeared there with an Ongedaan maken
+// button beside them, inviting him to revert work he has never seen.
+const DASHBOARD_MARKER = '[dashboard]';
+// Draws a line under everything older, so the list can be started fresh --
+// at handover, or whenever it has become a wall of noise.
+const HISTORY_RESET_MARKER = '[history-reset]';
+
+function hasMarker(message, marker) {
+  return (message || '').split('\n').some(line => line.trim() === marker);
+}
 
 // This site is on GitHub Pages, which rebuilds on every push and ignores the
 // marker below -- so a save is live within the minute whatever the dashboard
@@ -367,13 +379,21 @@ class GitHubAPI {
   // Single choke point for save commit messages: nothing that writes from the
   // dashboard may reach the branch without the skip marker attached.
   _saveMessage(message, target) {
-    if (!DEFER_PUBLISH) return message;
-    const lines = [message, '', SKIP_DEPLOY_MARKER];
+    const lines = [message, '', DASHBOARD_MARKER];
+    if (DEFER_PUBLISH) lines.push(SKIP_DEPLOY_MARKER);
     // Where in the dashboard this change was made, so the publish bar can offer
     // a way back to it. A trailer rather than something parsed out of the
     // message text: the messages are prose, and prose changes.
     if (target) lines.push(`${TARGET_PREFIX}${target}]`);
     return lines.join('\n');
+  }
+
+  // Starts the change list fresh. An empty commit, so nothing about the site
+  // moves; the list simply stops walking when it reaches this.
+  resetHistory() {
+    return this._enqueue(
+      () => this._commitTreeEntries([], `Lijst met recente wijzigingen gewist${'\n'}${'\n'}${HISTORY_RESET_MARKER}`),
+      'Lijst wissen');
   }
 
   // The publish step: an empty commit with NO skip marker, so Netlify picks it
@@ -432,6 +452,12 @@ class GitHubAPI {
     const pending = [];
     for (const c of commits) {
       const message = c.commit.message;
+      // Everything before a reset belongs to whoever used the dashboard before,
+      // and is not his to undo.
+      if (hasMarker(message, HISTORY_RESET_MARKER)) break;
+      // Commits that did not come from here -- deploys, engineering work -- are
+      // not changes he made, so they are not changes he can be offered back.
+      if (!hasMarker(message, DASHBOARD_MARKER)) continue;
       // Only a deferred setup has a boundary to stop at.
       if (DEFER_PUBLISH && !isDeferredSave(message)) break;
       const target = (message.match(/\[target: ([^\]]+)\]/) || [])[1] || null;

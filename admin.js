@@ -2002,6 +2002,32 @@ async function saveSettings() {
 }
 
 // ---------- Init ----------
+// Not a way to undo anything -- it only stops the list going further back.
+// Worth having at handover, so the first thing Johnny sees is his own work
+// rather than a page of changes he did not make.
+async function clearHistoryList() {
+  const go = await askConfirm({
+    title: 'Lijst met recente wijzigingen wissen?',
+    lines: [
+      'De lijst begint daarna opnieuw. Aan de website zelf verandert niets.',
+      'Wat er nu in staat, kun je daarna niet meer met \u00e9\u00e9n klik terugzetten.',
+    ],
+    confirmLabel: 'Ja, wis de lijst',
+  });
+  if (!go) return;
+  const btn = $('#clearHistoryBtn');
+  setBusy(btn, true, 'Wissen\u2026');
+  try {
+    await api.resetHistory();
+    await refreshPublishBar();
+    toast('De lijst is gewist.', 'ok');
+  } catch (e) {
+    toast(`Wissen mislukt: ${e.message}`, 'err');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   applyPublishWording();
   initConnect();
@@ -2043,6 +2069,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#cancelPresenceBtn').addEventListener('click', () => $('#presenceForm').classList.add('hidden'));
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);
+  $('#clearHistoryBtn').addEventListener('click', clearHistoryList);
   $('#publishBtn').addEventListener('click', publishChanges);
   $('#publishToggle').addEventListener('click', (e) => {
     e.stopPropagation();  // the document listener below closes both menus
