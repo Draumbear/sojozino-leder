@@ -123,10 +123,31 @@ function renderOrderPage(site) {
   if (box && site.orderMessagePlaceholder) box.placeholder = site.orderMessagePlaceholder;
 }
 
+// The three photos on the markets page: the wide one under the heading, and
+// the pair below the dates. Kept in site.json rather than in the markup so
+// Johnny can swap them when the tent or the stall changes, without the page
+// going blank in the meantime -- an entry he has not touched simply keeps the
+// picture the file already carries.
+const MARKET_PHOTO_SLOTS = [
+  ['marketPhotoBanner', 'banner'],
+  ['marketPhotoLeft', 'left'],
+  ['marketPhotoRight', 'right'],
+];
+
 function renderMarketsPage(site) {
   setEditableText('marketsEyebrow', site.marketsEyebrow);
   setEditableText('marketsHeading', site.marketsHeading, { allowBreaks: true });
   setEditableText('marketsIntro', site.marketsIntro);
+
+  const photos = site.marketPhotos || {};
+  for (const [id, key] of MARKET_PHOTO_SLOTS) {
+    const el = document.getElementById(id);
+    const photo = photos[key];
+    if (!el || !photo) continue;
+    if (photo.src) el.src = photo.src;
+    // Alt text describes the picture, so it only travels with a new one.
+    if (photo.alt) el.alt = photo.alt;
+  }
 }
 
 // Instagram: an icon in the header on every page, and a button where he has

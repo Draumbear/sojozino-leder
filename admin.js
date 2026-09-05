@@ -72,9 +72,11 @@ function applyPublishWording() {
     savingBody.innerHTML = DEFER_PUBLISH
       ? `<p><strong>Opslaan</strong> bewaart je werk, maar zet het nog niet op de website. Bovenaan telt <strong>Recente wijzigingen</strong> mee hoeveel er klaarstaan.</p>
          <p>Ben je klaar? Klik daarop en dan op <strong>Publiceer wijzigingen</strong>. Alles gaat in één keer online, meestal binnen een minuut.</p>
+         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één bewaard. Onderaan zie je staan wat er nog wacht — wacht tot dat leeg is voor je publiceert, dan gaat alles in één keer mee.</p>
          <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
       : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
          <p>Onderaan het scherm zie je <strong>Wordt online gezet</strong> staan, en zodra het gelukt is <strong>Staat online</strong>. Je hoeft dus niet zelf te gaan kijken.</p>
+         <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één opgeslagen, netjes in de volgorde waarin je ze maakte. Onderaan zie je staan wat er nog wacht. De website loopt dan even achter — een paar minuten na een drukke sessie is normaal. Je hoeft niets te doen: alles komt er vanzelf op.</p>
          <p class="hint">Ververs de pagina op de website als je ze daarna nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
 
@@ -1432,7 +1434,12 @@ function renderQueueStatus() {
   }
 
   if (deployRow) rows.push(deployRow);
-  el.innerHTML = `<ul class="qs-list">${rows.join('')}</ul>`;
+  // Only once something is actually waiting: a note that is always there is
+  // furniture, and he stops reading it long before the day it matters.
+  const note = waiting.length >= 2
+    ? '<p class="qs-note">Je wijzigingen worden één voor één opgeslagen. Hoe meer je na elkaar aanpast, hoe langer het duurt voor de website helemaal bij is.</p>'
+    : '';
+  el.innerHTML = `<ul class="qs-list">${rows.join('')}</ul>${note}`;
   el.hidden = false;
 }
 
@@ -1808,6 +1815,7 @@ async function saveAbout() {
 
 // ---------- Presence ----------
 function renderPresenceTab() {
+  renderMarketPhotos();
   const list = $('#presenceList');
   const sorted = [...state.presence].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
   list.innerHTML = sorted.length ? sorted.map(p => `
@@ -1853,6 +1861,75 @@ function openPresenceForm(entry) {
   $('#pr-date').value = entry?.date || '';
   $('#pr-description').value = entry?.description || '';
   form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ---------- The three photos on the markets page ----------
+// Fixed paths rather than uploaded filenames: the page has exactly three
+// slots, replacing one should replace the file it already points at, and a
+// stable path keeps the site's own fallback markup true.
+const MARKET_PHOTOS = [
+  { key: 'banner', path: 'assets/markt-tent.jpg', label: 'Brede foto bovenaan' },
+  { key: 'left', path: 'assets/markt-stand.jpg', label: 'Foto links' },
+  { key: 'right', path: 'assets/markt-team.jpg', label: 'Foto rechts' },
+];
+
+function renderMarketPhotos() {
+  const photos = state.site.marketPhotos || {};
+  for (const slot of MARKET_PHOTOS) {
+    const saved = photos[slot.key] || {};
+    // Cache-busted: the path never changes, so without this the preview would
+    // keep showing the photo he just replaced.
+    $(`#mp-${slot.key}-preview`).src = `${saved.src || slot.path}?cb=${Date.now()}`;
+    $(`#mp-${slot.key}-alt`).value = saved.alt || '';
+    const input = $(`#mp-${slot.key}-input`);
+    input.value = '';
+    showChosenFile(input);
+  }
+}
+
+function describeMarketPhotoChanges() {
+  const photos = state.site.marketPhotos || {};
+  const lines = [];
+  for (const slot of MARKET_PHOTOS) {
+    if ($(`#mp-${slot.key}-input`).files[0]) lines.push(`${slot.label}: nieuwe foto`);
+    const before = (photos[slot.key] || {}).alt || '';
+    const line = changedField(`${slot.label} — beschrijving`, before, $(`#mp-${slot.key}-alt`).value.trim());
+    if (line) lines.push(line);
+  }
+  return lines;
+}
+
+async function saveMarketPhotos() {
+  if (!await confirmSave('Deze foto\u2019s opslaan?', describeMarketPhotoChanges())) return;
+
+  const btn = $('#saveMarketPhotosBtn');
+  setBusy(btn, true, 'Opslaan\u2026');
+  try {
+    const files = [];
+    state.site.marketPhotos = state.site.marketPhotos || {};
+    for (const slot of MARKET_PHOTOS) {
+      const saved = state.site.marketPhotos[slot.key] || {};
+      const file = $(`#mp-${slot.key}-input`).files[0];
+      if (file) {
+        setBusy(btn, true, `${slot.label}\u2026`);
+        const prepared = await api.prepareUpload(file, 'assets');
+        files.push({ path: slot.path, content: prepared.content });
+      }
+      state.site.marketPhotos[slot.key] = {
+        src: slot.path,
+        alt: $(`#mp-${slot.key}-alt`).value.trim() || saved.alt || '',
+      };
+    }
+
+    files.push({ path: 'data/site.json', content: () => JSON.stringify(state.site, null, 2) });
+    await api.commitBatch(files, summariseChanges(describeMarketPhotoChanges(), 'Foto\u2019s aanwezigheid bijgewerkt'), 'presence');
+    savedToast('De foto\u2019s zijn opgeslagen.');
+    renderMarketPhotos();
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(btn, false);
+  }
 }
 
 async function savePresenceEntry() {
@@ -2093,6 +2170,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderVariantsManager();
   });
   $('#savePresenceBtn').addEventListener('click', savePresenceEntry);
+  $('#saveMarketPhotosBtn').addEventListener('click', saveMarketPhotos);
+  MARKET_PHOTOS.forEach(slot => {
+    const input = $(`#mp-${slot.key}-input`);
+    input.addEventListener('change', () => {
+      const f = input.files[0];
+      if (f) $(`#mp-${slot.key}-preview`).src = URL.createObjectURL(f);
+      showChosenFile(input);
+    });
+  });
   $('#cancelPresenceBtn').addEventListener('click', () => $('#presenceForm').classList.add('hidden'));
   $('#saveAboutBtn').addEventListener('click', saveAbout);
   $('#saveSettingsBtn').addEventListener('click', saveSettings);

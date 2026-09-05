@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=be8cb114">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=be8cb114">
+<link rel="stylesheet" href="admin.css?v=e67955cc">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=e67955cc">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -210,6 +210,49 @@
         <button class="btn-admin small" id="newPresenceBtn">+ Nieuwe datum</button>
       </div>
       <div id="presenceList"></div>
+
+      <div class="admin-card" id="marketPhotosCard">
+        <h2>Foto's op deze pagina</h2>
+        <p class="hint" style="margin-bottom:1.2rem;">De brede foto bovenaan en de twee eronder. Laat een foto staan zoals ze is door er niets voor te kiezen.</p>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Brede foto bovenaan</label>
+            <img title="Klik om te vergroten" id="mp-banner-preview" src="assets/markt-tent.jpg" alt="" style="width:100%;max-width:220px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:1px solid var(--a-line);margin-bottom:0.6rem;display:block;">
+            <div class="file-picker">
+              <input type="file" id="mp-banner-input" accept="image/*">
+              <label class="file-btn" for="mp-banner-input">Foto kiezen</label>
+              <span class="file-name">Geen bestand gekozen</span>
+            </div>
+            <label for="mp-banner-alt" style="margin-top:0.7rem;">Beschrijving <span class="hint">(voor wie de foto niet ziet)</span></label>
+            <input type="text" id="mp-banner-alt">
+          </div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Foto links</label>
+            <img title="Klik om te vergroten" id="mp-left-preview" src="assets/markt-stand.jpg" alt="" style="width:100%;max-width:150px;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid var(--a-line);margin-bottom:0.6rem;display:block;">
+            <div class="file-picker">
+              <input type="file" id="mp-left-input" accept="image/*">
+              <label class="file-btn" for="mp-left-input">Foto kiezen</label>
+              <span class="file-name">Geen bestand gekozen</span>
+            </div>
+            <label for="mp-left-alt" style="margin-top:0.7rem;">Beschrijving</label>
+            <input type="text" id="mp-left-alt">
+          </div>
+          <div class="admin-field">
+            <label>Foto rechts</label>
+            <img title="Klik om te vergroten" id="mp-right-preview" src="assets/markt-team.jpg" alt="" style="width:100%;max-width:150px;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid var(--a-line);margin-bottom:0.6rem;display:block;">
+            <div class="file-picker">
+              <input type="file" id="mp-right-input" accept="image/*">
+              <label class="file-btn" for="mp-right-input">Foto kiezen</label>
+              <span class="file-name">Geen bestand gekozen</span>
+            </div>
+            <label for="mp-right-alt" style="margin-top:0.7rem;">Beschrijving</label>
+            <input type="text" id="mp-right-alt">
+          </div>
+        </div>
+        <button class="btn-admin" id="saveMarketPhotosBtn">Opslaan</button>
+      </div>
 
       <div id="presenceForm" class="admin-card hidden" style="margin-top:1.5rem;">
         <h2>Markt / evenement</h2>
@@ -504,7 +547,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=be8cb114"></script>
-<script src="admin.js?v=be8cb114"></script>
+<script src="admin-github.js?v=e67955cc"></script>
+<script src="admin.js?v=e67955cc"></script>
 </body>
 </html>

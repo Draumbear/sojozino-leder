@@ -39,5 +39,19 @@
   "marketsEyebrow": "Kom langs",
   "marketsHeading": "Waar vind je mij?",
   "marketsIntro": "Sojozino staat af en toe op markten en ambachtenbeurzen — kijk uit naar de opvallende rode tent. Hieronder de eerstvolgende data.",
+  "marketPhotos": {
+    "banner": {
+      "src": "assets/markt-tent.jpg",
+      "alt": "De rode tent van Sojozino op een ambachtenmarkt"
+    },
+    "left": {
+      "src": "assets/markt-stand.jpg",
+      "alt": "Johnny aan zijn kraam met handgemaakte lederwaren"
+    },
+    "right": {
+      "src": "assets/markt-team.jpg",
+      "alt": "Johnny op de markt"
+    }
+  },
   "navLabels": {}
 }

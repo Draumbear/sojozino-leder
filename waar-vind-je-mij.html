@@ -6,8 +6,8 @@
 <title>Waar vind je mij — Sojozino</title>
 <meta name="description" content="Ontdek waar je Sojozino binnenkort kan vinden: markten en evenementen.">
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="styles.css?v=be8cb114">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=be8cb114">
+<link rel="stylesheet" href="styles.css?v=e67955cc">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=e67955cc">
 <link rel="canonical" href="https://draumbear.github.io/sojozino-leder/waar-vind-je-mij.html">
 <!-- social:start -->
 <!-- Preview card for links shared in WhatsApp, Facebook, Instagram.
@@ -40,7 +40,8 @@
 </div>
 
 <div class="section" style="padding-top:0;">
-  <img class="banner-photo reveal" src="assets/markt-tent.jpg" alt="De rode tent van Sojozino op een ambachtenmarkt">
+  <!-- src and alt come from data/site.json; what is here is the fallback. -->
+  <img class="banner-photo reveal" id="marketPhotoBanner" src="assets/markt-tent.jpg" alt="De rode tent van Sojozino op een ambachtenmarkt">
 </div>
 
 <div class="section" style="padding-top:0;">
@@ -49,8 +50,8 @@
 
 <div class="section" style="padding-top:0;">
   <div class="photo-duo">
-    <img class="reveal" src="assets/markt-stand.jpg" alt="Johnny aan zijn kraam met handgemaakte lederwaren">
-    <img class="reveal" src="assets/markt-team.jpg" alt="Johnny op de markt">
+    <img class="reveal" id="marketPhotoLeft" src="assets/markt-stand.jpg" alt="Johnny aan zijn kraam met handgemaakte lederwaren">
+    <img class="reveal" id="marketPhotoRight" src="assets/markt-team.jpg" alt="Johnny op de markt">
   </div>
 </div>
 
@@ -65,7 +66,7 @@
 
 <div id="siteFooter"></div>
 
-<script src="site-data.js?v=be8cb114"></script>
-<script src="script.js?v=be8cb114"></script>
+<script src="site-data.js?v=e67955cc"></script>
+<script src="script.js?v=e67955cc"></script>
 </body>
 </html>
