@@ -614,3 +614,10 @@ button.conn-status.off { cursor: default; }
   border-top: 1px solid var(--a-line);
   margin: 0.7rem 0;
 }
+
+/* Every picture in the dashboard opens full size, so every picture says so.
+   The exceptions are the two that are not pictures: the mark in the header is
+   a Home button wearing a logo, and the lightbox's own image is already full
+   size. */
+#dashboard img { cursor: zoom-in; }
+#homeBtn img, .admin-lightbox img { cursor: inherit; }

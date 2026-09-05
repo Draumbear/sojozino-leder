@@ -753,7 +753,7 @@ function renderProductsTab() {
     listEl.innerHTML = list.length ? list.map(p => `
       <div class="row-card" data-slug="${esc(p.slug)}" ${filtering ? '' : 'draggable="true"'}>
         ${filtering ? '' : '<span class="drag-handle" title="Sleep om de volgorde te wijzigen">⠿</span>'}
-        <img src="${esc(p.cover?.src || '')}" alt="">
+        <img src="${esc(p.cover?.src || '')}" alt="" title="Klik om te vergroten">
         <div class="rc-info"><strong>${esc(p.name)}</strong><span>${esc(catByslug[p.category] || '—')}</span></div>
         <div class="rc-actions">
           <button class="btn-feature${p.featured ? ' on' : ''}" data-action="feature"
@@ -1170,12 +1170,30 @@ function bindImageDragging(wrap) {
 let lightboxPhotos = [];
 let lightboxIndex = 0;
 
+// Any picture in the dashboard, not only the product editor's tiles. Every
+// preview here is shown small -- an 80px logo, a 140px portrait, a 44px row
+// thumbnail -- which is enough to recognise a photo but not to judge one, and
+// judging it is exactly what he is doing when he decides whether to replace it.
+// Inside the photo manager the whole set becomes the reel, so the arrows still
+// step through a variant; anywhere else it is that one picture on its own.
 function openPhotoLightbox(img) {
   const manager = img.closest('.image-manager');
-  const images = [...manager.querySelectorAll('.image-tile img')];
+  const images = manager ? [...manager.querySelectorAll('.image-tile img')] : [img];
   lightboxPhotos = images.map(el => el.src);
-  showPhoto(images.indexOf(img));
+  showPhoto(Math.max(images.indexOf(img), 0));
   $('#adminLightbox').hidden = false;
+}
+
+// Which pictures open, decided in one place rather than at each render site --
+// the row thumbnails and the editor tiles are built from strings in three
+// different functions, and a rule spread across them drifts.
+function zoomableImage(target) {
+  const img = target.closest('img');
+  // A blank preview has nothing to enlarge; the header mark is a Home button
+  // wearing a logo, not a picture; and the lightbox must not reopen itself.
+  if (!img || !img.getAttribute('src')) return null;
+  if (img.closest('#homeBtn, .admin-lightbox')) return null;
+  return img;
 }
 
 function showPhoto(index) {
@@ -1198,6 +1216,15 @@ function closePhotoLightbox() {
 
 function initPhotoLightbox() {
   const box = $('#adminLightbox');
+  // Delegated on the dashboard: most of these images are rendered after this
+  // runs, and re-bound on every save.
+  $('#dashboard').addEventListener('click', (e) => {
+    // A control drawn on top of a tile -- cover, remove, reorder -- is doing
+    // its own job; only a click on the picture itself enlarges it.
+    if (e.target.closest('button, a')) return;
+    const img = zoomableImage(e.target);
+    if (img) openPhotoLightbox(img);
+  });
   // Clicking the backdrop closes; clicking the photo or a control does not.
   box.addEventListener('click', (e) => { if (e.target === box) closePhotoLightbox(); });
   $('#alClose').addEventListener('click', closePhotoLightbox);
