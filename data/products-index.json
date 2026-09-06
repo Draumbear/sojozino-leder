@@ -457,12 +457,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "kaartenhouders",
     "cover": {
-      "src": "assets/products/kaartenhouders-duo-kleur/cover.jpg",
+      "src": "assets/products/kaartenhouders-duo-kleur/01.jpg",
       "alt": "Kaartenhouders Duo Kleur"
     },
     "order": 30,
-    "featured": false,
-    "fit": "contain"
+    "featured": false
   },
   {
     "slug": "kleine-geldbeugel",

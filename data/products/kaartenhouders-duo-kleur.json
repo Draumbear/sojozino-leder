@@ -33,10 +33,6 @@
           "alt": "Kaartenhouders Duo Kleur"
         },
         {
-          "src": "assets/products/kaartenhouders-duo-kleur/07.jpg",
-          "alt": "Kaartenhouders Duo Kleur"
-        },
-        {
           "src": "assets/products/kaartenhouders-duo-kleur/08.jpg",
           "alt": "Kaartenhouders Duo Kleur"
         },
@@ -98,6 +94,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/kaartenhouders-duo-kleur/02.jpg"
+  ]
 }
