@@ -580,12 +580,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "allerlei",
     "cover": {
-      "src": "assets/products/vide-poche/cover.jpg",
+      "src": "assets/products/vide-poche/01.jpg",
       "alt": "Vide Poche"
     },
     "order": 40,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "zakmeshouder-met-sleutelhanger",

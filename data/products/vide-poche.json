@@ -3,7 +3,7 @@
   "name": "Vide Poche",
   "category": "kleine-lederwaren",
   "subcategory": "allerlei",
-  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over vide poche.",
+  "description": "Handgemaakt in leder. Lederen schaal om al de spullen uit de broekzak te verzamelen. Alles bij elkaar, zo vergeet je niets als je vertrekt. Kan op maat gemaakt worden. \nNeem gerust contact op voor meer details over vide poche.",
   "variants": [
     {
       "name": null,
@@ -42,6 +42,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/vide-poche/02.jpg"
+  ]
 }
