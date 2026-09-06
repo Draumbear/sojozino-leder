@@ -88,6 +88,7 @@ function applyPublishWording() {
          <p class="hint">Zo kan je rustig een hele avond aanpassen zonder dat bezoekers je halve werk zien.</p>`
       : `<p><strong>Opslaan</strong> zet je wijziging meteen op de website. Meestal is ze binnen een minuut te zien.</p>
          <p>Onderaan het scherm zie je <strong>Wordt online gezet</strong> staan, en zodra het gelukt is <strong>Staat online</strong>. Je hoeft dus niet zelf te gaan kijken.</p>
+         <p><strong>Je hoeft niet te wachten.</strong> Terwijl dat kadertje bezig is, kan je gerust verder werken: nog iets aanpassen, een foto toevoegen, naar een ander tabblad gaan. Alles wat je intussen opslaat komt er netjes achteraan bij. Je mag het dashboard zelfs sluiten — wat al verstuurd is, komt hoe dan ook online.</p>
          <p><strong>Pas je veel na elkaar aan?</strong> Dan worden je wijzigingen één voor één online gezet, netjes in de volgorde waarin je ze maakte. Onderaan zie je staan wat er nog wacht. De website loopt dan even achter — een paar minuten na een drukke sessie kan normaal zijn. Je hoeft niets te doen: alles komt er vanzelf op.</p>
          <p class="hint">Ververs de pagina op de website als je ze daarna nog niet ziet — je browser houdt soms even de oude versie vast.</p>`;
   }
@@ -1774,7 +1775,7 @@ let deployWatch = null;
 function deployStatusRow() {
   if (!deployWatch) return '';
   if (deployWatch.state === 'waiting') {
-    return `<li class="qs-active"><span class="spinner"></span><span>Wordt online gezet<span class="qs-step"> — even geduld</span></span></li>`;
+    return `<li class="qs-active"><span class="spinner"></span><span>Wordt online gezet<span class="qs-step"> — je kan gewoon verder werken</span></span></li>`;
   }
   if (deployWatch.state === 'live') {
     return `<li class="qs-done"><span class="qs-tick">&#10003;</span><span>Staat online</span></li>`;
