@@ -623,7 +623,7 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   padding: 0;
   cursor: pointer;
   font: inherit;
-  line-height: 0; /* no text box under the image to offset the squares */
+  text-align: center;
 }
 .variant-swatch img {
   width: var(--swatch-size); height: var(--swatch-size);
@@ -632,52 +632,52 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   border: 2px solid var(--espresso);
   display: block;
 }
-/* Name as a hover/focus tooltip: printed under each swatch it wrapped to
-   different line counts, which pushed the squares to uneven heights. */
-/* Below the swatch, not above: the fixed site header covers the space above
-   it whenever the picker sits high in the viewport, which hid the tooltip. */
-.variant-swatch span {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(-3px);
-  background: var(--espresso);
-  color: #fff;
-  padding: 0.32rem 0.6rem;
-  border-radius: var(--radius);
+/* Printed under the swatch rather than hidden in a tooltip. Three squares of
+   the same belt are not a choice; "60cm / EUR 50" against "120cm / EUR 99" is,
+   and a difference nobody can see without hovering is a difference nobody
+   knows about -- least of all on a phone, where there is no hover at all.
+   The squares stay level because the container aligns them at the top, so a
+   name that wraps lengthens its own label and nothing else. */
+.vs-label {
+  display: block;
+  margin-top: 0.45rem;
   font-family: var(--sans);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  line-height: 1.2;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  z-index: 5;
+  line-height: 1.25;
+  color: var(--espresso);
 }
-.variant-swatch span::after {
-  content: '';
-  position: absolute;
-  bottom: 100%; left: 50%;
-  margin-left: -4px;
-  border: 4px solid transparent;
-  border-bottom-color: var(--espresso);
+/* Two lines, then an ellipsis. A name like "Bordeaux met zilveren gesp" under
+   a 92px square would otherwise run to five lines and turn the picker into a
+   column of paragraphs. Nothing is lost: the full name is in the tooltip and
+   in the button's accessible name, so a screen reader and a hover both still
+   get all of it. Breaking mid-word only where a single word is itself too
+   long, which is the one case wrapping cannot solve. */
+.vs-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
-.variant-swatch:hover span,
-.variant-swatch:focus-visible span { opacity: 1; transform: translateX(-50%) translateY(0); }
+.vs-price {
+  display: block;
+  font-weight: 700;
+  color: var(--espresso-soft);
+  margin-top: 0.1em;
+}
+/* The one being shown is the one in the accent colour, name and price
+   together, so the picker answers "which am I looking at" on its own. */
+.variant-swatch.active .vs-label,
+.variant-swatch.active .vs-price { color: var(--rust); }
+.variant-swatch.active .vs-label { font-weight: 700; }
+.variant-swatch:hover .vs-label,
+.variant-swatch:hover .vs-price { color: var(--rust); }
 .variant-swatch:hover img { border-color: var(--rust); }
+.variant-swatch:focus-visible img { outline: 2px solid var(--rust); outline-offset: 2px; }
 .variant-swatch.active img { border-color: var(--rust); box-shadow: 0 0 0 2px var(--rust); }
 
-/* Name of the variant currently being shown, so it's readable without hovering. */
-/* Scoped to .product-info so it beats that block's own paragraph sizing --
-   this is a label for the swatches, not body copy, and shouldn't grow with it. */
-.product-info .variant-current,
-.variant-current {
-  margin: 0.8rem 0 0;
-  font-size: clamp(0.88rem, 0.78rem + 0.25vw, 1.05rem);
-  font-weight: 700;
-  color: var(--rust);
-}
 .spotlight-thumbs img {
   width: 62px; height: 62px;
   object-fit: cover;
@@ -1097,11 +1097,3 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   color: var(--espresso);
 }
 
-/* A price under a swatch, where the variants differ by price rather than by
-   colour. */
-.variant-swatch span small {
-  display: block;
-  font-weight: 700;
-  color: var(--espresso);
-  margin-top: 0.1em;
-}

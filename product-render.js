@@ -148,13 +148,6 @@ function updateLightboxChrome() {
   counter.textContent = multi ? `${photoIndex + 1} / ${images.length}` : '';
 }
 
-function updateVariantLabel() {
-  const el = document.getElementById('variantCurrent');
-  if (!el) return;
-  const v = product.variants[variantIndex];
-  el.textContent = v.name || `Variant ${variantIndex + 1}`;
-}
-
 // The price of what is on screen. A variant's own price wins where it has one
 // -- a belt in three lengths is one product at three prices -- and falls back
 // to the product's. Re-run on every variant change, so the number never
@@ -177,7 +170,6 @@ function setVariant(vi) {
   document.querySelectorAll('.variant-swatch').forEach((el, i) => {
     el.classList.toggle('active', i === variantIndex);
   });
-  updateVariantLabel();
   updatePrice();
   renderGallery();
 }
@@ -357,17 +349,18 @@ async function renderProduct() {
           // one price under three identical squares says nothing.
           const own = v.price ?? null;
           const priceTag = own !== null && variantPricesDiffer()
-            ? `<small>${window.SojozinoSite.formatPrice(own)}</small>` : '';
-          const full = priceTag ? `${label} — ${window.SojozinoSite.formatPrice(own)}` : label;
+            ? `<small class="vs-price">${window.SojozinoSite.formatPrice(own)}</small>` : '';
+          // The full name always reaches the tooltip and the accessible name,
+          // so clipping a long one on screen loses nothing.
+          const full = priceTag ? `${label} \u2014 ${window.SojozinoSite.formatPrice(own)}` : label;
           return `
           <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
                   title="${escapeHTML(full)}" aria-label="${escapeHTML(full)}">
             <img src="${escapeHTML(thumbUrl(variantImages(v)[0]?.src || ''))}" data-full="${escapeHTML(variantImages(v)[0]?.src || '')}" alt="" loading="lazy" decoding="async">
-            <span>${escapeHTML(label)}${priceTag}</span>
+            <span class="vs-label"><span class="vs-name">${escapeHTML(label)}</span>${priceTag}</span>
           </button>`;
         }).join('')}
       </div>
-      <p class="variant-current" id="variantCurrent"></p>
     </div>` : '';
 
   document.getElementById('productRoot').innerHTML = `
@@ -399,7 +392,6 @@ async function renderProduct() {
     </div>`;
 
   initSpotlight();
-  updateVariantLabel();
   updatePrice();
   renderGallery();
 }
