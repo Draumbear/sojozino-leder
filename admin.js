@@ -1774,6 +1774,7 @@ function snapshotSettings() {
     'Zin onder de titel': s.heroTagline,
     'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
     'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
+    'Regel onder je naam': s.brandSubtitle,
     'BTW-nummer': s.vatNumber, 'Adres': s.address,
     'Kleine regel bestelpagina': s.orderEyebrow, 'Titel bestelpagina': s.orderHeading,
     'Uitleg bestelpagina': s.orderIntro,
@@ -2160,6 +2161,7 @@ function renderSettingsTab() {
   $('#s-heroSecondaryLabel').value = s.heroSecondaryLabel || '';
   $('#s-contactHeading').value = s.contactHeading || '';
   $('#s-contactIntro').value = s.contactIntro || '';
+  $('#s-brandSubtitle').value = s.brandSubtitle || '';
   $('#s-vatNumber').value = s.vatNumber || '';
   $('#s-address').value = s.address || '';
   $('#s-orderEyebrow').value = s.orderEyebrow || '';
@@ -2189,6 +2191,7 @@ async function saveSettings() {
     'Zin onder de titel': $('#s-heroTagline').value.trim(),
     'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
     'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
+    'Regel onder je naam': $('#s-brandSubtitle').value.trim(),
     'BTW-nummer': $('#s-vatNumber').value.trim(), 'Adres': $('#s-address').value.trim(),
     'Kleine regel bestelpagina': $('#s-orderEyebrow').value.trim(), 'Titel bestelpagina': $('#s-orderHeading').value.trim(),
     'Uitleg bestelpagina': $('#s-orderIntro').value.trim(),
@@ -2218,6 +2221,7 @@ async function saveSettings() {
       heroSecondaryLabel: $('#s-heroSecondaryLabel').value.trim(),
       contactHeading: $('#s-contactHeading').value.trim(),
       contactIntro: $('#s-contactIntro').value.trim(),
+      brandSubtitle: $('#s-brandSubtitle').value.trim(),
       vatNumber: $('#s-vatNumber').value.trim(),
       address: $('#s-address').value.trim(),
       orderEyebrow: $('#s-orderEyebrow').value.trim(),

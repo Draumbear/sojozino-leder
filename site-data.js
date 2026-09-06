@@ -46,6 +46,14 @@ async function loadSite() {
   return res.json();
 }
 
+// The small line under the name in the menu bar. Undefined means the field
+// has never existed -- an older site.json -- and gets the wording the markup
+// used to carry. Empty means he cleared it on purpose, and the line goes away
+// rather than springing back to a default he just deleted.
+function brandSubtitle(site) {
+  return site.brandSubtitle === undefined ? 'Handgemaakt leder' : site.brandSubtitle.trim();
+}
+
 function renderHeader(site) {
   const el = document.getElementById('siteHeader');
   if (!el) return;
@@ -58,7 +66,7 @@ function renderHeader(site) {
       <nav class="nav">
         <a href="index.html" class="brand">
           <img src="${escapeHTML(site.logo?.mark || 'assets/logo-mark.png')}" alt="${escapeHTML(site.businessName)}">
-          <span class="brand-text">${escapeHTML(site.businessName)}<small>Handgemaakt leder</small></span>
+          <span class="brand-text">${escapeHTML(site.businessName)}${brandSubtitle(site) ? `<small>${escapeHTML(brandSubtitle(site))}</small>` : ''}</span>
         </a>
         <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
         <ul class="nav-links" id="navLinks">${links}</ul>
