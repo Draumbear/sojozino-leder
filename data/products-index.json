@@ -70,12 +70,11 @@
     "category": "handtassen",
     "subcategory": null,
     "cover": {
-      "src": "assets/products/handtas-den-mimi/cover.jpg",
+      "src": "assets/products/handtas-den-mimi/01.jpg",
       "alt": "Handtas Den Mimi"
     },
     "order": 6,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "lotustasje",

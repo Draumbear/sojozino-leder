@@ -73,10 +73,6 @@
           "alt": "Handtas Den Mimi"
         },
         {
-          "src": "assets/products/handtas-den-mimi/17.jpg",
-          "alt": "Handtas Den Mimi"
-        },
-        {
           "src": "assets/products/handtas-den-mimi/18.jpg",
           "alt": "Handtas Den Mimi"
         },
@@ -102,6 +98,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/handtas-den-mimi/02.jpg"
+  ]
 }
