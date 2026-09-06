@@ -498,12 +498,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "etuis",
     "cover": {
-      "src": "assets/products/messenbeugel/cover.jpg",
+      "src": "assets/products/messenbeugel/15.jpg",
       "alt": "Messenbeugel"
     },
     "order": 33,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "poepzakjeshouder-handtasje",

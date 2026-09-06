@@ -9,62 +9,6 @@
       "name": null,
       "images": [
         {
-          "src": "assets/products/messenbeugel/01.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/02.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/03.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/04.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/05.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/06.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/07.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/08.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/09.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/10.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/11.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/12.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/13.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
-          "src": "assets/products/messenbeugel/14.jpg",
-          "alt": "Messenbeugel"
-        },
-        {
           "src": "assets/products/messenbeugel/15.jpg",
           "alt": "Messenbeugel"
         },
@@ -126,6 +70,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/messenbeugel/14.jpg"
+  ]
 }
