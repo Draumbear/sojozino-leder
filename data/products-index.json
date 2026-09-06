@@ -559,12 +559,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "hoesjes",
     "cover": {
-      "src": "assets/products/tablethoes/cover.jpg",
+      "src": "assets/products/tablethoes/01.jpg",
       "alt": "Tablethoes"
     },
     "order": 38,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "telefoonhoesje-prosper",

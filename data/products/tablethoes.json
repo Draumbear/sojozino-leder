@@ -3,7 +3,7 @@
   "name": "Tablethoes",
   "category": "kleine-lederwaren",
   "subcategory": "hoesjes",
-  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over tablethoes.",
+  "description": "Den Bobo: Handgemaakt in leder. Een origami hoesje. De hoes is niet genaaid en wordt samen gehouden door twee zij riempjes. Binnenin is de hoes beschermd door extra schuimvulling en afgewerkt met een zachte suède om het scherm te beschermen\nNeem gerust contact op voor meer details over tablethoes.",
   "variants": [
     {
       "name": null,
@@ -74,6 +74,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/tablethoes/04.jpg"
+  ]
 }
