@@ -731,10 +731,157 @@ function initTabs() {
 // ---------- Overview ----------
 function renderOverview() {
   $('#statProducts').textContent = state.productsIndex.length;
+  // Only if it is already open: opening it is his choice, and re-running it
+  // unasked would fetch every product on every save.
+  if (productHealthLoaded && !$('#productHealth').hidden) renderProductHealth();
   $('#statCategories').textContent = state.categories.length;
   const today = new Date().toISOString().slice(0, 10);
   const next = [...state.presence].filter(p => p.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
   $('#statNextMarket').textContent = next ? new Date(next.date + 'T00:00:00').toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' }) : '—';
+}
+
+// ---------- What is still missing ----------
+// Forty-odd products arrived from an import, most of them carrying a
+// description the importer wrote rather than one Johnny did. That is invisible
+// from the product list -- every row looks equally finished -- so the work left
+// to do had no shape and no end. This gives it both.
+
+// The importer's stand-in text. It reads like a description and is not one, so
+// counting it as filled in would hide exactly the work this panel exists to
+// surface.
+const PLACEHOLDER_DESCRIPTION = /beschrijving volgt binnenkort/i;
+
+function describeGaps(detail) {
+  const gaps = [];
+  const description = (detail.description || '').trim();
+  if (!description || PLACEHOLDER_DESCRIPTION.test(description)) gaps.push('beschrijving');
+
+  // A price counts as set when the product has one, or when every variant does.
+  // Some variants priced and others not is not "priced", it is half-done, and
+  // the site would show "vanaf" a number that skips the unpriced ones.
+  const variants = detail.variants || [];
+  const named = variants.filter(v => v.name);
+  const pricedVariants = named.filter(v => v.price !== null && v.price !== undefined);
+  const hasPrice = (detail.price !== null && detail.price !== undefined)
+    || (named.length > 0 && pricedVariants.length === named.length);
+  if (!hasPrice) gaps.push(named.length && pricedVariants.length ? 'prijs bij elke variant' : 'prijs');
+
+  if (!variants.some(v => (v.images || []).length)) gaps.push("foto's");
+  return gaps;
+}
+
+// Read from the published site rather than through the API: 47 files is 47
+// calls otherwise, against a rate limit shared with saving. Same origin, so it
+// costs nothing and needs no token -- at the price of describing what is live
+// rather than what is saved-but-unpublished, which for a to-do list is close
+// enough to true.
+async function loadProductDetails(slugs) {
+  const out = [];
+  const BATCH = 8;
+  for (let i = 0; i < slugs.length; i += BATCH) {
+    const chunk = slugs.slice(i, i + BATCH);
+    const loaded = await Promise.all(chunk.map(async (slug) => {
+      if (productCache[slug]) return productCache[slug];
+      try {
+        const res = await fetch(`data/products/${slug}.json?cb=${Date.now()}`, { cache: 'no-store' });
+        return res.ok ? await res.json() : null;
+      } catch { return null; }
+    }));
+    out.push(...loaded);
+  }
+  return out;
+}
+
+let productHealthLoaded = false;
+
+async function renderProductHealth() {
+  const panel = $('#productHealth');
+  const summary = $('#phSummary');
+  const slugs = state.productsIndex.map(p => p.slug);
+  if (!slugs.length) {
+    summary.textContent = 'Er staan nog geen producten op de website.';
+    $('#phCounts').innerHTML = '';
+    $('#phList').innerHTML = '';
+    return;
+  }
+
+  summary.textContent = 'Even kijken\u2026';
+  const details = await loadProductDetails(slugs);
+
+  const rows = state.productsIndex.map((p, i) => ({
+    slug: p.slug,
+    name: p.name,
+    gaps: details[i] ? describeGaps(details[i]) : [],
+    unknown: !details[i],
+  }));
+  const complete = rows.filter(r => !r.unknown && !r.gaps.length);
+  const incomplete = rows.filter(r => r.gaps.length);
+  const pct = Math.round((complete.length / rows.length) * 100);
+
+  $('#phBarFill').style.width = `${pct}%`;
+  $('#phBar').classList.toggle('done', pct === 100);
+  $('#phBar').setAttribute('aria-label', `${pct}% van je producten is volledig ingevuld`);
+  summary.textContent = complete.length === rows.length
+    ? `Alle ${rows.length} producten zijn volledig ingevuld.`
+    : `${complete.length} van de ${rows.length} producten zijn volledig ingevuld (${pct}%).`;
+
+  // One product mist iets, meerdere missen iets: the verb has to follow the
+  // number, or the panel reads like it was written by a machine.
+  const matching = (prefix) => incomplete.filter(r => r.gaps.some(g => g.startsWith(prefix)));
+  const kinds = [
+    { prefix: 'beschrijving', what: 'een eigen beschrijving', title: 'Beschrijving ontbreekt' },
+    { prefix: 'prijs', what: 'een prijs', title: 'Prijs ontbreekt' },
+    { prefix: 'foto', what: "foto's", title: "Foto's ontbreken" },
+  ].map(k => ({ ...k, items: matching(k.prefix) })).filter(k => k.items.length);
+
+  $('#phCounts').innerHTML = kinds.map(k => {
+    const n = k.items.length;
+    return `<li><strong>${n}</strong> ${n === 1 ? 'product mist' : 'producten missen'} nog ${esc(k.what)}.</li>`;
+  }).join('');
+
+  // Grouped by what is missing rather than one long list: the work is done in
+  // batches -- an evening of descriptions, an evening of prices -- not product
+  // by product.
+  const groups = kinds.map(k => {
+    const items = k.items;
+    return `
+      <details class="ph-group">
+        <summary>${esc(k.title)} (${items.length})</summary>
+        ${items.map(r => `
+          <div class="ph-item">
+            <span>
+              <strong>${esc(r.name)}</strong>
+              <span class="ph-missing">mist: ${esc(r.gaps.join(', '))}</span>
+            </span>
+            <button class="btn-admin secondary small" type="button" data-ph-slug="${esc(r.slug)}">Invullen</button>
+          </div>`).join('')}
+      </details>`;
+  }).join('');
+  $('#phList').innerHTML = groups;
+  productHealthLoaded = true;
+}
+
+function initProductHealth() {
+  const box = $('#statProductsBox');
+  const panel = $('#productHealth');
+  box.addEventListener('click', () => {
+    const opening = panel.hidden;
+    panel.hidden = !opening;
+    box.setAttribute('aria-expanded', String(opening));
+    if (opening) {
+      renderProductHealth();
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  // Straight into the editor for the product that needs the work.
+  $('#phList').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-ph-slug]');
+    if (!btn) return;
+    $all('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === 'products'));
+    $all('.admin-tab').forEach(t => t.hidden = t.id !== 'tab-products');
+    openProductEditor(btn.dataset.phSlug);
+  });
 }
 
 // The product page labels a single item with its category, so it needs the
@@ -2385,6 +2532,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConnect();
   initTabs();
   initReport();
+  initProductHealth();
   showDashboardVersion();
   initSettingsSubTabs();
 

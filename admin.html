@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=665ac5a7">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=665ac5a7">
+<link rel="stylesheet" href="admin.css?v=a432da7b">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=a432da7b">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -127,11 +127,25 @@
       <div class="admin-card">
         <h2>Welkom terug</h2>
         <div class="stat-grid">
-          <div class="stat-box"><div class="num" id="statProducts">0</div><div class="label">Producten</div></div>
+          <!-- A button, because it does something. The other two are just numbers. -->
+          <button class="stat-box stat-box--action" id="statProductsBox" type="button" aria-expanded="false" aria-controls="productHealth">
+            <div class="num" id="statProducts">0</div>
+            <div class="label">Producten <span class="stat-more">bekijk wat er nog ontbreekt</span></div>
+          </button>
           <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
           <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
         </div>
         <p class="hint" style="margin-top:1.4rem;" id="overviewPublishHint"></p>
+      </div>
+
+      <!-- What is still missing, and where to go and fix it. Hidden until he
+           asks: the overview should open calm, not with a list of chores. -->
+      <div class="admin-card" id="productHealth" hidden>
+        <h2>Wat is er nog niet ingevuld?</h2>
+        <div class="ph-bar" role="img" id="phBar" aria-label=""><span id="phBarFill"></span></div>
+        <p class="ph-summary" id="phSummary"></p>
+        <ul class="ph-counts" id="phCounts"></ul>
+        <div id="phList"></div>
       </div>
     </section>
 
@@ -611,7 +625,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=665ac5a7"></script>
-<script src="admin.js?v=665ac5a7"></script>
+<script src="admin-github.js?v=a432da7b"></script>
+<script src="admin.js?v=a432da7b"></script>
 </body>
 </html>
