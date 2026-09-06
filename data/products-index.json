@@ -481,12 +481,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "etuis",
     "cover": {
-      "src": "assets/products/mes-tasje/cover.jpg",
+      "src": "assets/products/mes-tasje/01.jpg",
       "alt": "Mes Tasje"
     },
     "order": 32,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "messenbeugel",
