@@ -712,8 +712,6 @@ button.conn-status.off { cursor: default; }
   text-align: inherit;
   cursor: pointer;
   border: 1px solid var(--a-line);
-  /* The one tile that does something, so the one tile with an edge on it. */
-  border-left: 3px solid var(--a-espresso);
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 .stat-box--action:hover {
@@ -738,7 +736,10 @@ button.conn-status.off { cursor: default; }
    on the element being a transformable box, which for a one-character span
    inside a flex row it is not reliably. Swapping the content always works, and
    a caret pointing down reads more plainly than a chevron on its side. */
-.stat-chevron { font-size: 1.05em; line-height: 1; }
+.stat-chevron, .stat-arrow { font-size: 1.05em; line-height: 1; }
+/* An arrow goes somewhere; the triangle on Producten opens something in place.
+   Two different promises, so two different marks. */
+.stat-arrow::before { content: "→"; }
 .stat-chevron::before { content: "▸"; }
 .stat-box--action[aria-expanded="true"] .stat-chevron::before { content: "▾"; }
 

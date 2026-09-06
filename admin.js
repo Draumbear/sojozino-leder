@@ -739,6 +739,8 @@ function renderOverview() {
   const today = new Date().toISOString().slice(0, 10);
   const next = [...state.presence].filter(p => p.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
   $('#statNextMarket').textContent = next ? new Date(next.date + 'T00:00:00').toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' }) : '—';
+  const marketNote = $('#statMarketNote');
+  if (marketNote) marketNote.textContent = next ? next.title : 'nog niets gepland';
 }
 
 // ---------- What is still missing ----------
@@ -906,6 +908,14 @@ function refreshProductHealth() {
   return productHealthBusy;
 }
 
+// Switching tabs from somewhere other than the tab bar. Written once, because
+// three tiles and a change list all need to do it and each hand-rolled copy is
+// a chance to leave the highlight on the wrong tab.
+function goToTab(name) {
+  $all('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  $all('.admin-tab').forEach(t => t.hidden = t.id !== `tab-${name}`);
+}
+
 function initProductHealth() {
   const box = $('#statProductsBox');
   const panel = $('#productHealth');
@@ -923,8 +933,7 @@ function initProductHealth() {
   $('#phList').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-ph-slug]');
     if (!btn) return;
-    $all('[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === 'products'));
-    $all('.admin-tab').forEach(t => t.hidden = t.id !== 'tab-products');
+    goToTab('products');
     openProductEditor(btn.dataset.phSlug);
   });
 }
@@ -2584,6 +2593,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initReport();
   initProductHealth();
+
+  $('#statCategoriesBox').addEventListener('click', () => goToTab('categories'));
+
+  // Straight to the market it names, since that is the one the number is
+  // about. With nothing coming up there is nothing to open, so it lands on
+  // the tab with its "+ Nieuwe datum" button in view.
+  $('#statMarketBox').addEventListener('click', () => {
+    goToTab('presence');
+    const today = new Date().toISOString().slice(0, 10);
+    const next = [...state.presence]
+      .filter(p => p.date >= today)
+      .sort((a, b) => a.date.localeCompare(b.date))[0];
+    if (next) openPresenceForm(next);
+  });
   showDashboardVersion();
   initSettingsSubTabs();
 

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=64264fe8">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=64264fe8">
+<link rel="stylesheet" href="admin.css?v=d13f3786">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=d13f3786">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -135,8 +135,18 @@
             <div class="stat-bar" id="statProductsBar" hidden><span id="statProductsFill"></span></div>
             <div class="stat-more"><span id="statProductsNote">bekijk wat er nog ontbreekt</span> <span class="stat-chevron" aria-hidden="true"></span></div>
           </button>
-          <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
-          <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
+          <!-- All three go somewhere, so all three are buttons. The arrow means
+               "takes you there"; the triangle on Producten means "opens here". -->
+          <button class="stat-box stat-box--action" id="statCategoriesBox" type="button">
+            <div class="num" id="statCategories">0</div>
+            <div class="label">Categorieën</div>
+            <div class="stat-more"><span>beheer je categorieën</span> <span class="stat-arrow" aria-hidden="true"></span></div>
+          </button>
+          <button class="stat-box stat-box--action" id="statMarketBox" type="button">
+            <div class="num" id="statNextMarket">—</div>
+            <div class="label">Volgende markt</div>
+            <div class="stat-more"><span id="statMarketNote">bekijk je agenda</span> <span class="stat-arrow" aria-hidden="true"></span></div>
+          </button>
         </div>
         <p class="hint" style="margin-top:1.4rem;" id="overviewPublishHint"></p>
       </div>
@@ -629,7 +639,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=64264fe8"></script>
-<script src="admin.js?v=64264fe8"></script>
+<script src="admin-github.js?v=d13f3786"></script>
+<script src="admin.js?v=d13f3786"></script>
 </body>
 </html>
