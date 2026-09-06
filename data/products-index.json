@@ -5,12 +5,11 @@
     "category": "handtassen",
     "subcategory": null,
     "cover": {
-      "src": "assets/products/tties/cover.jpg",
-      "alt": "Tties"
+      "src": "assets/products/tties/den-sofie/01.jpg",
+      "alt": "Tties — Den Sofie"
     },
     "order": 1,
-    "featured": false,
-    "fit": "contain"
+    "featured": false
   },
   {
     "slug": "clutch",

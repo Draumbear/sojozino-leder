@@ -3,7 +3,7 @@
   "name": "Tties",
   "category": "handtassen",
   "subcategory": null,
-  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over tties.",
+  "description": "Handgemaakt in leder. Met de machine gestikt of met de hand genaaid. Deze handtassen bestaan in 3 versie: de small (den Sofie), de medium (den Zita) en de large (den Ulla).\nNeem gerust contact op voor meer details over Tties.",
   "variants": [
     {
       "name": "Den Sofie",
@@ -128,6 +128,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/tties/den-sofie/02.jpg"
+  ]
 }
