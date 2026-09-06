@@ -13,10 +13,6 @@
           "alt": "Kaartenhouder Bruin Idem Grofleder"
         },
         {
-          "src": "assets/products/kaartenhouder-bruin-idem-grofleder/02.jpg",
-          "alt": "Kaartenhouder Bruin Idem Grofleder"
-        },
-        {
           "src": "assets/products/kaartenhouder-bruin-idem-grofleder/03.jpg",
           "alt": "Kaartenhouder Bruin Idem Grofleder"
         },
@@ -34,6 +30,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/kaartenhouder-bruin-idem-grofleder/02.jpg"
+  ]
 }
