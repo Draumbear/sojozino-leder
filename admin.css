@@ -704,22 +704,62 @@ button.conn-status.off { cursor: default; }
 }
 
 /* ---------- What is still missing ---------- */
+/* The other two tiles are numbers; this one is a button, so it has to stop
+   looking like its neighbours -- a real border, a hover that lifts, and a
+   chevron that turns when it is open. */
 .stat-box--action {
   font: inherit;
   text-align: inherit;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 1px solid var(--a-line);
+  /* The one tile that does something, so the one tile with an edge on it. */
+  border-left: 3px solid var(--a-espresso);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
-.stat-box--action:hover { border-color: var(--a-line); }
+.stat-box--action:hover {
+  border-color: var(--a-espresso);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+.stat-box--action:hover .stat-more { text-decoration: underline; }
+.stat-box--action:focus-visible { outline: 2px solid var(--a-espresso); outline-offset: 2px; }
 .stat-more {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--a-ink-soft);
-  margin-top: 0.15rem;
+  color: var(--a-espresso);
+  margin-top: 0.4rem;
 }
+/* The glyph itself changes rather than rotating: a rotated character depends
+   on the element being a transformable box, which for a one-character span
+   inside a flex row it is not reliably. Swapping the content always works, and
+   a caret pointing down reads more plainly than a chevron on its side. */
+.stat-chevron { font-size: 1.05em; line-height: 1; }
+.stat-chevron::before { content: "▸"; }
+.stat-box--action[aria-expanded="true"] .stat-chevron::before { content: "▾"; }
+
+/* The same bar as in the panel, at tile size. */
+.stat-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--a-line);
+  overflow: hidden;
+  margin-top: 0.6rem;
+}
+.stat-bar[hidden] { display: none; }
+.stat-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--a-espresso);
+  transition: width 0.6s ease;
+}
+.stat-bar.done span, .ph-bar.done span { background: #4c8a4f; }
 .ph-bar {
   height: 10px;
   border-radius: 999px;

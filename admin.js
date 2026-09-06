@@ -731,9 +731,9 @@ function initTabs() {
 // ---------- Overview ----------
 function renderOverview() {
   $('#statProducts').textContent = state.productsIndex.length;
-  // Only if it is already open: opening it is his choice, and re-running it
-  // unasked would fetch every product on every save.
-  if (productHealthLoaded && !$('#productHealth').hidden) renderProductHealth();
+  // The bar on the tile is worth having without being asked for, so this runs
+  // on every overview render -- guarded against overlapping itself.
+  refreshProductHealth();
   $('#statCategories').textContent = state.categories.length;
   const today = new Date().toISOString().slice(0, 10);
   const next = [...state.presence].filter(p => p.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -744,11 +744,12 @@ function renderOverview() {
 // Forty-odd products arrived from an import, most of them carrying a
 // description the importer wrote rather than one Johnny did. That is invisible
 // from the product list -- every row looks equally finished -- so the work left
-// to do had no shape and no end. This gives it both.
+// to do had no shape and no end. This gives it both: a bar on the overview that
+// says how far along he is, and behind it the products themselves, grouped by
+// what they lack, each one a click from the field that fills it.
 
 // The importer's stand-in text. It reads like a description and is not one, so
-// counting it as filled in would hide exactly the work this panel exists to
-// surface.
+// counting it as filled in would hide exactly the work this exists to surface.
 const PLACEHOLDER_DESCRIPTION = /beschrijving volgt binnenkort/i;
 
 function describeGaps(detail) {
@@ -792,48 +793,81 @@ async function loadProductDetails(slugs) {
   return out;
 }
 
-let productHealthLoaded = false;
+// Worked out once and kept, so the bar on the tile and the list behind it never
+// disagree, and opening the panel costs nothing.
+let productHealth = null;
+let productHealthBusy = null;
 
-async function renderProductHealth() {
-  const panel = $('#productHealth');
+const HEALTH_KINDS = [
+  { prefix: 'beschrijving', what: 'een eigen beschrijving', title: 'Beschrijving ontbreekt' },
+  { prefix: 'prijs', what: 'een prijs', title: 'Prijs ontbreekt' },
+  { prefix: 'foto', what: "foto's", title: "Foto's ontbreken" },
+];
+
+async function computeProductHealth() {
+  const index = state.productsIndex;
+  const details = await loadProductDetails(index.map(p => p.slug));
+  const rows = index.map((p, i) => ({
+    slug: p.slug,
+    name: p.name,
+    gaps: details[i] ? describeGaps(details[i]) : [],
+    unknown: !details[i],
+  }));
+  const incomplete = rows.filter(r => r.gaps.length);
+  const complete = rows.filter(r => !r.unknown && !r.gaps.length);
+  const kinds = HEALTH_KINDS
+    .map(k => ({ ...k, items: incomplete.filter(r => r.gaps.some(g => g.startsWith(k.prefix))) }))
+    .filter(k => k.items.length);
+  return {
+    total: rows.length,
+    complete: complete.length,
+    pct: rows.length ? Math.round((complete.length / rows.length) * 100) : 100,
+    kinds,
+  };
+}
+
+// The bar on the tile itself, so the state of things is visible without asking.
+function renderProductHealthTile() {
+  const fill = $('#statProductsFill');
+  const note = $('#statProductsNote');
+  const bar = $('#statProductsBar');
+  if (!fill || !note) return;
+
+  if (!productHealth) {
+    bar.hidden = true;
+    note.textContent = 'bekijk wat er nog ontbreekt';
+    return;
+  }
+  const { complete, total, pct } = productHealth;
+  bar.hidden = false;
+  fill.style.width = `${pct}%`;
+  bar.classList.toggle('done', pct === 100);
+  note.textContent = pct === 100
+    ? 'alles is ingevuld'
+    : `${complete} van ${total} volledig ingevuld`;
+}
+
+function renderProductHealthPanel() {
   const summary = $('#phSummary');
-  const slugs = state.productsIndex.map(p => p.slug);
-  if (!slugs.length) {
+  if (!productHealth) { summary.textContent = 'Even kijken\u2026'; return; }
+  const { complete, total, pct, kinds } = productHealth;
+
+  if (!total) {
     summary.textContent = 'Er staan nog geen producten op de website.';
     $('#phCounts').innerHTML = '';
     $('#phList').innerHTML = '';
     return;
   }
 
-  summary.textContent = 'Even kijken\u2026';
-  const details = await loadProductDetails(slugs);
-
-  const rows = state.productsIndex.map((p, i) => ({
-    slug: p.slug,
-    name: p.name,
-    gaps: details[i] ? describeGaps(details[i]) : [],
-    unknown: !details[i],
-  }));
-  const complete = rows.filter(r => !r.unknown && !r.gaps.length);
-  const incomplete = rows.filter(r => r.gaps.length);
-  const pct = Math.round((complete.length / rows.length) * 100);
-
   $('#phBarFill').style.width = `${pct}%`;
   $('#phBar').classList.toggle('done', pct === 100);
   $('#phBar').setAttribute('aria-label', `${pct}% van je producten is volledig ingevuld`);
-  summary.textContent = complete.length === rows.length
-    ? `Alle ${rows.length} producten zijn volledig ingevuld.`
-    : `${complete.length} van de ${rows.length} producten zijn volledig ingevuld (${pct}%).`;
+  summary.textContent = complete === total
+    ? `Alle ${total} producten zijn volledig ingevuld.`
+    : `${complete} van de ${total} producten zijn volledig ingevuld (${pct}%).`;
 
   // One product mist iets, meerdere missen iets: the verb has to follow the
   // number, or the panel reads like it was written by a machine.
-  const matching = (prefix) => incomplete.filter(r => r.gaps.some(g => g.startsWith(prefix)));
-  const kinds = [
-    { prefix: 'beschrijving', what: 'een eigen beschrijving', title: 'Beschrijving ontbreekt' },
-    { prefix: 'prijs', what: 'een prijs', title: 'Prijs ontbreekt' },
-    { prefix: 'foto', what: "foto's", title: "Foto's ontbreken" },
-  ].map(k => ({ ...k, items: matching(k.prefix) })).filter(k => k.items.length);
-
   $('#phCounts').innerHTML = kinds.map(k => {
     const n = k.items.length;
     return `<li><strong>${n}</strong> ${n === 1 ? 'product mist' : 'producten missen'} nog ${esc(k.what)}.</li>`;
@@ -841,24 +875,34 @@ async function renderProductHealth() {
 
   // Grouped by what is missing rather than one long list: the work is done in
   // batches -- an evening of descriptions, an evening of prices -- not product
-  // by product.
-  const groups = kinds.map(k => {
-    const items = k.items;
-    return `
-      <details class="ph-group">
-        <summary>${esc(k.title)} (${items.length})</summary>
-        ${items.map(r => `
-          <div class="ph-item">
-            <span>
-              <strong>${esc(r.name)}</strong>
-              <span class="ph-missing">mist: ${esc(r.gaps.join(', '))}</span>
-            </span>
-            <button class="btn-admin secondary small" type="button" data-ph-slug="${esc(r.slug)}">Invullen</button>
-          </div>`).join('')}
-      </details>`;
-  }).join('');
-  $('#phList').innerHTML = groups;
-  productHealthLoaded = true;
+  // by product. Open by default where there is only one group to look at.
+  $('#phList').innerHTML = kinds.map((k, i) => `
+    <details class="ph-group"${kinds.length === 1 || i === 0 ? ' open' : ''}>
+      <summary>${esc(k.title)} (${k.items.length})</summary>
+      ${k.items.map(r => `
+        <div class="ph-item">
+          <span>
+            <strong>${esc(r.name)}</strong>
+            <span class="ph-missing">mist: ${esc(r.gaps.join(', '))}</span>
+          </span>
+          <button class="btn-admin secondary small" type="button" data-ph-slug="${esc(r.slug)}">Invullen</button>
+        </div>`).join('')}
+    </details>`).join('');
+}
+
+// One in flight at a time: the overview re-renders after every save, and 47
+// fetches per save would be absurd.
+function refreshProductHealth() {
+  if (productHealthBusy) return productHealthBusy;
+  productHealthBusy = computeProductHealth()
+    .then(result => {
+      productHealth = result;
+      renderProductHealthTile();
+      if (!$('#productHealth').hidden) renderProductHealthPanel();
+    })
+    .catch(() => { /* the tile simply keeps its invitation to look */ })
+    .finally(() => { productHealthBusy = null; });
+  return productHealthBusy;
 }
 
 function initProductHealth() {
@@ -868,10 +912,10 @@ function initProductHealth() {
     const opening = panel.hidden;
     panel.hidden = !opening;
     box.setAttribute('aria-expanded', String(opening));
-    if (opening) {
-      renderProductHealth();
-      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    if (!opening) return;
+    renderProductHealthPanel();
+    if (!productHealth) refreshProductHealth();
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   // Straight into the editor for the product that needs the work.

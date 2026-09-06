@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=a432da7b">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=a432da7b">
+<link rel="stylesheet" href="admin.css?v=9fe2286e">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=9fe2286e">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -127,10 +127,13 @@
       <div class="admin-card">
         <h2>Welkom terug</h2>
         <div class="stat-grid">
-          <!-- A button, because it does something. The other two are just numbers. -->
+          <!-- A button, because it does something. The other two are only
+               numbers, so this one has to look different from them. -->
           <button class="stat-box stat-box--action" id="statProductsBox" type="button" aria-expanded="false" aria-controls="productHealth">
             <div class="num" id="statProducts">0</div>
-            <div class="label">Producten <span class="stat-more">bekijk wat er nog ontbreekt</span></div>
+            <div class="label">Producten</div>
+            <div class="stat-bar" id="statProductsBar" hidden><span id="statProductsFill"></span></div>
+            <div class="stat-more"><span id="statProductsNote">bekijk wat er nog ontbreekt</span> <span class="stat-chevron" aria-hidden="true"></span></div>
           </button>
           <div class="stat-box"><div class="num" id="statCategories">0</div><div class="label">Categorieën</div></div>
           <div class="stat-box"><div class="num" id="statNextMarket">—</div><div class="label">Volgende markt</div></div>
@@ -625,7 +628,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=a432da7b"></script>
-<script src="admin.js?v=a432da7b"></script>
+<script src="admin-github.js?v=9fe2286e"></script>
+<script src="admin.js?v=9fe2286e"></script>
 </body>
 </html>
