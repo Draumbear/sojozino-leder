@@ -19,6 +19,10 @@ const DASHBOARD_MARKER = '[dashboard]';
 // Draws a line under everything older, so the list can be started fresh --
 // at handover, or whenever it has become a wall of noise.
 const HISTORY_RESET_MARKER = '[history-reset]';
+// On the empty commit publish() makes. That commit is the one thing that costs
+// a build, so it is the one thing worth counting. Safe to put in a message:
+// Netlify only looks for '[skip netlify]'.
+const PUBLISH_MARKER = '[publish]';
 
 function hasMarker(message, marker) {
   return (message || '').split('\n').some(line => line.trim() === marker);
@@ -399,7 +403,26 @@ class GitHubAPI {
   // The publish step: an empty commit with NO skip marker, so Netlify picks it
   // up and ships every save made since the last publish in a single build.
   async publish(message = 'Publiceer wijzigingen') {
-    return this._commitTreeEntries([], message);
+    // Deliberately no [dashboard] trailer: a publish is not a change to the
+    // site's content, so it does not belong in the list of things to undo.
+    return this._commitTreeEntries([], `${message}\n\n${PUBLISH_MARKER}`);
+  }
+
+  // How many builds this calendar month has cost so far. Counted from the
+  // branch history rather than from Netlify: the number that matters is the one
+  // Johnny controls, and reading it here needs no second credential -- a Netlify
+  // token cannot be scoped, so one in his browser would grant far more than a
+  // count is worth. Returns null when the history cannot be read, which callers
+  // treat as "unknown" rather than as zero.
+  async publishesThisMonth() {
+    const since = new Date();
+    since.setUTCDate(1);
+    since.setUTCHours(0, 0, 0, 0);
+    const url = `${this.base}/commits?sha=${this.branch}&since=${since.toISOString()}&per_page=100&_=${Date.now()}`;
+    const res = await fetch(url, { headers: this.headers(), cache: 'no-store' });
+    if (!res.ok) return null;
+    const commits = await res.json();
+    return commits.filter(c => hasMarker(c.commit.message, PUBLISH_MARKER)).length;
   }
 
   // Undo, for anything. Rather than reconstructing what a change contained --
@@ -455,11 +478,14 @@ class GitHubAPI {
       // Everything before a reset belongs to whoever used the dashboard before,
       // and is not his to undo.
       if (hasMarker(message, HISTORY_RESET_MARKER)) break;
+      // The boundary comes first. A publish commit carries no [dashboard]
+      // trailer, so filtering before this would `continue` straight past the
+      // line it draws and list saves that are already live.
+      // Only a deferred setup has a boundary to stop at.
+      if (DEFER_PUBLISH && !isDeferredSave(message)) break;
       // Commits that did not come from here -- deploys, engineering work -- are
       // not changes he made, so they are not changes he can be offered back.
       if (!hasMarker(message, DASHBOARD_MARKER)) continue;
-      // Only a deferred setup has a boundary to stop at.
-      if (DEFER_PUBLISH && !isDeferredSave(message)) break;
       const target = (message.match(/\[target: ([^\]]+)\]/) || [])[1] || null;
       pending.push({
         sha: c.sha,

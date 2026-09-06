@@ -665,3 +665,16 @@ button.conn-status.off { cursor: default; }
   white-space: nowrap;
   margin-left: auto;
 }
+
+/* The month's publishes, under the publish button. Only ever shown where a
+   publish actually costs a build. */
+.pd-budget {
+  margin: 0.7rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--a-line);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--a-ink-soft);
+}
+.pd-budget[hidden] { display: none; }
+.pd-budget.warn { color: var(--a-danger); font-weight: 600; }

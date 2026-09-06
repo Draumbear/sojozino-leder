@@ -259,6 +259,9 @@ async function refreshPublishBar() {
   // Publishing is only a step where saves are held back; otherwise this is
   // purely a history with an undo against each line.
   $('#publishBtn').hidden = !DEFER_PUBLISH;
+  // Not awaited: a count is the least urgent thing in this panel, and it must
+  // never hold up the list of changes it sits under.
+  renderPublishBudget();
   $('#publishCount').textContent = DEFER_PUBLISH
     ? (pending.length === 1 ? '1 wijziging staat nog niet online' : `${pending.length} wijzigingen staan nog niet online`)
     : 'Recente wijzigingen';
@@ -330,6 +333,40 @@ async function publishChanges() {
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
 const DASHBOARD_VERSION = '1.0';
+
+// Netlify's free plan includes 300 build minutes a month. This site has no
+// build step -- netlify.toml publishes the folder as it stands -- so a deploy is
+// seconds of work, but Netlify bills in whole minutes, which makes one publish
+// cost about one minute.
+//
+// Worth checking against the plan the account is actually on before trusting
+// it: Netlify has been moving plans from build minutes to credits, and the
+// number below is the only thing that would need changing.
+const MONTHLY_PUBLISH_BUDGET = 300;
+// Where it stops being a fact and starts being a warning.
+const PUBLISH_BUDGET_WARN = 0.7;
+
+// Counted rather than asked. Netlify's own figure would need a token, and a
+// Netlify token cannot be scoped -- it grants the whole account, including
+// every form submission -- so one in his browser would cost far more than a
+// number is worth. What he controls is how often he publishes, and that is
+// readable from the history the dashboard already has.
+async function renderPublishBudget() {
+  const el = $('#publishBudget');
+  if (!el) return;
+  // Publishing only costs a build where saves are held back for one.
+  if (!DEFER_PUBLISH) { el.hidden = true; return; }
+
+  const used = await api.publishesThisMonth().catch(() => null);
+  if (used === null) { el.hidden = true; return; }
+
+  const month = new Date().toLocaleDateString('nl-BE', { month: 'long' });
+  el.hidden = false;
+  el.classList.toggle('warn', used >= MONTHLY_PUBLISH_BUDGET * PUBLISH_BUDGET_WARN);
+  el.textContent = used >= MONTHLY_PUBLISH_BUDGET * PUBLISH_BUDGET_WARN
+    ? `Je publiceerde ${used} keer in ${month}, van de ongeveer ${MONTHLY_PUBLISH_BUDGET} die er per maand in zitten. Sla gerust meerdere dingen op en publiceer ze in één keer.`
+    : `${used} van ongeveer ${MONTHLY_PUBLISH_BUDGET} publicaties deze maand.`;
+}
 
 // ---------- Iets melden ----------
 // "Het werkt niet" costs a round trip. What turns it into something diagnosable
