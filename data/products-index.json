@@ -121,12 +121,11 @@
     "category": "handtassen",
     "subcategory": null,
     "cover": {
-      "src": "assets/products/rugbyhandtas/cover.jpg",
+      "src": "assets/products/rugbyhandtas/03.jpg",
       "alt": "Rugbyhandtas"
     },
     "order": 10,
-    "featured": false,
-    "fit": "contain"
+    "featured": false
   },
   {
     "slug": "schimmeltas",

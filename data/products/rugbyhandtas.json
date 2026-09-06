@@ -9,14 +9,6 @@
       "name": null,
       "images": [
         {
-          "src": "assets/products/rugbyhandtas/01.jpg",
-          "alt": "Rugbyhandtas"
-        },
-        {
-          "src": "assets/products/rugbyhandtas/02.jpg",
-          "alt": "Rugbyhandtas"
-        },
-        {
           "src": "assets/products/rugbyhandtas/03.jpg",
           "alt": "Rugbyhandtas"
         },
@@ -34,14 +26,6 @@
         },
         {
           "src": "assets/products/rugbyhandtas/07.jpg",
-          "alt": "Rugbyhandtas"
-        },
-        {
-          "src": "assets/products/rugbyhandtas/08.jpg",
-          "alt": "Rugbyhandtas"
-        },
-        {
-          "src": "assets/products/rugbyhandtas/09.jpg",
           "alt": "Rugbyhandtas"
         },
         {
@@ -70,6 +54,22 @@
         },
         {
           "src": "assets/products/rugbyhandtas/16.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/01.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/02.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/08.jpg",
+          "alt": "Rugbyhandtas"
+        },
+        {
+          "src": "assets/products/rugbyhandtas/09.jpg",
           "alt": "Rugbyhandtas"
         },
         {
@@ -122,6 +122,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/rugbyhandtas/12.jpg"
+  ]
 }
