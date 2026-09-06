@@ -4,6 +4,11 @@
 // (listens for the 'site:loaded' event it dispatches) so header/footer are
 // already in place.
 
+// Held here because productCardHTML is called from several places that do not
+// carry the site with them, and the VAT wording is a property of the site
+// rather than of any one card.
+let siteData = {};
+
 async function loadJSON(path) {
   const res = await fetch(`${path}?_=${Date.now()}`, { cache: 'no-store' });
   if (!res.ok) return null;
@@ -19,12 +24,17 @@ function productCardHTML(p) {
   // white backdrop are contained (whole product visible, letterboxing
   // invisible against a white tile), busier photos fill the tile instead.
   const fit = p.fit === 'contain' ? ' fit-contain' : ' fit-cover';
+  // Already escaped where it is built: priceLabel returns a fragment of
+  // markup, because "vanaf" and the btw note are styled differently to the
+  // number itself.
+  const price = window.SojozinoSite.priceLabel(p, siteData);
   return `
     <a class="product-card reveal" href="product.html?slug=${encodeURIComponent(p.slug)}">
       <div class="thumb${fit}"><img src="${esc(p.cover?.src)}" alt="${esc(p.cover?.alt || p.name)}" loading="lazy"></div>
       <div class="info">
         <div class="cat">${esc(catLabel)}</div>
         <h3>${esc(p.name)}</h3>
+        ${price ? `<div class="price">${price}</div>` : ''}
       </div>
     </a>`;
 }
@@ -228,6 +238,7 @@ async function initPresence(site) {
 
 document.addEventListener('site:loaded', (e) => {
   const site = e.detail;
+  siteData = site;
   if (document.getElementById('featuredGrid') || document.getElementById('nextMarketTeaser')) initHome(site);
   if (document.getElementById('productGrid')) initGallery();
   if (document.getElementById('upcomingGrid')) initPresence(site);

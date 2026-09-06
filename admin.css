@@ -678,3 +678,27 @@ button.conn-status.off { cursor: default; }
 }
 .pd-budget[hidden] { display: none; }
 .pd-budget.warn { color: var(--a-danger); font-weight: 600; }
+
+/* A price field reads as a price rather than as another text box. */
+.price-input { display: flex; align-items: stretch; }
+.price-currency {
+  display: flex; align-items: center;
+  padding: 0 0.6rem;
+  border: 1px solid var(--a-line);
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+  background: var(--a-bg2);
+  color: var(--a-ink-soft);
+  font-weight: 700;
+}
+.price-input input { border-radius: 0 6px 6px 0 !important; min-width: 0; }
+.variant-price { display: flex; align-items: stretch; max-width: 9rem; }
+.variant-price .price-currency { font-size: 0.85rem; padding: 0 0.5rem; }
+.variant-price input {
+  width: 100%;
+  font: inherit; font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--a-line);
+  border-radius: 0 6px 6px 0;
+  background: #fff;
+}

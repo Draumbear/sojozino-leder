@@ -1074,3 +1074,25 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
 .reveal.in { opacity: 1; transform: none; }
 
 .empty-note { grid-column: 1 / -1; text-align: center; color: var(--espresso-soft); padding: 3rem 0; }
+
+/* ---------- Prices ---------- */
+.product-card .price {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--espresso);
+}
+.product-card .price small,
+.product-price small {
+  font-size: 0.72em;
+  font-weight: 400;
+  color: var(--espresso-soft);
+  margin-left: 0.3em;
+}
+.product-price[hidden] { display: none; }
+.product-price {
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  font-weight: 700;
+  color: var(--espresso);
+}

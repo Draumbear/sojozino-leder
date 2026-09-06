@@ -20,7 +20,8 @@
           "src": "assets/products/dopp-kit/bruin/03.jpg",
           "alt": "Dopp Kit — Bruin"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Fuchsia",
@@ -41,7 +42,8 @@
           "src": "assets/products/dopp-kit/fuchsia/04.jpg",
           "alt": "Dopp Kit — Fuchsia"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Grof Leder",
@@ -58,7 +60,8 @@
           "src": "assets/products/dopp-kit/grof-leder/03.jpg",
           "alt": "Dopp Kit — Grof Leder"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Lichtbruin",
@@ -79,7 +82,8 @@
           "src": "assets/products/dopp-kit/lichtbruin/04.jpg",
           "alt": "Dopp Kit — Lichtbruin"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Roze",
@@ -100,7 +104,8 @@
           "src": "assets/products/dopp-kit/roze/04.jpg",
           "alt": "Dopp Kit — Roze"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Zwart",
@@ -117,8 +122,10 @@
           "src": "assets/products/dopp-kit/zwart/03.jpg",
           "alt": "Dopp Kit — Zwart"
         }
-      ]
+      ],
+      "price": null
     }
   ],
-  "coverImage": "assets/products/dopp-kit/bruin/03.jpg"
+  "coverImage": "assets/products/dopp-kit/bruin/03.jpg",
+  "price": null
 }

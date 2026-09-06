@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=c4c2bb30">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=c4c2bb30">
+<link rel="stylesheet" href="admin.css?v=665ac5a7">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=665ac5a7">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -161,6 +161,14 @@
           <label for="pe-subcategory">Onderverdeling</label>
           <select id="pe-subcategory"></select>
         </div>
+        <div class="admin-field" style="max-width:16rem;">
+          <label for="pe-price">Prijs <span class="hint">(optioneel)</span></label>
+          <div class="price-input">
+            <span class="price-currency">&euro;</span>
+            <input type="text" id="pe-price" inputmode="decimal" placeholder="bv. 145">
+          </div>
+          <span class="hint">Laat leeg om geen prijs te tonen. Heeft elke variant een eigen prijs, vul die dan hieronder in bij de variant.</span>
+        </div>
         <div class="admin-field">
           <label for="pe-description">Beschrijving</label>
           <textarea id="pe-description" placeholder="Vertel iets over dit stuk: materiaal, afmetingen, bijzonderheden…"></textarea>
@@ -312,6 +320,15 @@
         <div class="admin-row">
           <div class="admin-field"><label for="s-businessName">Bedrijfsnaam</label><input type="text" id="s-businessName"></div>
           <div class="admin-field"><label for="s-ownerName">Naam</label><input type="text" id="s-ownerName"></div>
+        </div>
+        <div class="admin-field" style="max-width:22rem;">
+          <label for="s-priceVatMode">Prijzen op de website</label>
+          <select id="s-priceVatMode">
+            <option value="">Toon enkel het bedrag</option>
+            <option value="incl">Bedragen zijn inclusief btw</option>
+            <option value="excl">Bedragen zijn exclusief btw</option>
+          </select>
+          <span class="hint">Geldt voor elke prijs op de website. Kies je een van de twee, dan staat er "incl. btw" of "excl. btw" bij.</span>
         </div>
         <div class="admin-field"><label for="s-brandSubtitle">Regel onder je naam <span class="hint">(in de menubalk bovenaan — leeg laten om ze weg te halen)</span></label><input type="text" id="s-brandSubtitle"></div>
         <div class="admin-field"><label for="s-tagline">Tagline <span class="hint">(onderaan elke pagina)</span></label><input type="text" id="s-tagline"></div>
@@ -502,6 +519,13 @@
         </details>
 
         <details class="help-item">
+          <summary>Een prijs bij een stuk zetten</summary>
+          <p>In de editor van een product staat een veld <strong>Prijs</strong>. Laat je het leeg, dan toont de website geen prijs — precies zoals nu.</p>
+          <p>Kost elke uitvoering iets anders — een riem in drie lengtes bijvoorbeeld — vul dan een prijs in bij de variant zelf. Die gaat voor op de prijs van het product, en op de overzichtspagina staat er dan <strong>vanaf</strong> bij de goedkoopste.</p>
+          <p>Onder <strong>Instellingen &rarr; Bedrijf</strong> kies je één keer of de bedragen inclusief of exclusief btw zijn. Dat geldt voor de hele website.</p>
+        </details>
+
+        <details class="help-item">
           <summary>Iets werkt niet — hoe meld je dat?</summary>
           <p>Klik bovenaan op <strong>Iets melden</strong> en schrijf kort op wat je probeerde te doen en wat er in plaats daarvan gebeurde. Ging er net iets mis? Dan staat er ook een knopje <strong>Meld dit</strong> in de melding zelf.</p>
           <p>Je hoeft geen technische dingen uit te leggen: welk scherm je open had, welke browser je gebruikt en wat je laatste stappen waren, gaan automatisch mee. Je toegangscode wordt nooit meegestuurd.</p>
@@ -587,7 +611,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=c4c2bb30"></script>
-<script src="admin.js?v=c4c2bb30"></script>
+<script src="admin-github.js?v=665ac5a7"></script>
+<script src="admin.js?v=665ac5a7"></script>
 </body>
 </html>

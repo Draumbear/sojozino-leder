@@ -1103,6 +1103,9 @@ function showChosenFile(input) {
   wrap.querySelector('.file-name').textContent = f ? f.name : 'Geen bestand gekozen';
 }
 
+// What the dropdown means, in the words the review dialog should use.
+const VAT_MODE_LABELS = { '': 'enkel het bedrag', incl: 'inclusief btw', excl: 'exclusief btw' };
+
 const MAX_FEATURED = 8;
 
 function toggleFeatured(slug, rerender) {
@@ -1159,6 +1162,29 @@ async function deleteProduct(slug) {
   }
 }
 
+// Prices are typed by a human, so they arrive as "145", "145,50", "€ 145" or
+// "145.50". Stored as a number so the site never has to parse prose, and so
+// "vanaf" can compare variants. Anything that is not a number becomes null,
+// which means "no price shown" rather than zero -- a free bag is not what he
+// meant to type.
+function parsePrice(text) {
+  const cleaned = String(text == null ? '' : text)
+    .replace(/[^0-9.,-]/g, '')
+    .replace(/\.(?=\d{3}\b)/g, '')   // 1.250 is a thousands separator here
+    .replace(',', '.');
+  if (!cleaned) return null;
+  const n = Number(cleaned);
+  return Number.isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : null;
+}
+
+// Back into the box, the way he would write it: no decimals on a round number.
+function priceToInput(value) {
+  if (value === null || value === undefined || value === '') return '';
+  const n = Number(value);
+  if (!Number.isFinite(n)) return '';
+  return (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2).replace('.', ','));
+}
+
 // ---------- Product editor ----------
 async function openProductEditor(slug) {
   editingSlug = slug;
@@ -1180,13 +1206,14 @@ async function openProductEditor(slug) {
     $('#pe-name').value = detail.name || '';
     $('#pe-category').value = detail.category || '';
     $('#pe-description').value = detail.description || '';
+    $('#pe-price').value = priceToInput(detail.price);
     renderSubcategorySelect(detail.subcategory || '');
     // Backward-compatible: a product saved before variants existed only has
     // a flat `images` array -- treat it as one unnamed variant.
     const source = (detail.variants && detail.variants.length)
       ? detail.variants
       : [{ name: null, images: detail.images || [] }];
-    editorVariants = source.map(v => ({ name: v.name || null, images: (v.images || []).map(img => ({ ...img })) }));
+    editorVariants = source.map(v => ({ name: v.name || null, price: v.price ?? null, images: (v.images || []).map(img => ({ ...img })) }));
 
     const idxEntry = state.productsIndex.find(p => p.slug === slug);
     editorCoverKey = findImageRef(idxEntry?.cover?.src) || { variantIdx: 0, imageIdx: 0 };
@@ -1195,8 +1222,9 @@ async function openProductEditor(slug) {
     $('#pe-name').value = '';
     $('#pe-category').value = state.categories[0]?.slug || '';
     $('#pe-description').value = '';
+    $('#pe-price').value = '';
     renderSubcategorySelect('');
-    editorVariants = [{ name: null, images: [] }];
+    editorVariants = [{ name: null, price: null, images: [] }];
     editorCoverKey = { variantIdx: 0, imageIdx: 0 };
   }
   renderVariantsManager();
@@ -1279,6 +1307,14 @@ function renderVariantsManager() {
       ${multi ? `
       <div class="variant-editor-head">
         <input type="text" class="variant-name-input" data-vidx="${vi}" placeholder="Naam (bv. Blauw)" value="${esc(v.name || '')}">
+        <!-- A belt in three lengths is one product at three prices. Left empty,
+             the variant simply costs whatever the product costs. -->
+        <span class="variant-price">
+          <span class="price-currency">&euro;</span>
+          <input type="text" class="variant-price-input" data-vidx="${vi}" inputmode="decimal"
+                 placeholder="zelfde prijs" title="Prijs voor deze variant — leeg = de prijs van het product"
+                 value="${esc(priceToInput(v.price))}">
+        </span>
         <button class="btn-admin danger small" type="button" data-action="remove-variant" data-vidx="${vi}">Variant verwijderen</button>
       </div>` : ''}
       <div class="image-manager">${existingTiles}${pendingTiles}</div>
@@ -1506,6 +1542,8 @@ function bindVariantsManagerEvents(wrap) {
   wrap.oninput = (e) => {
     const nameInput = e.target.closest('.variant-name-input');
     if (nameInput) editorVariants[Number(nameInput.dataset.vidx)].name = nameInput.value.trim() || null;
+    const priceInput = e.target.closest('.variant-price-input');
+    if (priceInput) editorVariants[Number(priceInput.dataset.vidx)].price = parsePrice(priceInput.value);
   };
 
   wrap.onchange = (e) => {
@@ -1745,7 +1783,8 @@ function snapshotProductEditor() {
     category: $('#pe-category').value,
     subcategory: $('#pe-subcategory-wrap').hidden ? null : ($('#pe-subcategory').value || null),
     description: $('#pe-description').value.trim(),
-    variants: editorVariants.map(v => ({ name: v.name, images: v.images.map(i => i.src) })),
+    price: parsePrice($('#pe-price').value),
+    variants: editorVariants.map(v => ({ name: v.name, price: v.price ?? null, images: v.images.map(i => i.src) })),
     coverSrc: (editorVariants[editorCoverKey.variantIdx]?.images[editorCoverKey.imageIdx] || {}).src || null,
   };
 }
@@ -1812,6 +1851,7 @@ function snapshotSettings() {
     'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
     'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
     'Regel onder je naam': s.brandSubtitle,
+    'Prijzen op de website': VAT_MODE_LABELS[s.priceVatMode || ''],
     'BTW-nummer': s.vatNumber, 'Adres': s.address,
     'Kleine regel bestelpagina': s.orderEyebrow, 'Titel bestelpagina': s.orderHeading,
     'Uitleg bestelpagina': s.orderIntro,
@@ -1933,12 +1973,21 @@ async function saveProduct() {
     // Drop any variant that ended up with no photos (e.g. its only image got removed).
     const cleanedVariants = editorVariants.filter(v => v.images.length > 0);
 
-    const productData = { slug, name, category, subcategory, description, variants: cleanedVariants };
+    // null rather than absent, so a price he cleared is recorded as cleared
+    // instead of falling back to whatever the file said before.
+    const price = parsePrice($('#pe-price').value);
+    const productData = {
+      slug, name, category, subcategory, description, price,
+      variants: cleanedVariants.map(v => ({ ...v, price: v.price ?? null })),
+    };
     files.push({ path: `data/products/${slug}.json`, content: JSON.stringify(productData, null, 2) });
 
     const existingIdx = state.productsIndex.findIndex(p => p.slug === slug);
     const indexEntry = {
       slug, name, category, subcategory, cover: { src: coverImage.src, alt: coverImage.alt || name },
+      // The card needs a number without opening the product. Variants may each
+      // carry their own, so this is the lowest of them -- shown as "vanaf".
+      price, variantPrices: cleanedVariants.map(v => v.price ?? null).filter(p => p !== null),
       order: existingIdx >= 0 ? state.productsIndex[existingIdx].order : state.productsIndex.length + 1,
       featured: existingIdx >= 0 ? !!state.productsIndex[existingIdx].featured : false,
     };
@@ -2199,6 +2248,7 @@ function renderSettingsTab() {
   $('#s-contactHeading').value = s.contactHeading || '';
   $('#s-contactIntro').value = s.contactIntro || '';
   $('#s-brandSubtitle').value = s.brandSubtitle || '';
+  $('#s-priceVatMode').value = s.priceVatMode || '';
   $('#s-vatNumber').value = s.vatNumber || '';
   $('#s-address').value = s.address || '';
   $('#s-orderEyebrow').value = s.orderEyebrow || '';
@@ -2229,6 +2279,7 @@ async function saveSettings() {
     'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
     'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
     'Regel onder je naam': $('#s-brandSubtitle').value.trim(),
+    'Prijzen op de website': VAT_MODE_LABELS[$('#s-priceVatMode').value],
     'BTW-nummer': $('#s-vatNumber').value.trim(), 'Adres': $('#s-address').value.trim(),
     'Kleine regel bestelpagina': $('#s-orderEyebrow').value.trim(), 'Titel bestelpagina': $('#s-orderHeading').value.trim(),
     'Uitleg bestelpagina': $('#s-orderIntro').value.trim(),
@@ -2259,6 +2310,7 @@ async function saveSettings() {
       contactHeading: $('#s-contactHeading').value.trim(),
       contactIntro: $('#s-contactIntro').value.trim(),
       brandSubtitle: $('#s-brandSubtitle').value.trim(),
+      priceVatMode: $('#s-priceVatMode').value,
       vatNumber: $('#s-vatNumber').value.trim(),
       address: $('#s-address').value.trim(),
       orderEyebrow: $('#s-orderEyebrow').value.trim(),
@@ -2364,7 +2416,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#cancelProductBtn').addEventListener('click', closeProductEditor);
   $('#pe-category').addEventListener('change', () => renderSubcategorySelect(''));
   $('#addVariantBtn').addEventListener('click', () => {
-    editorVariants.push({ name: `Variant ${editorVariants.length + 1}`, images: [] });
+    editorVariants.push({ name: `Variant ${editorVariants.length + 1}`, price: null, images: [] });
     renderVariantsManager();
   });
   $('#savePresenceBtn').addEventListener('click', savePresenceEntry);

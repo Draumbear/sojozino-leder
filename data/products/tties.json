@@ -52,7 +52,8 @@
           "src": "assets/products/tties/den-sofie/11.jpg",
           "alt": "Tties — Den Sofie"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Den Zita - Blauw",
@@ -73,7 +74,8 @@
           "src": "assets/products/tties/den-zita-blauw/04.jpg",
           "alt": "Tties — Den Zita - Blauw"
         }
-      ]
+      ],
+      "price": null
     },
     {
       "name": "Den Zita - Zwart Croco",
@@ -126,7 +128,9 @@
           "src": "assets/products/tties/den-zita-zwart-croco/12.jpg",
           "alt": "Tties — Den Zita - Zwart Croco"
         }
-      ]
+      ],
+      "price": null
     }
-  ]
+  ],
+  "price": null
 }

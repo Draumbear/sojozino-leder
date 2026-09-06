@@ -303,6 +303,44 @@ document.addEventListener('DOMContentLoaded', async () => {
   initReveal();
 });
 
+// ---------- Prices ----------
+// Written the way a price is written here: a comma for the decimals, a
+// non-breaking space after the euro sign so "45" never wraps away from its
+// currency, and no decimals at all on a round number -- "45" reads as a price,
+// "45,00" reads as an invoice.
+function formatPrice(value) {
+  const n = Number(value);
+  if (value === null || value === undefined || value === '' || !Number.isFinite(n)) return '';
+  const body = Math.round(n * 100) % 100 === 0
+    ? String(Math.round(n))
+    : n.toFixed(2).replace('.', ',');
+  return `\u20ac\u00a0${body}`;
+}
+
+// Whether the numbers on the site are with or without VAT is one answer for the
+// whole site, set once in the dashboard. Left unset it says nothing rather than
+// guessing -- claiming "incl. btw" about a price that excludes it is worse than
+// showing the bare number.
+function vatSuffix(site) {
+  const mode = (site && site.priceVatMode) || '';
+  if (mode === 'incl') return 'incl. btw';
+  if (mode === 'excl') return 'excl. btw';
+  return '';
+}
+
+// The price to show for a product without opening it. Variants may each carry
+// their own, so a product whose variants differ is shown as "vanaf" the lowest.
+function priceLabel(entry, site) {
+  const variantPrices = (entry.variantPrices || []).filter(p => p !== null && p !== undefined);
+  const base = entry.price ?? null;
+  const all = variantPrices.length ? variantPrices : (base === null ? [] : [base]);
+  if (!all.length) return '';
+  const low = Math.min(...all);
+  const varies = all.length > 1 && Math.max(...all) !== low;
+  const suffix = vatSuffix(site);
+  return `${varies ? 'vanaf ' : ''}${formatPrice(low)}${suffix ? ` <small>${suffix}</small>` : ''}`;
+}
+
 // A category label attached to one item reads in the singular -- a card for
 // one bag says "Handtas", not "Handtassen". Dutch plurals are too irregular to
 // strip, so it's a field set in the dashboard; collective names like "Kleine
@@ -312,4 +350,4 @@ function categoryLabel(cat) {
   return (cat && (cat.singular || cat.name)) || '';
 }
 
-window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote, whereBlock, marketLinks };
+window.SojozinoSite = { getSite, escapeHTML, initReveal, categoryLabel, mapsLink, externalLink, instagramNote, whereBlock, marketLinks, formatPrice, vatSuffix, priceLabel };

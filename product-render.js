@@ -24,6 +24,9 @@ function escapeHTML(str) {
 }
 
 let product = null;
+// The site's own settings, for the one thing on this page that comes from them:
+// whether prices are quoted with or without VAT.
+let site = {};
 let variantIndex = 0;
 let photoIndex = 0;
 
@@ -131,6 +134,22 @@ function updateVariantLabel() {
   el.textContent = v.name || `Variant ${variantIndex + 1}`;
 }
 
+// The price of what is on screen. A variant's own price wins where it has one
+// -- a belt in three lengths is one product at three prices -- and falls back
+// to the product's. Re-run on every variant change, so the number never
+// describes a variant other than the one being looked at.
+function updatePrice() {
+  const el = document.getElementById('productPrice');
+  if (!el) return;
+  const S = window.SojozinoSite;
+  const variant = product.variants[variantIndex] || {};
+  const value = variant.price ?? product.price ?? null;
+  if (value === null || value === undefined) { el.hidden = true; el.innerHTML = ''; return; }
+  const suffix = S.vatSuffix(site);
+  el.hidden = false;
+  el.innerHTML = `${S.formatPrice(value)}${suffix ? ` <small>${escapeHTML(suffix)}</small>` : ''}`;
+}
+
 function setVariant(vi) {
   if (vi === variantIndex) return;
   variantIndex = ((vi % product.variants.length) + product.variants.length) % product.variants.length;
@@ -138,6 +157,7 @@ function setVariant(vi) {
     el.classList.toggle('active', i === variantIndex);
   });
   updateVariantLabel();
+  updatePrice();
   renderGallery();
 }
 
@@ -336,6 +356,7 @@ async function renderProduct() {
       <div class="product-info">
         ${catName ? `<span class="cat-tag">${escapeHTML(catName)}</span>` : ''}
         <h1>${escapeHTML(data.name)}</h1>
+        <p class="product-price" id="productPrice" hidden></p>
         <p>${escapeHTML(data.description || '')}</p>
         ${swatchesHTML}
       </div>
@@ -350,7 +371,8 @@ async function renderProduct() {
 
   initSpotlight();
   updateVariantLabel();
+  updatePrice();
   renderGallery();
 }
 
-document.addEventListener('site:loaded', renderProduct);
+document.addEventListener('site:loaded', (e) => { site = e.detail || {}; renderProduct(); });
