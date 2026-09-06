@@ -31,7 +31,28 @@ let variantIndex = 0;
 let photoIndex = 0;
 
 function currentVariant() { return product.variants[variantIndex]; }
-function currentImages() { return currentVariant().images; }
+// A variant with no photos of its own shows the product's. That is the belt
+// case: three lengths at three prices, one set of photographs, because a 95cm
+// belt does not photograph differently from a 100cm one. The first variant
+// that has any is the one they come from -- it is the one whose photos were
+// uploaded, and the one the cover is picked from.
+function sharedImages() {
+  const withPhotos = product.variants.find(v => (v.images || []).length);
+  return withPhotos ? withPhotos.images : [];
+}
+
+function variantImages(v) {
+  return (v && (v.images || []).length) ? v.images : sharedImages();
+}
+
+function currentImages() { return variantImages(currentVariant()); }
+
+// True only where the variants are not all the same price -- which is what
+// makes a price worth printing on each swatch.
+function variantPricesDiffer() {
+  const prices = product.variants.map(v => v.price ?? null).filter(p => p !== null);
+  return prices.length > 1 && new Set(prices).size > 1;
+}
 
 function renderGallery() {
   const images = currentImages();
@@ -330,11 +351,19 @@ async function renderProduct() {
       <div class="variant-swatches" id="variantSwatches">
         ${product.variants.map((v, i) => {
           const label = v.name || `Variant ${i + 1}`;
+          // Where variants differ in price rather than in looks -- a belt in
+          // three lengths -- the price is the thing being chosen between, so it
+          // belongs on the swatch. Only when they actually differ: repeating
+          // one price under three identical squares says nothing.
+          const own = v.price ?? null;
+          const priceTag = own !== null && variantPricesDiffer()
+            ? `<small>${window.SojozinoSite.formatPrice(own)}</small>` : '';
+          const full = priceTag ? `${label} — ${window.SojozinoSite.formatPrice(own)}` : label;
           return `
           <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
-                  title="${escapeHTML(label)}" aria-label="${escapeHTML(label)}">
-            <img src="${escapeHTML(thumbUrl(v.images[0]?.src || ''))}" data-full="${escapeHTML(v.images[0]?.src || '')}" alt="" loading="lazy" decoding="async">
-            <span>${escapeHTML(label)}</span>
+                  title="${escapeHTML(full)}" aria-label="${escapeHTML(full)}">
+            <img src="${escapeHTML(thumbUrl(variantImages(v)[0]?.src || ''))}" data-full="${escapeHTML(variantImages(v)[0]?.src || '')}" alt="" loading="lazy" decoding="async">
+            <span>${escapeHTML(label)}${priceTag}</span>
           </button>`;
         }).join('')}
       </div>

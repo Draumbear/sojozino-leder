@@ -1096,3 +1096,12 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   font-weight: 700;
   color: var(--espresso);
 }
+
+/* A price under a swatch, where the variants differ by price rather than by
+   colour. */
+.variant-swatch span small {
+  display: block;
+  font-weight: 700;
+  color: var(--espresso);
+  margin-top: 0.1em;
+}

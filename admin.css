@@ -796,3 +796,16 @@ button.conn-status.off { cursor: default; }
   font-size: 0.85rem;
 }
 .ph-missing { color: var(--a-ink-soft); font-size: 0.78rem; }
+
+/* A variant that borrows the product's photos says so where the photos would
+   otherwise be, rather than leaving an empty strip that looks like a mistake. */
+.variant-shared-note {
+  margin: 0 0 0.7rem;
+  padding: 0.55rem 0.7rem;
+  border-left: 3px solid var(--a-line);
+  background: var(--a-bg2);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--a-ink-soft);
+}

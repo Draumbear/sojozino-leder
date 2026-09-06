@@ -1508,6 +1508,8 @@ function renderVariantsManager() {
         </span>
         <button class="btn-admin danger small" type="button" data-action="remove-variant" data-vidx="${vi}">Variant verwijderen</button>
       </div>` : ''}
+      ${multi && !v.images.length && !editorPendingUploads.some(p => p.variantIdx === vi) ? `
+      <p class="variant-shared-note">Deze variant heeft nog geen eigen foto's en toont dezelfde foto's als het product. Prima voor bijvoorbeeld een riem in een andere lengte — voeg alleen foto's toe als deze variant er echt anders uitziet.</p>` : ''}
       <div class="image-manager">${existingTiles}${pendingTiles}</div>
       <div class="upload-drop" data-vidx="${vi}">
         Klik of sleep foto's hierheen${multi ? ` om toe te voegen aan ${esc(v.name || `variant ${vi + 1}`)}` : ' om toe te voegen'}
@@ -2162,7 +2164,11 @@ async function saveProduct() {
       || editorVariants.flatMap(v => v.images)[0];
 
     // Drop any variant that ended up with no photos (e.g. its only image got removed).
-    const cleanedVariants = editorVariants.filter(v => v.images.length > 0);
+    // Kept if it has photos, or if it is a named variant -- a length at its own
+    // price needs no pictures of its own, and the site falls back to the
+    // product's. Only a variant with neither a name nor a photo is nothing at
+    // all, which is what an accidental "+ Variant" leaves behind.
+    const cleanedVariants = editorVariants.filter(v => v.images.length > 0 || v.name);
 
     // null rather than absent, so a price he cleared is recorded as cleared
     // instead of falling back to whatever the file said before.
