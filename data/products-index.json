@@ -566,16 +566,15 @@
   },
   {
     "slug": "telefoonhoesje-prosper",
-    "name": "Telefoonhoesje Prosper",
+    "name": "Telefoonhoesje den Prosper",
     "category": "kleine-lederwaren",
     "subcategory": "hoesjes",
     "cover": {
-      "src": "assets/products/telefoonhoesje-prosper/cover.jpg",
+      "src": "assets/products/telefoonhoesje-prosper/01.jpg",
       "alt": "Telefoonhoesje Prosper"
     },
     "order": 39,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "vide-poche",

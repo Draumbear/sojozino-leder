@@ -1,9 +1,9 @@
 {
   "slug": "telefoonhoesje-prosper",
-  "name": "Telefoonhoesje Prosper",
+  "name": "Telefoonhoesje den Prosper",
   "category": "kleine-lederwaren",
   "subcategory": "hoesjes",
-  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over telefoonhoesje prosper.",
+  "description": "Handgemaakt in leder en met de hand genaaid. Dit hoesje heeft een extra cardslot achteraan en een opbergvak binnenin. Op maat gemaakt.\nNeem gerust contact op voor meer details over telefoonhoesje Prosper.",
   "variants": [
     {
       "name": null,
@@ -62,6 +62,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/telefoonhoesje-prosper/02.jpg"
+  ]
 }
