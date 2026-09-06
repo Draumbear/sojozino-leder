@@ -506,12 +506,11 @@
     "category": "kleine-lederwaren",
     "subcategory": "poepzakjeshouder",
     "cover": {
-      "src": "assets/products/poepzakjeshouder-handtasje/cover.jpg",
+      "src": "assets/products/poepzakjeshouder-handtasje/01.jpg",
       "alt": "Poepzakjeshouder Handtasje"
     },
     "order": 34,
-    "featured": false,
-    "fit": "cover"
+    "featured": false
   },
   {
     "slug": "portefeuille-den-stijn",

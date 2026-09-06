@@ -3,7 +3,7 @@
   "name": "Poepzakjeshouder Handtasje",
   "category": "kleine-lederwaren",
   "subcategory": "poepzakjeshouder",
-  "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over poepzakjeshouder handtasje.",
+  "description": "Handgemaakt in leder. Dit is een klein tasje die je geld bespaard. Met een karabijnhaakje om hem aan de leiband of handtas de bevestigen.\nNeem gerust contact op voor meer details over poepzakjeshouder handtasje.",
   "variants": [
     {
       "name": null,
@@ -42,6 +42,5 @@
         }
       ]
     }
-  ],
-  "coverImage": "assets/products/poepzakjeshouder-handtasje/05.jpg"
+  ]
 }
