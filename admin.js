@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.3';
+const DASHBOARD_VERSION = '1.3.1';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -383,7 +383,7 @@ const RELEASE_NOTES = [
     date: '2026-09-06',
     items: [
       ['Foto’s slepen tussen varianten', 'Staat een foto bij de verkeerde variant? Sleep ze gewoon naar de juiste — ook naar een variant die nog geen foto’s heeft. Opnieuw uploaden hoeft niet meer.'],
-      ['Foto’s gaan niet meer verloren', 'Verwijder je de enige variant met foto’s, dan verhuizen die foto’s naar de variant die overblijft in plaats van te verdwijnen. Verwijder je een kleur die zijn eigen foto’s heeft, dan gaan die wel mee weg — dat zijn immers foto’s van die kleur.'],
+      ['Foto’s gaan niet meer verloren', 'Verwijder je de enige variant met foto’s, dan verhuizen die foto’s naar de variant die overblijft in plaats van te verdwijnen. Verwijder je een kleur die zijn eigen foto’s heeft, dan gaan die wel mee weg — dat zijn immers de foto’s van die variant.'],
     ],
   },
   {
