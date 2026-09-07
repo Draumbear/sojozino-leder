@@ -658,13 +658,7 @@ button.conn-status.off { cursor: default; }
 
 /* Which release is running, and which build of the files. A report names both
    without anyone having to ask. */
-.dashboard-version {
-  font-size: 0.72rem;
-  color: var(--a-ink-soft);
-  opacity: 0.75;
-  white-space: nowrap;
-  margin-left: auto;
-}
+
 
 /* The month's publishes, under the publish button. Only ever shown where a
    publish actually costs a build. */
@@ -810,3 +804,42 @@ button.conn-status.off { cursor: default; }
   line-height: 1.5;
   color: var(--a-ink-soft);
 }
+
+/* The version is a button now: it is the natural place to ask what changed. */
+.dashboard-version {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--a-ink-soft);
+  opacity: 0.75;
+  white-space: nowrap;
+  margin-left: auto;
+  cursor: pointer;
+}
+.dashboard-version:hover { opacity: 1; text-decoration: underline; }
+/* A dot while there is a release he has not read, and only then. */
+.dashboard-version.has-news { opacity: 1; color: var(--a-espresso); font-weight: 700; }
+.dashboard-version.has-news::after {
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  background: var(--a-danger);
+  vertical-align: 0.1em;
+}
+
+.wn-release + .wn-release { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--a-line); }
+.wn-release h4 { margin: 0 0 0.7rem; font-size: 0.95rem; }
+.wn-date { font-weight: 400; color: var(--a-ink-soft); font-size: 0.78rem; margin-left: 0.4rem; }
+.wn-release ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.8rem; }
+.wn-release li { display: grid; gap: 0.15rem; }
+.wn-release li strong { font-size: 0.88rem; }
+.wn-release li span { font-size: 0.85rem; line-height: 1.5; color: var(--a-ink-soft); }
+
+/* An undo in progress: the one being worked on says so, the rest stop being
+   clickable so a second revert cannot be queued behind the first. */
+.pc-undo:disabled, .pc-goto:disabled { opacity: 0.45; cursor: default; }
+.pc-undo:disabled:hover { border-color: var(--a-line); color: inherit; }

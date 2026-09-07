@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=d13f3786">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=d13f3786">
+<link rel="stylesheet" href="admin.css?v=018b12e8">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=018b12e8">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -119,7 +119,7 @@
       <!-- Beside Uitleg on purpose: the two things you reach for when something
            is not going the way you expected. -->
       <button class="btn-admin secondary small" id="reportChip" type="button">Iets melden</button>
-      <span class="dashboard-version" id="dashboardVersion" title="Versie van het dashboard, en welke bestanden er nu draaien"></span>
+      <button class="dashboard-version" id="dashboardVersion" type="button" title="Wat is er nieuw in deze versie?"></button>
     </div>
 
     <!-- Overview -->
@@ -610,6 +610,19 @@
      GitHub issue: an issue needs a token permission Johnny's does not have, and
      asking him to regenerate it is exactly the kind of errand this is meant to
      save. Contents write is what he already has. -->
+<!-- What changed, in his terms. Written by hand in RELEASE_NOTES in admin.js:
+     a list generated from commit messages would be a list of things done to the
+     code, not of things he can now do. -->
+<div class="modal-overlay" id="whatsNewModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="wnTitle">
+    <h3 id="wnTitle">Wat is er nieuw?</h3>
+    <div class="modal-body" id="wnBody"></div>
+    <div class="modal-actions">
+      <button class="btn-admin" id="wnClose" type="button">Begrepen</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="reportModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rpTitle">
     <h3 id="rpTitle">Iets melden</h3>
@@ -639,7 +652,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=d13f3786"></script>
-<script src="admin.js?v=d13f3786"></script>
+<script src="admin-github.js?v=018b12e8"></script>
+<script src="admin.js?v=018b12e8"></script>
 </body>
 </html>

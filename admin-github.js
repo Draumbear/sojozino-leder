@@ -431,17 +431,32 @@ class GitHubAPI {
   // parent commit. Git still has those blobs, so the restore is exact and no
   // file content has to be downloaded or re-uploaded. A path that did not exist
   // in the parent was added by the change, so undoing it means deleting it.
-  async revertCommit(sha, message) {
+  // Queued like every other write, which it is -- and which also puts it in the
+  // status panel, where until now an undo spent ten seconds saying nothing at
+  // all. Labelled for that panel rather than by its commit message: the message
+  // reads "Ongedaan gemaakt: ...", which describes a thing already done.
+  revertCommit(sha, message) {
+    return this._enqueue((entry) => this._revertCommit(sha, message, entry), 'Wijziging terugzetten');
+  }
+
+  async _revertCommit(sha, message, entry) {
+    this._step(entry, 'wijziging opzoeken');
     const res = await fetch(`${this.base}/commits/${sha}?_=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
     if (!res.ok) throw new Error(`Kon de wijziging niet ophalen (${res.status})`);
     const detail = await res.json();
     const parent = detail.parents && detail.parents[0];
     if (!parent) throw new Error('Deze wijziging heeft niets om naar terug te keren.');
 
-    const entries = await Promise.all((detail.files || []).map(async (f) => {
+    // One lookup per file the commit touched, so a product with a dozen photos
+    // is a dozen round trips -- most of the wait, and worth counting out loud
+    // rather than leaving as dead time.
+    const files = detail.files || [];
+    this._step(entry, files.length > 1 ? `${files.length} bestanden opzoeken` : 'bestand opzoeken');
+    const entries = await Promise.all(files.map(async (f) => {
       const before = await this.blobShaAt(f.filename, parent.sha);
       return { path: f.filename, mode: '100644', type: 'blob', sha: before };
     }));
+    this._step(entry, 'terugzetten');
     if (!entries.length) throw new Error('Deze wijziging raakte geen bestanden aan.');
     const newSha = await this._commitTreeEntries(entries, this._saveMessage(message));
     // The caller needs to know what moved: undoing a change is as much a

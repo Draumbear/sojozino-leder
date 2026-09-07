@@ -186,6 +186,9 @@ function askConfirm({ title, lines = [], confirmLabel = 'Ja, doorgaan', cancelLa
 // Used both by the undo offered right after a delete and by the publish bar.
 async function undoChange(sha, what) {
   try {
+    // Said before the first request goes out: the status panel narrates the
+    // steps, but only once there is a step to narrate.
+    toast('Bezig met terugzetten… dit duurt even.', 'info');
     const result = await api.revertCommit(sha, `Ongedaan gemaakt: ${what}`);
     toast('Teruggezet.', 'ok');
     await loadAll();
@@ -367,6 +370,93 @@ async function renderPublishBudget() {
   el.textContent = used >= MONTHLY_PUBLISH_BUDGET * PUBLISH_BUDGET_WARN
     ? `Je publiceerde ${used} keer in ${month}, van de ongeveer ${MONTHLY_PUBLISH_BUDGET} die er per maand in zitten. Sla gerust meerdere dingen op en publiceer ze in één keer.`
     : `${used} van ongeveer ${MONTHLY_PUBLISH_BUDGET} publicaties deze maand.`;
+}
+
+// ---------- What is new ----------
+// Written by hand, per release, in the words of what he can now do. A list
+// generated from commit messages would be a list of things done to the code.
+//
+// Newest first. Add an entry here whenever DASHBOARD_VERSION changes.
+const RELEASE_NOTES = [
+  {
+    version: '1.1',
+    date: '2026-09-06',
+    items: [
+      ['Prijzen', 'Bij een product kan je nu een prijs zetten. Heeft elke variant een eigen prijs \u2014 een riem in drie lengtes bijvoorbeeld \u2014 vul die dan in bij de variant zelf. Onder Instellingen kies je \u00e9\u00e9n keer of je bedragen inclusief of exclusief btw zijn.'],
+      ['Varianten zonder eigen foto\u2019s', 'Ziet een variant er hetzelfde uit? Laat de foto\u2019s leeg, dan toont ze dezelfde foto\u2019s als het product. Je hoeft ze niet opnieuw te uploaden.'],
+      ['Namen en prijzen bij de varianten', 'Onder elk vierkantje staat nu de naam, en de prijs als die verschilt. Wat je bekijkt staat in het rood.'],
+      ['Zien wat er nog ontbreekt', 'Klik op het aantal producten op het overzicht. Je ziet hoeveel er volledig zijn ingevuld, wat er nog mist, en je kan van daaruit meteen naar het product dat je wil aanvullen.'],
+      ['Alles op het overzicht is klikbaar', 'Categorie\u00ebn brengt je naar je categorie\u00ebn, en Volgende markt opent meteen die markt.'],
+      ['Foto\u2019s vergroten', 'Elke foto in het dashboard kan je aanklikken om ze groot te bekijken \u2014 ook je logo en de foto bij Over mij.'],
+      ['Iets melden', 'Werkt er iets niet? Klik bovenaan op "Iets melden". Tanguy krijgt je bericht met alle technische details erbij, zodat hij niet hoeft te raden.'],
+    ],
+  },
+  {
+    version: '1.0',
+    date: '2026-09-05',
+    items: [
+      ['De eerste versie', 'Producten, categorie\u00ebn, markten, teksten en foto\u2019s beheren, met "Ongedaan maken" bij elke wijziging en een melding wanneer iets echt online staat.'],
+    ],
+  },
+];
+
+const SEEN_VERSION_KEY = 'sojozino-admin-seen-version';
+
+function releaseNotesHTML(entries) {
+  return entries.map(note => `
+    <div class="wn-release">
+      <h4>Versie ${esc(note.version)} <span class="wn-date">${esc(note.date)}</span></h4>
+      <ul>
+        ${note.items.map(([title, text]) =>
+          `<li><strong>${esc(title)}</strong><span>${esc(text)}</span></li>`).join('')}
+      </ul>
+    </div>`).join('');
+}
+
+// Everything he has not seen yet, so someone coming back after two releases
+// gets both rather than only the latest.
+function unseenReleases() {
+  let seen = null;
+  try { seen = localStorage.getItem(SEEN_VERSION_KEY); } catch { /* private window */ }
+  if (!seen) return [];
+  const seenIdx = RELEASE_NOTES.findIndex(n => n.version === seen);
+  return seenIdx <= 0 ? [] : RELEASE_NOTES.slice(0, seenIdx);
+}
+
+function openWhatsNew(entries) {
+  $('#wnBody').innerHTML = releaseNotesHTML(entries && entries.length ? entries : RELEASE_NOTES);
+  $('#whatsNewModal').hidden = false;
+  markVersionSeen();
+}
+
+function markVersionSeen() {
+  try { localStorage.setItem(SEEN_VERSION_KEY, DASHBOARD_VERSION); } catch { /* nothing lost */ }
+  $('#dashboardVersion').classList.remove('has-news');
+}
+
+function initWhatsNew() {
+  const button = $('#dashboardVersion');
+  button.addEventListener('click', () => openWhatsNew(null));
+  $('#wnClose').addEventListener('click', () => { $('#whatsNewModal').hidden = true; });
+  $('#whatsNewModal').addEventListener('click', (e) => {
+    if (e.target === $('#whatsNewModal')) $('#whatsNewModal').hidden = true;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !$('#whatsNewModal').hidden) $('#whatsNewModal').hidden = true;
+  });
+
+  let seen = null;
+  try { seen = localStorage.getItem(SEEN_VERSION_KEY); } catch { /* private window */ }
+  if (seen === DASHBOARD_VERSION) return;
+  if (!seen) {
+    // First time on this machine: nothing is "new" to someone who has never
+    // seen the old one, so the button just stops glowing.
+    markVersionSeen();
+    return;
+  }
+  // He has used an older version: show what changed, unprompted, once.
+  button.classList.add('has-news');
+  openWhatsNew(unseenReleases());
 }
 
 // ---------- Iets melden ----------
@@ -2593,6 +2683,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initReport();
   initProductHealth();
+  initWhatsNew();
 
   $('#statCategoriesBox').addEventListener('click', () => goToTab('categories'));
 
@@ -2691,7 +2782,21 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmLabel: 'Ja, zet terug',
       danger: true
     });
-    if (go) await undoChange(undo.dataset.sha, undo.dataset.what);
+    if (!go) return;
+    // The revert is a handful of round trips and then a full reload -- ten
+    // seconds is normal. Without this the button sat there looking untouched,
+    // which invites a second click and a second revert.
+    const others = $all('.pc-undo, .pc-goto').filter(b => b !== undo);
+    others.forEach(b => { b.disabled = true; });
+    setBusy(undo, true, 'Bezig met terugzetten…');
+    try {
+      await undoChange(undo.dataset.sha, undo.dataset.what);
+    } finally {
+      // The list is rebuilt on success, so these may be gone by now; on failure
+      // they are still here and have to work again.
+      setBusy(undo, false);
+      others.forEach(b => { b.disabled = false; });
+    }
   });
 
 
