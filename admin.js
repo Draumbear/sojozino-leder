@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.2.1';
+const DASHBOARD_VERSION = '1.2.2';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -469,9 +469,22 @@ function initWhatsNew() {
   try { seen = localStorage.getItem(SEEN_VERSION_KEY); } catch { /* private window */ }
   if (seen === DASHBOARD_VERSION) return;
   if (!seen) {
-    // First time on this machine: nothing is "new" to someone who has never
-    // seen the old one, so the button just stops glowing.
-    markVersionSeen();
+    // No record, which is two different situations. A browser with a token
+    // saved in it has used the dashboard before -- it simply used it before
+    // this feature existed, so every note is news to it. A browser without one
+    // has never been signed in, and nothing is "new" to someone who has not
+    // seen the old thing.
+    //
+    // Johnny's browser is the first case: he has been using 1.0 and 1.1 for
+    // days, and without this he would be marked as caught up on a list he had
+    // never been shown.
+    const usedBefore = !!(GitHubStore.load() || {}).token;
+    if (!usedBefore) {
+      markVersionSeen();
+      return;
+    }
+    button.classList.add('has-news');
+    openWhatsNew(RELEASE_NOTES);
     return;
   }
   const unseen = unseenReleases(seen);
