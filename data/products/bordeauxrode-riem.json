@@ -4,9 +4,11 @@
   "category": "riemen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over bordeauxrode riem.",
+  "price": 45,
   "variants": [
     {
       "name": "1",
+      "price": null,
       "images": [
         {
           "src": "assets/products/bordeauxrode-riem/1/01.jpg",
@@ -40,6 +42,7 @@
     },
     {
       "name": "2",
+      "price": null,
       "images": [
         {
           "src": "assets/products/bordeauxrode-riem/2/01.jpg",
@@ -66,7 +69,21 @@
           "alt": "Bordeauxrode Riem — 2"
         }
       ]
+    },
+    {
+      "name": "30 mm",
+      "price": 50,
+      "images": []
+    },
+    {
+      "name": "35 mm",
+      "price": 55,
+      "images": []
+    },
+    {
+      "name": "40 mm",
+      "price": 60,
+      "images": []
     }
-  ],
-  "coverImage": "assets/products/bordeauxrode-riem/2/01.jpg"
+  ]
 }
