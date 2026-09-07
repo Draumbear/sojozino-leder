@@ -1097,3 +1097,31 @@ p { margin: 0 0 1rem; color: var(--espresso-soft); }
   color: var(--espresso);
 }
 
+/* Variants told apart by size rather than by looks: no picture, because the
+   picture would be the same one three times. A row of plain buttons instead,
+   sized to their own labels. */
+.variant-swatches.as-text { gap: 0.5rem; align-items: stretch; }
+.variant-swatches.as-text .variant-swatch {
+  width: auto;
+  min-width: 4.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--espresso);
+  border-radius: var(--radius);
+  background: var(--cream-ink);
+  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+.variant-swatches.as-text .vs-label { margin-top: 0; }
+/* The name stays on one line here: these labels are short by nature, and the
+   two-line clamp exists for colour names, not for "40mm". */
+.variant-swatches.as-text .vs-name { -webkit-line-clamp: 1; line-clamp: 1; }
+.variant-swatches.as-text .variant-swatch:hover {
+  border-color: var(--rust);
+  background: #fff;
+}
+.variant-swatches.as-text .variant-swatch.active {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  box-shadow: none;
+}
+.variant-swatches.as-text .variant-swatch.active .vs-label,
+.variant-swatches.as-text .variant-swatch.active .vs-price { color: #fff; }

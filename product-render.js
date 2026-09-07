@@ -47,6 +47,17 @@ function variantImages(v) {
 
 function currentImages() { return variantImages(currentVariant()); }
 
+// A picker of pictures only makes sense where the pictures differ. The moment
+// one variant borrows the product's photos, these variants are not being told
+// apart by how they look -- a belt in 30, 35 and 40mm is the same belt -- and
+// three identical squares are then just three identical squares. So the whole
+// picker drops to plain buttons: the width is the choice, so the width is what
+// you click.
+function variantsLookAlike() {
+  return product.variants.length > 1
+    && product.variants.some(v => !(v.images || []).length);
+}
+
 // True only where the variants are not all the same price -- which is what
 // makes a price worth printing on each swatch.
 function variantPricesDiffer() {
@@ -340,7 +351,7 @@ async function renderProduct() {
   const swatchesHTML = hasVariants ? `
     <div class="variant-picker">
       <p class="eyebrow">Kies een variant</p>
-      <div class="variant-swatches" id="variantSwatches">
+      <div class="variant-swatches${variantsLookAlike() ? ' as-text' : ''}" id="variantSwatches">
         ${product.variants.map((v, i) => {
           const label = v.name || `Variant ${i + 1}`;
           // Where variants differ in price rather than in looks -- a belt in
@@ -353,10 +364,12 @@ async function renderProduct() {
           // The full name always reaches the tooltip and the accessible name,
           // so clipping a long one on screen loses nothing.
           const full = priceTag ? `${label} \u2014 ${window.SojozinoSite.formatPrice(own)}` : label;
+          const photo = variantsLookAlike() ? '' :
+            `<img src="${escapeHTML(thumbUrl(variantImages(v)[0]?.src || ''))}" data-full="${escapeHTML(variantImages(v)[0]?.src || '')}" alt="" loading="lazy" decoding="async">`;
           return `
           <button type="button" class="variant-swatch${i === 0 ? ' active' : ''}" data-idx="${i}"
                   title="${escapeHTML(full)}" aria-label="${escapeHTML(full)}">
-            <img src="${escapeHTML(thumbUrl(variantImages(v)[0]?.src || ''))}" data-full="${escapeHTML(variantImages(v)[0]?.src || '')}" alt="" loading="lazy" decoding="async">
+            ${photo}
             <span class="vs-label"><span class="vs-name">${escapeHTML(label)}</span>${priceTag}</span>
           </button>`;
         }).join('')}

@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.2.2';
+const DASHBOARD_VERSION = '1.2.3';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -378,6 +378,13 @@ async function renderPublishBudget() {
 //
 // Newest first. Add an entry here whenever DASHBOARD_VERSION changes.
 const RELEASE_NOTES = [
+  {
+    version: '1.2.3',
+    date: '2026-09-06',
+    items: [
+      ['Varianten zonder eigen foto’s tonen nu knoppen', 'Hebben je varianten dezelfde foto’s — een riem in 30, 35 en 40mm bijvoorbeeld — dan toont de website gewone knoppen met de maat en de prijs, in plaats van drie keer dezelfde foto.'],
+    ],
+  },
   {
     version: '1.2',
     date: '2026-09-06',
