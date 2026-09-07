@@ -236,17 +236,12 @@
     "category": "riemen",
     "subcategory": null,
     "cover": {
-      "src": "assets/products/bordeauxrode-riem/1/01.jpg",
-      "alt": "Bordeauxrode Riem — 1"
+      "src": "assets/products/bordeauxrode-riem/cover.jpg",
+      "alt": "Bordeauxrode Riem"
     },
-    "price": null,
-    "variantPrices": [
-      50,
-      75,
-      99
-    ],
     "order": 42,
-    "featured": false
+    "featured": false,
+    "fit": "cover"
   },
   {
     "slug": "dopp-kit",

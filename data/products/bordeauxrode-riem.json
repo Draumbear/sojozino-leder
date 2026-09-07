@@ -4,11 +4,9 @@
   "category": "riemen",
   "subcategory": null,
   "description": "Handgemaakt in leder. Beschrijving volgt binnenkort — neem gerust contact op voor meer details over bordeauxrode riem.",
-  "price": null,
   "variants": [
     {
-      "name": "60cm",
-      "price": 50,
+      "name": "1",
       "images": [
         {
           "src": "assets/products/bordeauxrode-riem/1/01.jpg",
@@ -41,8 +39,7 @@
       ]
     },
     {
-      "name": "90cm",
-      "price": 75,
+      "name": "2",
       "images": [
         {
           "src": "assets/products/bordeauxrode-riem/2/01.jpg",
@@ -69,11 +66,7 @@
           "alt": "Bordeauxrode Riem — 2"
         }
       ]
-    },
-    {
-      "name": "120cm",
-      "price": 99,
-      "images": []
     }
-  ]
+  ],
+  "coverImage": "assets/products/bordeauxrode-riem/2/01.jpg"
 }
