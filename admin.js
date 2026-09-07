@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.2';
+const DASHBOARD_VERSION = '1.2.1';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -383,8 +383,7 @@ const RELEASE_NOTES = [
     date: '2026-09-06',
     items: [
       ['Meer teksten die je zelf kan aanpassen', 'De drie blokken op de homepagina (uitgelicht werk, over het atelier, waar vind je mij) en de hele creaties-pagina staan nu onder Instellingen → Teksten. Ook de kleine regel boven de titel op de contactpagina en bij Over mij.'],
-      ['Terugzetten zegt nu dat het bezig is', 'Klik je op "Ongedaan maken", dan zie je meteen dat er iets gebeurt. Het duurt even omdat elk bestand apart teruggezet wordt — je hoeft niet nog eens te klikken.'],
-      ['Deze knop', 'Rechtsboven staat nu "Nieuw in v1.2". Daar lees je wat er veranderd is sinds de vorige keer.'],
+      ['Kleine verbeteringen', 'Een reeks kleine aanpassingen en opgeloste foutjes.'],
     ],
   },
   {
@@ -422,14 +421,26 @@ function releaseNotesHTML(entries) {
     </div>`).join('');
 }
 
-// Everything he has not seen yet, so someone coming back after two releases
-// gets both rather than only the latest.
-function unseenReleases() {
-  let seen = null;
-  try { seen = localStorage.getItem(SEEN_VERSION_KEY); } catch { /* private window */ }
+// 1.2.1 is newer than 1.2, and "1.10" is newer than "1.9" -- neither of which
+// a string comparison gets right.
+function compareVersions(a, b) {
+  const pa = String(a).split('.').map(Number);
+  const pb = String(b).split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff) return diff;
+  }
+  return 0;
+}
+
+// Everything released since the version he last saw, so someone coming back
+// after two releases gets both rather than only the latest. By version rather
+// than by position in the list: a release that carries no notes of its own --
+// a fix with nothing to announce -- has no entry here, and looking it up by
+// position then quietly meant "show him everything".
+function unseenReleases(seen) {
   if (!seen) return [];
-  const seenIdx = RELEASE_NOTES.findIndex(n => n.version === seen);
-  return seenIdx <= 0 ? [] : RELEASE_NOTES.slice(0, seenIdx);
+  return RELEASE_NOTES.filter(n => compareVersions(n.version, seen) > 0);
 }
 
 function openWhatsNew(entries) {
@@ -463,9 +474,16 @@ function initWhatsNew() {
     markVersionSeen();
     return;
   }
+  const unseen = unseenReleases(seen);
+  if (!unseen.length) {
+    // A newer version with no notes of its own: nothing to announce, so
+    // nothing interrupts him.
+    markVersionSeen();
+    return;
+  }
   // He has used an older version: show what changed, unprompted, once.
   button.classList.add('has-news');
-  openWhatsNew(unseenReleases());
+  openWhatsNew(unseen);
 }
 
 // ---------- Iets melden ----------
