@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.2.3';
+const DASHBOARD_VERSION = '1.3';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -378,6 +378,14 @@ async function renderPublishBudget() {
 //
 // Newest first. Add an entry here whenever DASHBOARD_VERSION changes.
 const RELEASE_NOTES = [
+  {
+    version: '1.3',
+    date: '2026-09-06',
+    items: [
+      ['Foto’s slepen tussen varianten', 'Staat een foto bij de verkeerde variant? Sleep ze gewoon naar de juiste — ook naar een variant die nog geen foto’s heeft. Opnieuw uploaden hoeft niet meer.'],
+      ['Foto’s gaan niet meer verloren', 'Verwijder je de enige variant met foto’s, dan verhuizen die foto’s naar de variant die overblijft in plaats van te verdwijnen. Verwijder je een kleur die zijn eigen foto’s heeft, dan gaan die wel mee weg — dat zijn immers foto’s van die kleur.'],
+    ],
+  },
   {
     version: '1.2.3',
     date: '2026-09-06',
@@ -1625,7 +1633,7 @@ function renderVariantsManager() {
     const existingTiles = v.images.map((img, ii) => {
       const isCover = editorCoverKey.variantIdx === vi && editorCoverKey.imageIdx === ii;
       return `
-      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing" draggable="true" title="Klik om te vergroten — sleep om te herschikken">
+      <div class="image-tile${isCover ? ' is-cover' : ''}" data-vidx="${vi}" data-idx="${ii}" data-kind="existing" draggable="true" title="Klik om te vergroten — sleep om te herschikken of naar een andere variant te verplaatsen">
         ${isCover ? '<span class="cover-badge">Cover</span>' : ''}
         <img src="${esc(img.src)}" alt="" draggable="false">
         <div class="tile-actions">
@@ -1662,7 +1670,7 @@ function renderVariantsManager() {
       </div>` : ''}
       ${multi && !v.images.length && !editorPendingUploads.some(p => p.variantIdx === vi) ? `
       <p class="variant-shared-note">Deze variant heeft nog geen eigen foto's en toont dezelfde foto's als het product. Prima voor bijvoorbeeld een riem in een andere lengte — voeg alleen foto's toe als deze variant er echt anders uitziet.</p>` : ''}
-      <div class="image-manager">${existingTiles}${pendingTiles}</div>
+      <div class="image-manager" data-vidx="${vi}">${existingTiles}${pendingTiles}</div>
       <div class="upload-drop" data-vidx="${vi}">
         Klik of sleep foto's hierheen${multi ? ` om toe te voegen aan ${esc(v.name || `variant ${vi + 1}`)}` : ' om toe te voegen'}
         <input type="file" class="upload-input" data-vidx="${vi}" accept="image/*" multiple hidden>
@@ -1711,11 +1719,10 @@ function bindImageDragging(wrap) {
     });
 
     tile.addEventListener('dragover', (e) => {
-      // Photos belong to a specific variant, so a drag never crosses into another.
-      if (!dragging || Number(tile.dataset.vidx) !== dragging.vi) return;
+      if (!dragging) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-      if (Number(tile.dataset.idx) === dragging.ii) return;
+      if (Number(tile.dataset.vidx) === dragging.vi && Number(tile.dataset.idx) === dragging.ii) return;
       clearMarkers();
       tile.classList.add('drag-over');
     });
@@ -1725,15 +1732,75 @@ function bindImageDragging(wrap) {
     tile.addEventListener('drop', (e) => {
       if (!dragging) return;
       e.preventDefault();
-      const vi = Number(tile.dataset.vidx);
+      const toVi = Number(tile.dataset.vidx);
       const to = Number(tile.dataset.idx);
-      const from = dragging.ii;
+      const { vi: fromVi, ii: from } = dragging;
       dragging = null;
-      if (vi !== Number(tile.dataset.vidx) || to === from) { clearMarkers(); return; }
-      moveImage(vi, from, to);
+      clearMarkers();
+      if (toVi === fromVi) {
+        if (to === from) return;
+        moveImage(fromVi, from, to);
+      } else {
+        moveImageToVariant(fromVi, from, toVi, to);
+      }
       renderVariantsManager();
     });
   });
+
+  // The whole photo strip of a variant is a target too, not only the tiles in
+  // it: a variant with no photos yet has no tile to aim at, and that is exactly
+  // the variant a photo most often needs to reach.
+  wrap.querySelectorAll('.image-manager').forEach(strip => {
+    strip.addEventListener('dragover', (e) => {
+      if (!dragging || e.target.closest('.image-tile')) return;
+      const toVi = Number(strip.dataset.vidx);
+      if (toVi === dragging.vi) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      strip.classList.add('strip-target');
+    });
+    strip.addEventListener('dragleave', () => strip.classList.remove('strip-target'));
+    strip.addEventListener('drop', (e) => {
+      strip.classList.remove('strip-target');
+      if (!dragging || e.target.closest('.image-tile')) return;
+      e.preventDefault();
+      const toVi = Number(strip.dataset.vidx);
+      const { vi: fromVi, ii: from } = dragging;
+      dragging = null;
+      clearMarkers();
+      if (toVi === fromVi) return;
+      // Dropped on the empty part of the strip: it goes on the end.
+      moveImageToVariant(fromVi, from, toVi, editorVariants[toVi].images.length);
+      renderVariantsManager();
+    });
+  });
+}
+
+// A photo moved from one variant to another. Which variant a photograph belongs
+// to is a decision he changes his mind about -- a belt shot that turns out to
+// suit the 40mm row better, a colour photographed into the wrong pile -- and
+// re-uploading it to fix that is work the dashboard should not ask for.
+function moveImageToVariant(fromVi, from, toVi, to) {
+  const source = editorVariants[fromVi];
+  const target = editorVariants[toVi];
+  if (!source || !target) return;
+  const [image] = source.images.splice(from, 1);
+  if (!image) return;
+  target.images.splice(Math.min(to, target.images.length), 0, image);
+
+  // The cover is a position, so moving the photo it points at has to move the
+  // pointer with it, or the cover silently becomes a different photograph.
+  if (editorCoverKey.variantIdx === fromVi && editorCoverKey.imageIdx === from) {
+    editorCoverKey = { variantIdx: toVi, imageIdx: Math.min(to, target.images.length - 1) };
+  } else if (editorCoverKey.variantIdx === fromVi && editorCoverKey.imageIdx > from) {
+    editorCoverKey.imageIdx--;
+  } else if (editorCoverKey.variantIdx === toVi && editorCoverKey.imageIdx >= to) {
+    editorCoverKey.imageIdx++;
+  }
+
+  // A variant emptied by the move is not broken: it falls back to the product's
+  // photos, which is the whole point of leaving one empty.
+  toast(`Foto verplaatst naar ${target.name || `variant ${toVi + 1}`}.`, 'info');
 }
 
 // ---------- Photo viewer ----------
@@ -1825,23 +1892,48 @@ function bindVariantsManagerEvents(wrap) {
       if (editorVariants.length <= 1) return;
       const variant = editorVariants[vi];
       const photoCount = (variant.images || []).length;
+
+      // Whether the photos go with the variant or stay with the product turns
+      // on one question: would anything be left? Deleting a colour takes its
+      // photographs with it -- they are pictures of the red one, and showing
+      // them under "Blauw" would be worse than losing them. But where this is
+      // the last variant holding any, the others were borrowing from it, so
+      // the photographs belong to the product rather than to this row, and
+      // they move to what remains.
+      const lastWithPhotos = photoCount > 0
+        && !editorVariants.some((v, i) => i !== vi && (v.images || []).length);
+      const heir = editorVariants.find((v, i) => i !== vi);
+
       const go = await askConfirm({
         title: `Variant "${variant.name || `variant ${vi + 1}`}" verwijderen?`,
         lines: [
-          photoCount
-            ? `<span class="warn">${photoCount} foto${photoCount === 1 ? '' : "'s"}</span> in deze variant ${photoCount === 1 ? 'verdwijnt' : 'verdwijnen'} uit het product.`
-            : 'Deze variant heeft nog geen foto\u2019s.',
+          !photoCount
+            ? 'Deze variant heeft nog geen foto\u2019s.'
+            : lastWithPhotos
+              ? `De ${photoCount} foto${photoCount === 1 ? '' : "'s"} ${photoCount === 1 ? 'blijft' : 'blijven'} bewaard en ${photoCount === 1 ? 'verhuist' : 'verhuizen'} naar <strong>${esc(heir.name || 'de eerste variant')}</strong>. Het is de enige variant met foto\u2019s, dus het product zou er anders geen meer hebben.`
+              : `<span class="warn">${photoCount} foto${photoCount === 1 ? '' : "'s"}</span> in deze variant ${photoCount === 1 ? 'verdwijnt' : 'verdwijnen'} uit het product.`,
           'Dit gebeurt pas echt wanneer je het product opslaat.'
         ],
         confirmLabel: 'Ja, verwijder deze variant',
         danger: true
       });
       if (!go) return;
+
+      const rescued = lastWithPhotos ? variant.images : null;
       editorVariants.splice(vi, 1);
+      if (rescued) editorVariants[0].images = rescued;
+
       editorPendingUploads = editorPendingUploads
-        .filter(p => p.variantIdx !== vi)
-        .map(p => ({ ...p, variantIdx: p.variantIdx > vi ? p.variantIdx - 1 : p.variantIdx }));
-      if (editorCoverKey.variantIdx === vi) editorCoverKey = firstAvailableCover();
+        // Photos still uploading followed the same rule as the ones already
+        // there; dropping them while rescuing the rest would lose exactly the
+        // work he has not yet seen land.
+        .filter(p => rescued || p.variantIdx !== vi)
+        .map(p => p.variantIdx === vi
+          ? { ...p, variantIdx: 0 }
+          : { ...p, variantIdx: p.variantIdx > vi ? p.variantIdx - 1 : p.variantIdx });
+
+      if (rescued && editorCoverKey.variantIdx === vi) editorCoverKey = { variantIdx: 0, imageIdx: editorCoverKey.imageIdx };
+      else if (editorCoverKey.variantIdx === vi) editorCoverKey = firstAvailableCover();
       else if (editorCoverKey.variantIdx > vi) editorCoverKey.variantIdx--;
       renderVariantsManager();
       return;

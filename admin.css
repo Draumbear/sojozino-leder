@@ -853,3 +853,13 @@ button.conn-status.off { cursor: default; }
 /* The three chrome buttons stay together when the toolbar wraps: without this
    the toolbar's space-between throws them to opposite ends of two rows. */
 .toolbar-actions { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+
+/* A photo strip being aimed at from another variant. The tiles have their own
+   marker; this is for the empty space beside them, which is the only target a
+   variant with no photos of its own has. */
+.image-manager.strip-target {
+  outline: 2px dashed var(--a-rust);
+  outline-offset: 4px;
+  border-radius: var(--a-radius);
+  min-height: 3rem;
+}
