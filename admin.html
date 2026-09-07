@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Sojozino</title>
 <link rel="icon" href="assets/logo-mark.png" type="image/png">
-<link rel="stylesheet" href="admin.css?v=018b12e8">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=018b12e8">
+<link rel="stylesheet" href="admin.css?v=e2150b00">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=e2150b00">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="admin-body">
@@ -114,12 +114,18 @@
         <button data-tab="presence">Aanwezigheid</button>
         <button data-tab="settings">Instellingen</button>
       </div>
-      <!-- Beside the tabs, not among them: help is not a place she works. -->
-      <button class="btn-admin secondary small" id="helpChip" data-tab="help" type="button">Uitleg</button>
-      <!-- Beside Uitleg on purpose: the two things you reach for when something
-           is not going the way you expected. -->
-      <button class="btn-admin secondary small" id="reportChip" type="button">Iets melden</button>
-      <button class="dashboard-version" id="dashboardVersion" type="button" title="Wat is er nieuw in deze versie?"></button>
+      <!-- Grouped, so that on a narrow window the three wrap together as a
+           block instead of being scattered by the toolbar's space-between.
+           Beside the tabs but not among them: none of these is a place she
+           works, they are the things you reach for when something is not
+           going the way you expected. -->
+      <div class="toolbar-actions">
+        <button class="btn-admin secondary small" id="helpChip" data-tab="help" type="button">Uitleg</button>
+        <button class="btn-admin secondary small" id="reportChip" type="button">Iets melden</button>
+        <button class="btn-admin secondary small dashboard-version" id="dashboardVersion" type="button">
+          <span aria-hidden="true">&#9432;</span> <span id="dashboardVersionLabel">Wat is nieuw?</span>
+        </button>
+      </div>
     </div>
 
     <!-- Overview -->
@@ -223,6 +229,10 @@
     <section id="tab-about" class="admin-tab" hidden>
       <div class="admin-card">
         <h2>Over mij</h2>
+        <div class="admin-field">
+          <label for="a-eyebrow">Kleine regel boven de titel</label>
+          <input type="text" id="a-eyebrow">
+        </div>
         <div class="admin-field">
           <label for="a-heading">Titel</label>
           <input type="text" id="a-heading">
@@ -407,7 +417,33 @@
       </details>
 
       <details class="text-card">
+        <summary>Blokken op de homepagina</summary>
+        <p class="hint" style="margin-bottom:1rem;">De drie stukken die onder de grote titel op de homepagina staan. Elk heeft een kleine regel, een titel en de tekst van de knop eronder.</p>
+        <h3 class="text-group">Uitgelicht werk</h3>
+        <div class="admin-field"><label for="s-homeFeaturedEyebrow">Kleine regel</label><input type="text" id="s-homeFeaturedEyebrow"></div>
+        <div class="admin-field"><label for="s-homeFeaturedHeading">Titel</label><input type="text" id="s-homeFeaturedHeading"></div>
+        <div class="admin-field"><label for="s-homeFeaturedLink">Tekst van de knop</label><input type="text" id="s-homeFeaturedLink"></div>
+        <h3 class="text-group">Over het atelier</h3>
+        <div class="admin-field"><label for="s-homeAboutEyebrow">Kleine regel</label><input type="text" id="s-homeAboutEyebrow"></div>
+        <div class="admin-field"><label for="s-homeAboutHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label><textarea id="s-homeAboutHeading" rows="2"></textarea></div>
+        <div class="admin-field"><label for="s-homeAboutText">Tekst <span class="hint">(een korte samenvatting — je volledige verhaal staat onder "Over mij")</span></label><textarea id="s-homeAboutText" rows="4"></textarea></div>
+        <div class="admin-field"><label for="s-homeAboutLink">Tekst van de knop</label><input type="text" id="s-homeAboutLink"></div>
+        <h3 class="text-group">Waar vind je mij</h3>
+        <div class="admin-field"><label for="s-homeMarketsEyebrow">Kleine regel</label><input type="text" id="s-homeMarketsEyebrow"></div>
+        <div class="admin-field"><label for="s-homeMarketsHeading">Titel</label><input type="text" id="s-homeMarketsHeading"></div>
+        <div class="admin-field"><label for="s-homeMarketsText">Tekst</label><textarea id="s-homeMarketsText" rows="3"></textarea></div>
+        <div class="admin-field"><label for="s-homeMarketsLink">Tekst van de knop</label><input type="text" id="s-homeMarketsLink"></div>
+      </details>
+
+      <details class="text-card">
+        <summary>Tekst op de creaties-pagina</summary>
+        <div class="admin-field"><label for="s-creationsEyebrow">Kleine regel boven de titel</label><input type="text" id="s-creationsEyebrow"></div>
+        <div class="admin-field"><label for="s-creationsHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label><textarea id="s-creationsHeading" rows="2"></textarea></div>
+        <div class="admin-field"><label for="s-creationsIntro">Zin onder de titel</label><textarea id="s-creationsIntro" rows="3"></textarea></div>
+      </details>
+      <details class="text-card">
         <summary>Tekst op de contactpagina</summary>
+        <div class="admin-field"><label for="s-contactEyebrow">Kleine regel boven de titel</label><input type="text" id="s-contactEyebrow"></div>
         <div class="admin-field">
           <label for="s-contactHeading">Titel <span class="hint">(enter = nieuwe regel)</span></label>
           <textarea id="s-contactHeading" rows="2"></textarea>
@@ -652,7 +688,7 @@
   <div class="queue-status" id="queueStatus" hidden></div>
 </div>
 
-<script src="admin-github.js?v=018b12e8"></script>
-<script src="admin.js?v=018b12e8"></script>
+<script src="admin-github.js?v=e2150b00"></script>
+<script src="admin.js?v=e2150b00"></script>
 </body>
 </html>

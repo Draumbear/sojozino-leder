@@ -122,6 +122,8 @@ function renderHero(site) {
 // The contact page was written into the markup the same way the hero was, so
 // changing a word meant editing the file.
 function renderContact(site) {
+  setEditableText('contactEyebrow', site.contactEyebrow);
+  setEditableText('aboutEyebrow', site.aboutEyebrow);
   setEditableText('contactHeading', site.contactHeading, { allowBreaks: true });
   setEditableText('contactIntro', site.contactIntro);
 }
@@ -149,6 +151,29 @@ const MARKET_PHOTO_SLOTS = [
   ['marketPhotoLeft', 'left'],
   ['marketPhotoRight', 'right'],
 ];
+
+// The homepage's three section blocks, and the two page headers that had no
+// editable text at all. Each falls back to the markup, so a field he has never
+// filled in keeps the wording the page shipped with.
+function renderHomeSections(site) {
+  setEditableText('homeAboutEyebrow', site.homeAboutEyebrow);
+  setEditableText('homeAboutHeading', site.homeAboutHeading, { allowBreaks: true });
+  setEditableText('homeAboutText', site.homeAboutText);
+  setEditableText('homeAboutLink', site.homeAboutLink);
+  setEditableText('homeFeaturedEyebrow', site.homeFeaturedEyebrow);
+  setEditableText('homeFeaturedHeading', site.homeFeaturedHeading, { allowBreaks: true });
+  setEditableText('homeFeaturedLink', site.homeFeaturedLink);
+  setEditableText('homeMarketsEyebrow', site.homeMarketsEyebrow);
+  setEditableText('homeMarketsHeading', site.homeMarketsHeading, { allowBreaks: true });
+  setEditableText('homeMarketsText', site.homeMarketsText);
+  setEditableText('homeMarketsLink', site.homeMarketsLink);
+}
+
+function renderCreationsPage(site) {
+  setEditableText('creationsEyebrow', site.creationsEyebrow);
+  setEditableText('creationsHeading', site.creationsHeading, { allowBreaks: true });
+  setEditableText('creationsIntro', site.creationsIntro);
+}
 
 function renderMarketsPage(site) {
   setEditableText('marketsEyebrow', site.marketsEyebrow);
@@ -293,6 +318,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyHeroLogo(site);
   renderHero(site);
   renderContact(site);
+  renderHomeSections(site);
+  renderCreationsPage(site);
   renderOrderPage(site);
   renderMarketsPage(site);
   renderInstagramButton(site);

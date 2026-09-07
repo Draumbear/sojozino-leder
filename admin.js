@@ -336,7 +336,7 @@ async function publishChanges() {
 // The dashboard's own version, separate from the build hash beside it: the hash
 // says which files are running, this says which release they belong to. Bumped
 // by hand, because a release is a judgement, not a checksum.
-const DASHBOARD_VERSION = '1.1';
+const DASHBOARD_VERSION = '1.2';
 
 // Netlify's free plan includes 300 build minutes a month. This site has no
 // build step -- netlify.toml publishes the folder as it stands -- so a deploy is
@@ -378,6 +378,15 @@ async function renderPublishBudget() {
 //
 // Newest first. Add an entry here whenever DASHBOARD_VERSION changes.
 const RELEASE_NOTES = [
+  {
+    version: '1.2',
+    date: '2026-09-06',
+    items: [
+      ['Meer teksten die je zelf kan aanpassen', 'De drie blokken op de homepagina (uitgelicht werk, over het atelier, waar vind je mij) en de hele creaties-pagina staan nu onder Instellingen → Teksten. Ook de kleine regel boven de titel op de contactpagina en bij Over mij.'],
+      ['Terugzetten zegt nu dat het bezig is', 'Klik je op "Ongedaan maken", dan zie je meteen dat er iets gebeurt. Het duurt even omdat elk bestand apart teruggezet wordt — je hoeft niet nog eens te klikken.'],
+      ['Deze knop', 'Rechtsboven staat nu "Nieuw in v1.2". Daar lees je wat er veranderd is sinds de vorige keer.'],
+    ],
+  },
   {
     version: '1.1',
     date: '2026-09-06',
@@ -572,7 +581,12 @@ async function sendReport() {
 
 function showDashboardVersion() {
   const el = $('#dashboardVersion');
-  if (el) el.textContent = `v${DASHBOARD_VERSION} · ${assetVersion()}`;
+  if (!el) return;
+  // The build hash matters when reading a bug report, not to him, so it lives
+  // in the tooltip. What he sees is a question he might want answered.
+  el.title = `Dashboard v${DASHBOARD_VERSION} · ${assetVersion()} — klik om te zien wat er nieuw is`;
+  const label = $('#dashboardVersionLabel');
+  if (label) label.textContent = `Nieuw in v${DASHBOARD_VERSION}`;
 }
 
 function initReport() {
@@ -2142,6 +2156,21 @@ function snapshotSettings() {
     'Kleine regel boven de titel': s.heroEyebrow, 'Grote titel': s.heroTitle,
     'Zin onder de titel': s.heroTagline,
     'Tekst eerste knop': s.heroPrimaryLabel, 'Tekst tweede knop': s.heroSecondaryLabel,
+    'Homepagina: kleine regel uitgelicht': s.homeFeaturedEyebrow,
+    'Homepagina: titel uitgelicht': s.homeFeaturedHeading,
+    'Homepagina: knop uitgelicht': s.homeFeaturedLink,
+    'Homepagina: kleine regel over het atelier': s.homeAboutEyebrow,
+    'Homepagina: titel over het atelier': s.homeAboutHeading,
+    'Homepagina: tekst over het atelier': s.homeAboutText,
+    'Homepagina: knop over het atelier': s.homeAboutLink,
+    'Homepagina: kleine regel waar vind je mij': s.homeMarketsEyebrow,
+    'Homepagina: titel waar vind je mij': s.homeMarketsHeading,
+    'Homepagina: tekst waar vind je mij': s.homeMarketsText,
+    'Homepagina: knop waar vind je mij': s.homeMarketsLink,
+    'Kleine regel creaties-pagina': s.creationsEyebrow,
+    'Titel creaties-pagina': s.creationsHeading,
+    'Uitleg creaties-pagina': s.creationsIntro,
+    'Kleine regel contactpagina': s.contactEyebrow,
     'Titel contactpagina': s.contactHeading, 'Zin op de contactpagina': s.contactIntro,
     'Regel onder je naam': s.brandSubtitle,
     'Prijzen op de website': VAT_MODE_LABELS[s.priceVatMode || ''],
@@ -2309,6 +2338,7 @@ async function saveProduct() {
 // ---------- About ----------
 function renderAboutTab() {
   const s = state.site;
+  $('#a-eyebrow').value = s.aboutEyebrow || '';
   $('#a-heading').value = s.aboutHeading || '';
   $('#a-paragraphs').value = (s.aboutParagraphs || []).join('\n\n');
   $('#a-photo-preview').src = s.aboutPhoto?.src || 'assets/logo-mark.png';
@@ -2316,6 +2346,8 @@ function renderAboutTab() {
 
 async function saveAbout() {
   const lines = [];
+  const eyebrowLine = changedField('Kleine regel', state.site.aboutEyebrow, $('#a-eyebrow').value.trim());
+  if (eyebrowLine) lines.push(eyebrowLine);
   const headingLine = changedField('Titel', state.site.aboutHeading, $('#a-heading').value.trim());
   if (headingLine) lines.push(headingLine);
   const paragraphs = $('#a-paragraphs').value.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
@@ -2330,6 +2362,7 @@ async function saveAbout() {
   setBusy(btn, true, 'Opslaan…');
   try {
     const files = [];
+    state.site.aboutEyebrow = $('#a-eyebrow').value.trim();
     state.site.aboutHeading = $('#a-heading').value.trim();
     state.site.aboutParagraphs = $('#a-paragraphs').value.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
 
@@ -2542,6 +2575,21 @@ function renderSettingsTab() {
   $('#s-heroTagline').value = s.heroTagline || '';
   $('#s-heroPrimaryLabel').value = s.heroPrimaryLabel || '';
   $('#s-heroSecondaryLabel').value = s.heroSecondaryLabel || '';
+  $('#s-homeFeaturedEyebrow').value = s.homeFeaturedEyebrow || '';
+  $('#s-homeFeaturedHeading').value = s.homeFeaturedHeading || '';
+  $('#s-homeFeaturedLink').value = s.homeFeaturedLink || '';
+  $('#s-homeAboutEyebrow').value = s.homeAboutEyebrow || '';
+  $('#s-homeAboutHeading').value = s.homeAboutHeading || '';
+  $('#s-homeAboutText').value = s.homeAboutText || '';
+  $('#s-homeAboutLink').value = s.homeAboutLink || '';
+  $('#s-homeMarketsEyebrow').value = s.homeMarketsEyebrow || '';
+  $('#s-homeMarketsHeading').value = s.homeMarketsHeading || '';
+  $('#s-homeMarketsText').value = s.homeMarketsText || '';
+  $('#s-homeMarketsLink').value = s.homeMarketsLink || '';
+  $('#s-creationsEyebrow').value = s.creationsEyebrow || '';
+  $('#s-creationsHeading').value = s.creationsHeading || '';
+  $('#s-creationsIntro').value = s.creationsIntro || '';
+  $('#s-contactEyebrow').value = s.contactEyebrow || '';
   $('#s-contactHeading').value = s.contactHeading || '';
   $('#s-contactIntro').value = s.contactIntro || '';
   $('#s-brandSubtitle').value = s.brandSubtitle || '';
@@ -2574,6 +2622,21 @@ async function saveSettings() {
     'Kleine regel boven de titel': $('#s-heroEyebrow').value.trim(), 'Grote titel': $('#s-heroTitle').value.trim(),
     'Zin onder de titel': $('#s-heroTagline').value.trim(),
     'Tekst eerste knop': $('#s-heroPrimaryLabel').value.trim(), 'Tekst tweede knop': $('#s-heroSecondaryLabel').value.trim(),
+    'Homepagina: kleine regel uitgelicht': $('#s-homeFeaturedEyebrow').value.trim(),
+    'Homepagina: titel uitgelicht': $('#s-homeFeaturedHeading').value.trim(),
+    'Homepagina: knop uitgelicht': $('#s-homeFeaturedLink').value.trim(),
+    'Homepagina: kleine regel over het atelier': $('#s-homeAboutEyebrow').value.trim(),
+    'Homepagina: titel over het atelier': $('#s-homeAboutHeading').value.trim(),
+    'Homepagina: tekst over het atelier': $('#s-homeAboutText').value.trim(),
+    'Homepagina: knop over het atelier': $('#s-homeAboutLink').value.trim(),
+    'Homepagina: kleine regel waar vind je mij': $('#s-homeMarketsEyebrow').value.trim(),
+    'Homepagina: titel waar vind je mij': $('#s-homeMarketsHeading').value.trim(),
+    'Homepagina: tekst waar vind je mij': $('#s-homeMarketsText').value.trim(),
+    'Homepagina: knop waar vind je mij': $('#s-homeMarketsLink').value.trim(),
+    'Kleine regel creaties-pagina': $('#s-creationsEyebrow').value.trim(),
+    'Titel creaties-pagina': $('#s-creationsHeading').value.trim(),
+    'Uitleg creaties-pagina': $('#s-creationsIntro').value.trim(),
+    'Kleine regel contactpagina': $('#s-contactEyebrow').value.trim(),
     'Titel contactpagina': $('#s-contactHeading').value.trim(), 'Zin op de contactpagina': $('#s-contactIntro').value.trim(),
     'Regel onder je naam': $('#s-brandSubtitle').value.trim(),
     'Prijzen op de website': VAT_MODE_LABELS[$('#s-priceVatMode').value],
@@ -2604,6 +2667,21 @@ async function saveSettings() {
       heroTagline: $('#s-heroTagline').value.trim(),
       heroPrimaryLabel: $('#s-heroPrimaryLabel').value.trim(),
       heroSecondaryLabel: $('#s-heroSecondaryLabel').value.trim(),
+      homeFeaturedEyebrow: $('#s-homeFeaturedEyebrow').value.trim(),
+      homeFeaturedHeading: $('#s-homeFeaturedHeading').value.trim(),
+      homeFeaturedLink: $('#s-homeFeaturedLink').value.trim(),
+      homeAboutEyebrow: $('#s-homeAboutEyebrow').value.trim(),
+      homeAboutHeading: $('#s-homeAboutHeading').value.trim(),
+      homeAboutText: $('#s-homeAboutText').value.trim(),
+      homeAboutLink: $('#s-homeAboutLink').value.trim(),
+      homeMarketsEyebrow: $('#s-homeMarketsEyebrow').value.trim(),
+      homeMarketsHeading: $('#s-homeMarketsHeading').value.trim(),
+      homeMarketsText: $('#s-homeMarketsText').value.trim(),
+      homeMarketsLink: $('#s-homeMarketsLink').value.trim(),
+      creationsEyebrow: $('#s-creationsEyebrow').value.trim(),
+      creationsHeading: $('#s-creationsHeading').value.trim(),
+      creationsIntro: $('#s-creationsIntro').value.trim(),
+      contactEyebrow: $('#s-contactEyebrow').value.trim(),
       contactHeading: $('#s-contactHeading').value.trim(),
       contactIntro: $('#s-contactIntro').value.trim(),
       brandSubtitle: $('#s-brandSubtitle').value.trim(),
